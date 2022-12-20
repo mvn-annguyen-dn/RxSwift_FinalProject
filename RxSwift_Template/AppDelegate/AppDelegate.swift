@@ -9,16 +9,67 @@ import UIKit
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
-    var window: UIWindow?
+//    var window: UIWindow?
+//
+//    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+//        // Override point for customization after application launch.
+//        self.window = UIWindow(frame: UIScreen.main.bounds)
+//        // Provide your apps root view controller
+//        let naviVC = UINavigationController(rootViewController: LoginViewController())
+//        window?.rootViewController = naviVC
+//        window?.makeKeyAndVisible()
+//        return true
+//    }
 
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
-        self.window = UIWindow(frame: UIScreen.main.bounds)
-        // Provide your apps root view controller
-        let naviVC = UINavigationController(rootViewController: HomeViewController())
-        window?.rootViewController = naviVC
-        window?.makeKeyAndVisible()
-        return true
-    }
+        enum RootType {
+            case login
+            case tabbar
+        }
+
+        static var shared: AppDelegate = {
+            guard let delegate = UIApplication.shared.delegate as? AppDelegate else {
+                fatalError("Can not get AppDelegate")
+            }
+            return delegate
+        }()
+
+        var window: UIWindow?
+        let tabbarController = UITabBarController()
+
+        func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+            window = UIWindow(frame: UIScreen.main.bounds)
+            window?.makeKeyAndVisible()
+            setRoot(root: .login)
+            return true
+        }
+
+        private func setRootLogin() {
+            let vc = HomeViewController()
+            let navi = UINavigationController(rootViewController: vc)
+            window?.rootViewController = navi
+        }
+
+        private func setRootTabbar() {
+            configTabbar()
+            window?.rootViewController = tabbarController
+        }
+
+        func setRoot(root: RootType) {
+            switch root {
+            case .login:
+                setRootLogin()
+            case .tabbar:
+                setRootTabbar()
+            }
+        }
+
+        private func configTabbar() {
+            let homeVC = HomeViewController()
+            let homeNavi = UINavigationController(rootViewController: homeVC)
+            homeNavi.tabBarItem = UITabBarItem(title: "BasicRxSwift", image: UIImage(systemName: "avatar_name"), tag: 1)
+
+            let viewControllers = [homeNavi]
+            tabbarController.setViewControllers(viewControllers, animated: true)
+            tabbarController.selectedIndex = 1
+        }
 }
-

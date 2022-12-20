@@ -7,10 +7,11 @@ target 'RxSwift_Template' do
 
     pod 'RxSwift'
     pod 'RxCocoa'
-    pod 'Moya'
     pod 'RxDataSources'
     pod "RxGesture"
     pod 'SwiftLint'
+    pod 'Moya/RxSwift'
+    pod 'SwifterSwift'
 
   # Pods for RxSwift_Template
 
