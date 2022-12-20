@@ -15,7 +15,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         self.window = UIWindow(frame: UIScreen.main.bounds)
         // Provide your apps root view controller
-        let naviVC = UINavigationController(rootViewController: HomeViewController())
+        let naviVC = UINavigationController(rootViewController: MovieViewController())
         window?.rootViewController = naviVC
         window?.makeKeyAndVisible()
         return true
