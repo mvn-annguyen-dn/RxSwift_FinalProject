@@ -14,7 +14,7 @@ class ApiManager {
     static let shared: ApiManager = ApiManager()
     let baseUrl: String = "https://rss.applemarketingtools.com/api/v2/us/music/most-played/10/albums.json"
     let bag: DisposeBag = DisposeBag()
-
+    
     func loadAPI<T: Decodable>(method: Method) -> Single<T> {
         return Single<T>.create { [weak self] single -> Disposable in
             guard let this = self,
@@ -79,7 +79,6 @@ class ApiManager {
         task.resume()
     }
 }
-
 
 extension ApiManager {
     enum Method: String {

@@ -14,7 +14,7 @@ final class Music: Decodable {
     var releaseDate: String?
     var copyright: String?
     var artworkUrl100: String?
-
+    
     init(artistName: String? = nil, id: String? = nil, name: String? = nil, releaseDate: String? = nil, copyright: String? = nil, artworkUrl100: String? = nil) {
         self.artistName = artistName
         self.id = id
@@ -50,7 +50,7 @@ struct FeedResults: Decodable {
     init(results: [Music]?) {
         self.results = results
     }
-
+    
     enum CodingKeys: String, CodingKey {
         case feed
         case results

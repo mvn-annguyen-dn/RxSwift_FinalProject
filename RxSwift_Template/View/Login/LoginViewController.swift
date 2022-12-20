@@ -10,46 +10,51 @@ import RxSwift
 import RxCocoa
 
 final class LoginViewController: UIViewController {
-
+    
     @IBOutlet private weak var userNameTextField: UITextField!
     @IBOutlet private weak var passWordTextField: UITextField!
     @IBOutlet private weak var loginButton: UIButton!
     @IBOutlet private weak var errorLabel: UILabel!
-
+    
     let bag: DisposeBag = DisposeBag()
     var viewModel: LoginViewModel = LoginViewModel()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         bindingViewModel()
     }
-
+    
     // MARK: - Private func
     private func bindingViewModel() {
         userNameTextField.delegate = self
         passWordTextField.delegate = self
-
+        
         userNameTextField.rx.text.orEmpty
             .bind(to: viewModel.userName)
             .disposed(by: bag)
-
+        
         passWordTextField.rx.text.orEmpty
             .bind(to: viewModel.passWord)
             .disposed(by: bag)
-
-        viewModel.isValid.drive(loginButton.rx.enableButton).disposed(by: bag)
-
+        
+        viewModel.isValid
+            .drive(loginButton.rx.enableButton)
+            .disposed(by: bag)
+        
         loginButton.rx.tap
             .bind(onNext: {
                 self.viewModel.loginTap.onNext(Void())
             }).disposed(by: bag)
-
-        viewModel.loginDone.asObservable().subscribe(onNext: { music in
-            if let name = music?.name, !name.isEmpty {
-                AppDelegate.shared.setRoot(root: .tabbar)
-            }
-        }).disposed(by: bag)
+        
+        viewModel.loginDone
+            .asObservable()
+            .subscribe(onNext: { music in
+                if let name = music?.name, !name.isEmpty {
+                    AppDelegate.shared.setRoot(root: .tabbar)
+                }
+            })
+            .disposed(by: bag)
     }
 }
 
