@@ -26,8 +26,7 @@ final class MovieViewController: UIViewController {
         configTableView()
         configSearchBar()
         viewModel.loadingData
-            .asDriver(onErrorJustReturn: false)
-            .drive(activityIndicatorView.rx.isHidden)
+            .bind(to: activityIndicatorView.rx.isHidden)
             .disposed(by: disposeBag)
     }
 
@@ -60,22 +59,14 @@ final class MovieViewController: UIViewController {
             .modelSelected(Movie.self)
             .subscribe(onNext: { model in
                 self.navigationItem.rx.title.onNext(model.title)
-//                self.test(id: model.id ?? 0)
             })
             .disposed(by: disposeBag)
     }
 
-    private func test(id: Int) {
-//        let vc = VideoViewController()
-//        vc.viewModel = VideoViewModel(id: id)
-//        present(vc, animated: true)
-    }
-
     private func configSearchBar() {
-        searchBar.rx.setDelegate(self)
-            .disposed(by: disposeBag)
         searchBar.rx.text
-            .throttle(RxTimeInterval.milliseconds(1000), scheduler: MainScheduler.instance)
+            .distinctUntilChanged()
+            .debounce(RxTimeInterval.seconds(1), scheduler: MainScheduler.instance)
             .subscribe(onNext: { [weak self] query in
                 guard let this = self,
                       let query = query else { return }
@@ -88,11 +79,6 @@ final class MovieViewController: UIViewController {
 extension MovieViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         UITableView.automaticDimension
-    }
-}
-
-extension MovieViewController: UISearchBarDelegate {
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
     }
 }
 
@@ -113,6 +99,6 @@ extension MovieViewController {
 extension Reactive where Base: UITableViewCell {
     var setSelected: Observable<(selected: Bool, animated: Bool)> {
         base.rx.methodInvoked(#selector(UITableViewCell.setSelected(_:animated:)))
-            .map { (selected: $0[0] as! Bool, animated: $0[1] as! Bool) }
+            .map { (selected: $0[0] as? Bool ?? false, animated: $0[1] as? Bool ?? false) }
     }
 }

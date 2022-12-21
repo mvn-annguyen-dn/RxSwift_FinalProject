@@ -11,10 +11,8 @@ import RxCocoa
 
 final class MovieCellViewModel {
     var movieSub: BehaviorRelay<Movie?> = .init(value: nil)
-    var movie: Movie
 
     init(movie: Movie) {
-        self.movie = movie
         movieSub.accept(movie)
     }
 }

@@ -21,10 +21,6 @@ final class MovieTableViewCell: UITableViewCell {
     }
     var disposedBag = DisposeBag()
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
-    }
-    
     override func prepareForReuse() {
         super.prepareForReuse()
         disposedBag = DisposeBag()
@@ -32,19 +28,21 @@ final class MovieTableViewCell: UITableViewCell {
 
     private func updateCell() {
         guard let viewModel = viewModel else { return }
-        viewModel.movieSub
-            .map(\.?.title)
+        let movie = viewModel.movieSub.compactMap { $0 }
+        
+        movie
+            .map(\.title)
             .bind(to: movieNameLabel.rx.text)
             .disposed(by: disposedBag)
 
-        viewModel.movieSub
-            .map(\.?.overview)
+        movie
+            .map(\.overview)
             .bind(to: movieOverviewLabel.rx.text)
             .disposed(by: disposedBag)
-
-        viewModel.movieSub
-            .map(\.?.posterPath)
-            .flatMap { self.downloadImage(url: "http://image.tmdb.org/t/p/w500\($0 ?? "")") }
+        
+        movie
+            .map(\.posterPath)
+            .flatMap { self.downloadImage(url: "https://image.tmdb.org/t/p/w500/\($0 ?? "")") }
             .bind(to: movieImageView.rx.image)
             .disposed(by: disposedBag)
     }
@@ -62,7 +60,11 @@ final class MovieTableViewCell: UITableViewCell {
                     return
                 }
                 let image = UIImage(data: data)
-                observer.onNext(image)
+                if let image = image {
+                    observer.onNext(image)
+                } else {
+                    observer.onNext(nil)
+                }
                 observer.onCompleted()
             }
             task.resume()
