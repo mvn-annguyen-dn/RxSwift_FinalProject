@@ -25,10 +25,11 @@ final class RecommendCollectionViewCell: UICollectionViewCell {
     }
 
     private func updateCell() {
-        ApiManager.shared.downloadImage(url: viewModel?.music.artworkUrl100 ?? "") { [weak self] image in
+        ApiManager.shared.dowloadImageWithRxSwift(url: viewModel?.music.artworkUrl100 ?? "").subscribe { [weak self] element in
             guard let this = self else { return }
-            this.productImageView.image = image
+            this.productImageView.image = element
         }
+        .disposed(by: bag)
         nameProductLabel.text = viewModel?.music.artistName
         priceProductLabel.text = viewModel?.music.name
         shopLabel.text = viewModel?.music.copyright

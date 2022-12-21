@@ -54,29 +54,36 @@ class ApiManager {
         .observe(on: MainScheduler.instance)
     }
     
-    func downloadImage(url: String, completion: @escaping (UIImage?) -> Void) {
-        guard let url = URL(string: url) else {
-            completion(nil)
-            return
-        }
-        let config = URLSessionConfiguration.default
-        config.waitsForConnectivity = true
-        let session = URLSession(configuration: config)
-        let task = session.dataTask(with: url) { (data, _, error) in
-            DispatchQueue.main.async {
-                if let _ = error {
-                    completion(nil)
-                } else {
-                    if let data = data {
-                        let image = UIImage(data: data)
-                        completion(image)
+    func dowloadImageWithRxSwift(url: String) -> Observable<UIImage?> {
+        return Observable.create { observer in
+            guard let url = URL(string: url) else {
+                observer.onError(ApiError.pathError)
+                return Disposables.create()
+            }
+            let config = URLSessionConfiguration.default
+            config.waitsForConnectivity = true
+            let session = URLSession(configuration: config)
+            let task = session.dataTask(with: url) { data, _, error in
+                DispatchQueue.main.async {
+                    if let _ = error {
+                        observer.onError(ApiError.error("Data Image Fail"))
                     } else {
-                        completion(nil)
+                        if let data = data {
+                            let image = UIImage(data: data)
+                            observer.onNext(image)
+                            observer.onCompleted()
+                        } else {
+                            observer.onError(ApiError.error("Data Image not found"))
+                        }
                     }
                 }
             }
+            task.resume()
+
+            return Disposables.create() {
+                task.cancel()
+            }
         }
-        task.resume()
     }
 }
 
