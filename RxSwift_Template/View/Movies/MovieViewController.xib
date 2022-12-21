@@ -43,14 +43,14 @@
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
-                <constraint firstItem="2AR-mW-pHt" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="5gW-RC-zcs"/>
                 <constraint firstItem="OCi-LS-9gJ" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="7Df-S1-qW2"/>
+                <constraint firstItem="2AR-mW-pHt" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="81w-vJ-xur"/>
+                <constraint firstAttribute="bottom" secondItem="2AR-mW-pHt" secondAttribute="bottom" id="J6M-2Z-H9d"/>
                 <constraint firstItem="OCi-LS-9gJ" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="Poe-EU-iX9"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="2AR-mW-pHt" secondAttribute="trailing" id="Z1Q-Cg-fra"/>
-                <constraint firstItem="2AR-mW-pHt" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="fU8-xi-dte"/>
-                <constraint firstAttribute="bottom" secondItem="2AR-mW-pHt" secondAttribute="bottom" id="zsw-I1-dPP"/>
+                <constraint firstItem="2AR-mW-pHt" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="WLc-r4-opD"/>
+                <constraint firstItem="2AR-mW-pHt" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="r0y-ei-p9Q"/>
             </constraints>
-            <point key="canvasLocation" x="121" y="20"/>
+            <point key="canvasLocation" x="119.84732824427481" y="19.718309859154932"/>
         </view>
     </objects>
     <resources>

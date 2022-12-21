@@ -24,34 +24,38 @@ final class MovieTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
     }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        disposedBag = DisposeBag()
+    }
 
     private func updateCell() {
         guard let viewModel = viewModel else { return }
         viewModel.movieSub
-            .map { $0?.title }
+            .map(\.?.title)
             .bind(to: movieNameLabel.rx.text)
             .disposed(by: disposedBag)
 
         viewModel.movieSub
-            .map { $0?.overview }
+            .map(\.?.overview)
             .bind(to: movieOverviewLabel.rx.text)
             .disposed(by: disposedBag)
 
         viewModel.movieSub
-            .map { ($0?.posterPath) ?? "" }
-            .flatMap { self.downloadImage(url: "http://image.tmdb.org/t/p/w500\($0)") }
-            .subscribe { [weak self] image in
-                guard let this = self else { return }
-                this.movieImageView.rx
-                    .image
-                    .onNext(image)
-            }
+            .map(\.?.posterPath)
+            .flatMap { self.downloadImage(url: "http://image.tmdb.org/t/p/w500\($0 ?? "")") }
+            .bind(to: movieImageView.rx.image)
             .disposed(by: disposedBag)
     }
     
     private func downloadImage(url: String) -> Observable<UIImage?> {
         return Observable.create { observer in
-            let task = URLSession.shared.dataTask(with: URL(string: url)!) { data, _, _ in
+            guard let url = URL(string: url) else {
+                observer.onError(APIError.pathError)
+                return Disposables.create()
+            }
+            let task = URLSession.shared.dataTask(with: url) { data, _, _ in
                 guard let data = data else {
                     observer.onNext(nil)
                     observer.onCompleted()

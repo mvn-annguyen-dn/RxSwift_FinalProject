@@ -26,7 +26,8 @@ final class MovieViewController: UIViewController {
         configTableView()
         configSearchBar()
         viewModel.loadingData
-            .bind(to: activityIndicatorView.rx.isHidden)
+            .asDriver(onErrorJustReturn: false)
+            .drive(activityIndicatorView.rx.isHidden)
             .disposed(by: disposeBag)
     }
 
@@ -78,7 +79,7 @@ final class MovieViewController: UIViewController {
             .subscribe(onNext: { [weak self] query in
                 guard let this = self,
                       let query = query else { return }
-                query.isEmpty ? this.getData() : this.searchData(query)
+                this.searchData(query)
             })
             .disposed(by: disposeBag)
     }
@@ -96,17 +97,6 @@ extension MovieViewController: UISearchBarDelegate {
 }
 
 extension MovieViewController {
-    private func getData() {
-        viewModel.loadingData.onNext(false)
-        viewModel.getMovies()
-            .subscribe { [weak self] data in
-                guard let this = self else { return }
-                this.viewModel.loadingData.onNext(true)
-                this.viewModel.movies.onNext(data.results ?? [])
-            }
-            .disposed(by: disposeBag)
-    }
-
     private func searchData(_ query: String) {
         let searchText = query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
         viewModel.loadingData.onNext(false)
