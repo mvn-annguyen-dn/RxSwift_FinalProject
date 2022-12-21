@@ -13,10 +13,13 @@ import RxDataSources
 final class HomeViewController: UIViewController {
 
     @IBOutlet private weak var tableView: UITableView!
+    
+    var viewModel: HomeViewModel = HomeViewModel()
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        callAPI()
         configTableView()
     }
 
@@ -24,36 +27,38 @@ final class HomeViewController: UIViewController {
         title = "Home"
         let recommendCell = UINib(nibName: "RecommendCell", bundle: Bundle.main)
         tableView.register(recommendCell, forCellReuseIdentifier: "RecommendCell")
+        tableView.rx.setDelegate(self).disposed(by: viewModel.bag)
+        
+        viewModel.musicBehaviorRelay.bind(to: tableView.rx.items(cellIdentifier: "RecommendCell", cellType: RecommendCell.self)) { index, element, cell in
+            let indexPath = IndexPath(item: index, section: 0)
+            cell.viewModel = self.viewModel.getDataRecommendCell(indexPath: indexPath)
+            if let lastIndexVisible = self.tableView.indexPathsForVisibleRows,
+               lastIndexVisible.count == index {
+                self.tableView.reloadData()
+            }
+        }
+        .disposed(by: viewModel.bag)
+    
+//        tableView.delegate = self
+//        tableView.dataSource = self
+    }
 
-        tableView.delegate = self
-        tableView.dataSource = self
+    private func callAPI() {
+        viewModel.getApiMusic()
+            .subscribe { [weak self] data in
+                guard let this = self else { return }
+                this.viewModel.musicBehaviorRelay.accept(data.results ?? [])
+                this.tableView.reloadData()
+            } onFailure: { error in
+                print(error.localizedDescription)
+            }
+            .disposed(by: viewModel.bag)
     }
 }
 
-extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
-
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
-    }
-
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        switch indexPath.row {
-        case 0:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "RecommendCell") as? RecommendCell else {
-                return UITableViewCell()
-            }
-            return cell
-        default:
-            return UITableViewCell()
-        }
-    }
+extension HomeViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        switch indexPath.row {
-        case 0:
-            return 200
-        default:
-            return 200
-        }
+        return 300
     }
 }

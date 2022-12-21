@@ -9,47 +9,39 @@ import UIKit
 import RxCocoa
 import RxSwift
 
-final class RecommendCell: UITableViewCell, UIScrollViewDelegate {
+final class RecommendCell: UITableViewCell {
 
     @IBOutlet private weak var collectionView: UICollectionView!
     @IBOutlet private weak var viewAllLabel: UILabel!
 
-    let bag: DisposeBag = DisposeBag()
-    var viewModel: RecommendCellViewModel = RecommendCellViewModel()
-
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        
-        callAPI()
-        setupTableView()
-    }
-
-    private func callAPI() {
-        viewModel.getApiMusic()
-            .subscribe { [weak self] data in
-                guard let this = self else { return }
-                this.viewModel.musicBehaviorRelay.accept(data.results ?? [])
-            } onFailure: { error in
-                print(error.localizedDescription)
-            }
-            .disposed(by: bag)
+    var viewModel: RecommendCellViewModel? {
+        didSet {
+            setupCollectionView()
+            collectionView.reloadData()
+        }
     }
     
-    private func setupTableView() {
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        viewModel?.bag = DisposeBag()
+    }
+    
+    private func setupCollectionView() {
+        guard let viewModel = viewModel else { return }
         let cellNib = UINib(nibName: "RecommendCollectionViewCell", bundle: Bundle.main)
         collectionView.register(cellNib, forCellWithReuseIdentifier: "RecommendCollectionViewCell")
-        collectionView.rx.setDelegate(self).disposed(by: bag)
+        collectionView.rx.setDelegate(self).disposed(by: viewModel.bag)
 
-        viewModel.musicBehaviorRelay.bind(to: collectionView.rx.items(cellIdentifier: "RecommendCollectionViewCell", cellType: RecommendCollectionViewCell.self)) { (index, element, cell) in
-//            let indexPath = IndexPath(item: index, section: 0)
-            cell.viewModel = self.viewModel.getDataRecommendCell(index: index)
+        viewModel.musicBehaviorRelays.bind(to: collectionView.rx.items(cellIdentifier: "RecommendCollectionViewCell", cellType: RecommendCollectionViewCell.self)) { (index, element, cell) in
+            let indexPath = IndexPath(item: index, section: 0)
+            cell.viewModel = self.viewModel?.getDataRecommendCollectionCell(indexPath: indexPath)
 
             if let lastIndexVisible = self.collectionView.indexPathsForVisibleItems.last,
                lastIndexVisible.row == index {
                 self.collectionView.reloadData()
             }
         }
-        .disposed(by: bag)
+        .disposed(by: viewModel.bag)
     }
 }
 
@@ -57,9 +49,5 @@ extension RecommendCell:  UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: UIScreen.main.bounds.width, height: 180)
-    }
-
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     }
 }

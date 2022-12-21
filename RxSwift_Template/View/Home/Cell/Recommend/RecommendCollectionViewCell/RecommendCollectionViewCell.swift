@@ -17,7 +17,6 @@ final class RecommendCollectionViewCell: UICollectionViewCell {
     @IBOutlet private weak var shopLabel: UILabel!
     @IBOutlet private weak var recommendCellView: UIView!
 
-    let bag: DisposeBag = DisposeBag()
     var viewModel: RecommendCollectionViewCellViewModel? {
         didSet {
             updateCell()
@@ -25,13 +24,20 @@ final class RecommendCollectionViewCell: UICollectionViewCell {
     }
 
     private func updateCell() {
-        ApiManager.shared.dowloadImageWithRxSwift(url: viewModel?.music.artworkUrl100 ?? "").subscribe { [weak self] element in
-            guard let this = self else { return }
-            this.productImageView.image = element
-        }
-        .disposed(by: bag)
-        nameProductLabel.text = viewModel?.music.artistName
-        priceProductLabel.text = viewModel?.music.name
-        shopLabel.text = viewModel?.music.copyright
+        guard let viewModel = viewModel else { return }
+        viewModel.musicBehaviorRelay.asObservable()
+            .map { $0.name }
+            .bind(to: nameProductLabel.rx.text)
+            .disposed(by: viewModel.bag)
+        viewModel.musicBehaviorRelay.asObservable()
+            .map { $0.artistName }
+            .bind(to: priceProductLabel.rx.text)
+            .disposed(by: viewModel.bag)
+        viewModel.musicBehaviorRelay.asObservable().map { $0.artworkUrl100 ?? "" }.subscribe(onNext: { element in
+            ApiManager.shared.dowloadImageWithRxSwift(url: element).subscribe { image in
+                self.productImageView.image = image
+            }.disposed(by: viewModel.bag)
+        })
+        .disposed(by: viewModel.bag)
     }
 }

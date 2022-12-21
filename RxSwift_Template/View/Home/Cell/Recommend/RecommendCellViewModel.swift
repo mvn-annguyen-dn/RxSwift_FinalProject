@@ -11,13 +11,14 @@ import RxCocoa
 
 final class RecommendCellViewModel {
 
-    var musicBehaviorRelay: BehaviorRelay<[Music]> = .init(value: [])
-
-    func getApiMusic() -> Single<FeedResults> {
-        return ApiManager.shared.loadAPI(method: .get)
+    var bag: DisposeBag = DisposeBag()
+    var musicBehaviorRelays: BehaviorRelay<[Music]> = .init(value: [])
+    
+    init(music: [Music]) {
+        musicBehaviorRelays.accept(music)
     }
 
-    func getDataRecommendCell(index: Int) -> RecommendCollectionViewCellViewModel {
-        return RecommendCollectionViewCellViewModel(music: musicBehaviorRelay.value[index])
+    func getDataRecommendCollectionCell(indexPath: IndexPath) -> RecommendCollectionViewCellViewModel {
+        return RecommendCollectionViewCellViewModel(music: musicBehaviorRelays.value[indexPath.row])
     }
 }

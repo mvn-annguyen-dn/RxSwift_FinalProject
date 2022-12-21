@@ -11,4 +11,15 @@ import RxCocoa
 import RxDataSources
 
 final class HomeViewModel {
+    
+    let bag: DisposeBag = DisposeBag()
+    var musicBehaviorRelay: BehaviorRelay<[Music]> = .init(value: [])
+    
+    func getApiMusic() -> Single<FeedResults> {
+        return ApiManager.shared.loadAPI(method: .get)
+    }
+    
+    func getDataRecommendCell(indexPath: IndexPath) -> RecommendCellViewModel {
+        return RecommendCellViewModel(music: musicBehaviorRelay.value)
+    }
 }
