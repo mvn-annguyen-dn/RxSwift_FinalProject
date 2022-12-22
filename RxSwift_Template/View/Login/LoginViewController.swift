@@ -16,7 +16,6 @@ final class LoginViewController: UIViewController {
     @IBOutlet private weak var loginButton: UIButton!
     @IBOutlet private weak var errorLabel: UILabel!
     
-    let bag: DisposeBag = DisposeBag()
     var viewModel: LoginViewModel = LoginViewModel()
     
     override func viewDidLoad() {
@@ -27,25 +26,31 @@ final class LoginViewController: UIViewController {
     
     // MARK: - Private func
     private func bindingViewModel() {
-        userNameTextField.delegate = self
-        passWordTextField.delegate = self
-        
         userNameTextField.rx.text.orEmpty
             .bind(to: viewModel.userName)
-            .disposed(by: bag)
+            .disposed(by: viewModel.bag)
         
         passWordTextField.rx.text.orEmpty
             .bind(to: viewModel.passWord)
-            .disposed(by: bag)
-        
+            .disposed(by: viewModel.bag)
+
+        viewModel.isValidUsername.drive { isValid in
+            self.errorLabel.text = isValid
+        }
+        .disposed(by: viewModel.bag)
+
+        viewModel.isValidPassword.drive { isValid in
+            self.errorLabel.text = isValid
+        }
+        .disposed(by: viewModel.bag)
+
         viewModel.isValid
             .drive(loginButton.rx.enableButton)
-            .disposed(by: bag)
+            .disposed(by: viewModel.bag)
         
         loginButton.rx.tap
-            .bind(onNext: {
-                self.viewModel.loginTap.onNext(Void())
-            }).disposed(by: bag)
+            .bind(to: viewModel.loginTap)
+            .disposed(by: viewModel.bag)
         
         viewModel.loginDone
             .asObservable()
@@ -54,24 +59,7 @@ final class LoginViewController: UIViewController {
                     AppDelegate.shared.setRoot(root: .tabbar)
                 }
             })
-            .disposed(by: bag)
-    }
-}
-
-// MARK: - UITextFieldDelegate
-extension LoginViewController: UITextFieldDelegate {
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        switch textField {
-        case userNameTextField:
-            viewModel.isValidUsername.drive { isValid in
-                self.errorLabel.text = !isValid ? Config.isValidUserName : nil
-            }.disposed(by: bag)
-        case passWordTextField:
-            viewModel.isValidPassword.drive { isValid in
-                self.errorLabel.text = !isValid ? Config.isValidPassWord : nil
-            }.disposed(by: bag)
-        default: break
-        }
+            .disposed(by: viewModel.bag)
     }
 }
 
@@ -80,12 +68,5 @@ extension Reactive where Base: UIButton {
         return Binder(base.self) { btn, isEnabled in
             btn.backgroundColor = isEnabled ? .red : UIColor.gray
         }
-    }
-}
-
-extension LoginViewController {
-    struct Config {
-        static var isValidUserName: String = "Invild username"
-        static var isValidPassWord: String = "Invild password"
     }
 }

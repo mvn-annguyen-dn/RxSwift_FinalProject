@@ -35,11 +35,6 @@ final class RecommendCell: UITableViewCell {
         viewModel.musicBehaviorRelays.bind(to: collectionView.rx.items(cellIdentifier: "RecommendCollectionViewCell", cellType: RecommendCollectionViewCell.self)) { (index, element, cell) in
             let indexPath = IndexPath(item: index, section: 0)
             cell.viewModel = self.viewModel?.getDataRecommendCollectionCell(indexPath: indexPath)
-
-            if let lastIndexVisible = self.collectionView.indexPathsForVisibleItems.last,
-               lastIndexVisible.row == index {
-                self.collectionView.reloadData()
-            }
         }
         .disposed(by: viewModel.bag)
     }

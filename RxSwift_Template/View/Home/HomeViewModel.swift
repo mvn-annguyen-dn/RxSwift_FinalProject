@@ -18,6 +18,16 @@ final class HomeViewModel {
     func getApiMusic() -> Single<FeedResults> {
         return ApiManager.shared.loadAPI(method: .get)
     }
+
+    func loadApiMusic(completion: @escaping APICompletion) {
+        getApiMusic().subscribe { data in
+            self.musicBehaviorRelay.accept(data.results ?? [])
+            completion(.success)
+        } onFailure: { error in
+            completion(.failure(error))
+        }
+        .disposed(by: bag)
+    }
     
     func getDataRecommendCell(indexPath: IndexPath) -> RecommendCellViewModel {
         return RecommendCellViewModel(music: musicBehaviorRelay.value)

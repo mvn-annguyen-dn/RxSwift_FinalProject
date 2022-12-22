@@ -33,7 +33,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     private func setRootLogin() {
-        let vc = HomeViewController()
+        let vc = LoginViewController()
         let navi = UINavigationController(rootViewController: vc)
         window?.rootViewController = navi
     }
@@ -56,9 +56,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let homeVC = HomeViewController()
         let homeNavi = UINavigationController(rootViewController: homeVC)
         homeNavi.tabBarItem = UITabBarItem(title: "BasicRxSwift", image: UIImage(systemName: "avatar_name"), tag: 1)
-        
-        let viewControllers = [homeNavi]
-        tabbarController.setViewControllers(viewControllers, animated: true)
-        tabbarController.selectedIndex = 1
+        tabbarController.setViewControllers([homeNavi], animated: true)
     }
 }

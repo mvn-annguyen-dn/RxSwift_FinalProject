@@ -34,7 +34,7 @@ final class RecommendCollectionViewCell: UICollectionViewCell {
             .bind(to: priceProductLabel.rx.text)
             .disposed(by: viewModel.bag)
         viewModel.musicBehaviorRelay.asObservable().map { $0.artworkUrl100 ?? "" }.subscribe(onNext: { element in
-            ApiManager.shared.dowloadImageWithRxSwift(url: element).subscribe { image in
+            UIImage.dowloadImageWithRxSwift(url: element).subscribe { image in
                 self.productImageView.image = image
             }.disposed(by: viewModel.bag)
         })

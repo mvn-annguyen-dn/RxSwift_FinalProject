@@ -10,6 +10,13 @@ import RxCocoa
 import RxSwift
 import UIKit
 
+typealias APICompletion = (APIResult) -> Void
+
+enum APIResult {
+    case success
+    case failure(Error)
+}
+
 class ApiManager {
     static let shared: ApiManager = ApiManager()
     let baseUrl: String = "https://rss.applemarketingtools.com/api/v2/us/music/most-played/10/albums.json"
@@ -52,38 +59,6 @@ class ApiManager {
             return Disposables.create()
         }
         .observe(on: MainScheduler.instance)
-    }
-    
-    func dowloadImageWithRxSwift(url: String) -> Observable<UIImage?> {
-        return Observable.create { observer in
-            guard let url = URL(string: url) else {
-                observer.onError(ApiError.pathError)
-                return Disposables.create()
-            }
-            let config = URLSessionConfiguration.default
-            config.waitsForConnectivity = true
-            let session = URLSession(configuration: config)
-            let task = session.dataTask(with: url) { data, _, error in
-                DispatchQueue.main.async {
-                    if let _ = error {
-                        observer.onError(ApiError.error("Data Image Fail"))
-                    } else {
-                        if let data = data {
-                            let image = UIImage(data: data)
-                            observer.onNext(image)
-                            observer.onCompleted()
-                        } else {
-                            observer.onError(ApiError.error("Data Image not found"))
-                        }
-                    }
-                }
-            }
-            task.resume()
-
-            return Disposables.create() {
-                task.cancel()
-            }
-        }
     }
 }
 

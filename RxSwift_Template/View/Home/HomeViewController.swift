@@ -32,27 +32,19 @@ final class HomeViewController: UIViewController {
         viewModel.musicBehaviorRelay.bind(to: tableView.rx.items(cellIdentifier: "RecommendCell", cellType: RecommendCell.self)) { index, element, cell in
             let indexPath = IndexPath(item: index, section: 0)
             cell.viewModel = self.viewModel.getDataRecommendCell(indexPath: indexPath)
-            if let lastIndexVisible = self.tableView.indexPathsForVisibleRows,
-               lastIndexVisible.count == index {
-                self.tableView.reloadData()
-            }
         }
         .disposed(by: viewModel.bag)
-    
-//        tableView.delegate = self
-//        tableView.dataSource = self
     }
-
+    
     private func callAPI() {
-        viewModel.getApiMusic()
-            .subscribe { [weak self] data in
-                guard let this = self else { return }
-                this.viewModel.musicBehaviorRelay.accept(data.results ?? [])
-                this.tableView.reloadData()
-            } onFailure: { error in
+        viewModel.loadApiMusic { result in
+            switch result {
+            case .success:
+                self.tableView.reloadData()
+            case .failure(let error):
                 print(error.localizedDescription)
             }
-            .disposed(by: viewModel.bag)
+        }
     }
 }
 

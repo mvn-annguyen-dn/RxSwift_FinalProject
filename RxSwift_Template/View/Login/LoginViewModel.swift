@@ -17,23 +17,24 @@ final class LoginViewModel {
     let passWord: BehaviorRelay<String> = BehaviorRelay(value: "")
     var loginTap: PublishSubject<Void> = PublishSubject<Void>()
     
-    var isValidUsername: Driver<Bool> {
+    var isValidUsername: Driver<String?> {
         return    userName.asObservable().map { username in
-            username.count >= 6
+            username.count < 6 ? Config.isValidUserName : nil
         }
-        .asDriver(onErrorJustReturn: false)
+        .asDriver(onErrorJustReturn: nil)
     }
     
-    var isValidPassword: Driver<Bool> {
+    var isValidPassword: Driver<String?> {
         return passWord.asObservable().map {
             password in
-            password.count >= 6
+            password.count < 6 ? Config.isValidPassWord : nil
         }
-        .asDriver(onErrorJustReturn: false)
+        .asDriver(onErrorJustReturn: nil)
     }
     
     var isValid: Driver<Bool> {
-        return Observable.combineLatest(isValidUsername.asObservable(), isValidPassword.asObservable()) {$0 && $1}
+        return Observable.combineLatest(isValidUsername.asObservable(), isValidPassword.asObservable())
+            .map { $0 == nil && $1 == nil }
             .asDriver(onErrorJustReturn: false)
     }
     
@@ -42,10 +43,9 @@ final class LoginViewModel {
     init() {
         let usernameAndPasswordObservable: Observable<(String, String)> = Observable.combineLatest(userName.asObservable(), passWord.asObservable()) {($0, $1)}
         let request = loginTap
-            .asObservable()
             .withLatestFrom(usernameAndPasswordObservable)
             .flatMap { self.getApiMusic(userName: $0.0, password: $0.1) }
-        loginDone = request.asObservable()
+        loginDone = request
             .compactMap {$0.results?.first}
             .debug()
             .asDriver(onErrorJustReturn: nil)
@@ -53,5 +53,12 @@ final class LoginViewModel {
     
     func getApiMusic(userName: String, password: String) -> Single<FeedResults> {
         return ApiManager.shared.loadAPI(method: .get)
+    }
+}
+
+extension LoginViewModel {
+    struct Config {
+        static var isValidUserName: String = "Invild username"
+        static var isValidPassWord: String = "Invild password"
     }
 }
