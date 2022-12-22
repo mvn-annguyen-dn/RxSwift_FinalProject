@@ -24,12 +24,11 @@ class ApiManager {
     
     func loadAPI<T: Decodable>(method: Method) -> Single<T> {
         return Single<T>.create { [weak self] single -> Disposable in
-            guard let this = self,
-                  let path = URL(string: this.baseUrl) else {
-                single(.failure(APIError.pathError))
+            guard let this = self else {
                 return Disposables.create()
             }
-            let observable = Observable<URL>.just(path)
+            let observable = Observable<String>.just(this.baseUrl)
+                .compactMap { URL(string: $0) }
                 .map { path -> URLRequest in
                     var request = URLRequest(url: path)
                     request.httpMethod = method.rawValue
@@ -48,7 +47,7 @@ class ApiManager {
                     single(.failure(APIError.error("Fail parse data")))
                 }
             } onError: { error in
-                single(.failure(error))
+                single(.failure(ApiError.pathError))
             } onCompleted: {
                 print("completed")
             } onDisposed: {

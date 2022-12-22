@@ -31,7 +31,6 @@ extension UIImage {
                         observer.onError(ApiError.error("Data Image not found"))
                     }
                 }
-                
             }
             task.resume()
             
@@ -39,5 +38,6 @@ extension UIImage {
                 task.cancel()
             }
         }
+        .observe(on: MainScheduler.instance)
     }
 }
