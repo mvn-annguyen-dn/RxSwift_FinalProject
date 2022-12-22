@@ -43,10 +43,40 @@ final class MovieTableViewCell: UITableViewCell {
         movie
             .map(\.posterPath)
             .flatMap { self.downloadImage(url: "https://image.tmdb.org/t/p/w500/\($0 ?? "")") }
-            .bind(to: movieImageView.rx.image)
+            .subscribe { [weak self] image in
+                guard let this = self else { return }
+                this.movieImageView.rx
+                    .image
+                    .onNext(image)
+            }
             .disposed(by: disposedBag)
     }
+
+    // Using URLSession with RxSwift
+    private func downloadImage(url: String) -> Observable<UIImage?> {
+        return Observable.create { observer in
+            guard let url = URL(string: url) else {
+                observer.onError(APIError.pathError)
+                return Disposables.create()
+            }
+            let urlRequest = URLRequest(url: url)
+            URLSession.shared.rx
+                .response(request: urlRequest)
+                .subscribe(onNext: { data in
+                    let image = UIImage(data: data.data)
+                    observer.onNext(image)
+                }, onError: { _ in
+                    observer.onError(ApiError.error("Download Error"))
+                }, onCompleted: {
+                    print("onCompleted")
+                }).disposed(by: self.disposedBag)
+            return Disposables.create()
+        }
+        .subscribe(on: MainScheduler.instance)
+    }
     
+    // Using URLSession with Swift
+    /*
     private func downloadImage(url: String) -> Observable<UIImage?> {
         return Observable.create { observer in
             guard let url = URL(string: url) else {
@@ -55,8 +85,7 @@ final class MovieTableViewCell: UITableViewCell {
             }
             let task = URLSession.shared.dataTask(with: url) { data, _, _ in
                 guard let data = data else {
-                    observer.onNext(nil)
-                    observer.onCompleted()
+                    observer.onError(ApiError.error("Fail data"))
                     return
                 }
                 let image = UIImage(data: data)
@@ -74,4 +103,5 @@ final class MovieTableViewCell: UITableViewCell {
         }
         .observe(on: MainScheduler.instance)
     }
+    */
 }
