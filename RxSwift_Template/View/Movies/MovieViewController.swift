@@ -26,7 +26,8 @@ final class MovieViewController: UIViewController {
         configTableView()
         configSearchBar()
         viewModel.loadingData
-            .bind(to: activityIndicatorView.rx.isHidden)
+            .asDriver(onErrorJustReturn: true)
+            .drive(activityIndicatorView.rx.isHidden)
             .disposed(by: disposeBag)
     }
 
@@ -87,11 +88,13 @@ extension MovieViewController {
         let searchText = query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
         viewModel.loadingData.onNext(false)
         viewModel.searchMovies(searchText ?? "")
-            .subscribe { [weak self] data in
+            .subscribe(onSuccess: { [weak self] data in
                 guard let this = self else { return }
                 this.viewModel.loadingData.onNext(true)
                 this.viewModel.movies.onNext(data.results ?? [])
-            }
+            }, onFailure: { _ in
+                self.viewModel.loadingData.onNext(true)
+            })
             .disposed(by: disposeBag)
     }
 }
