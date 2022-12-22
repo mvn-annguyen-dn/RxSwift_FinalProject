@@ -17,6 +17,14 @@
 		3833F1AF2935AD64008A20E8 /* ApiTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3833F1AE2935AD64008A20E8 /* ApiTarget.swift */; };
 		38FA719B2935BA91005CB18B /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38FA719A2935BA91005CB18B /* User.swift */; };
 		460F65BE2E18B1C51E18FA5F /* Pods_RxSwift_TemplateTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2CEE637A8909295BC4720782 /* Pods_RxSwift_TemplateTests.framework */; };
+		840E7ED829516EC200004F66 /* Movie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840E7ED729516EC200004F66 /* Movie.swift */; };
+		840E7EDB29516F0F00004F66 /* MovieViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840E7ED929516F0F00004F66 /* MovieViewController.swift */; };
+		840E7EDC29516F0F00004F66 /* MovieViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 840E7EDA29516F0F00004F66 /* MovieViewController.xib */; };
+		840E7EDE29516FD100004F66 /* MovieViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840E7EDD29516FD100004F66 /* MovieViewModel.swift */; };
+		840E7EE2295170B300004F66 /* MovieTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840E7EE0295170B300004F66 /* MovieTableViewCell.swift */; };
+		840E7EE3295170B300004F66 /* MovieTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 840E7EE1295170B300004F66 /* MovieTableViewCell.xib */; };
+		840E7EE5295170BF00004F66 /* MovieCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840E7EE4295170BF00004F66 /* MovieCellViewModel.swift */; };
+		84BBDBE92952F9FA0078EF3B /* ApiManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BBDBE82952F9FA0078EF3B /* ApiManager.swift */; };
 		8F76F4D8D159F1B42DDBE003 /* Pods_RxSwift_Template.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 09A0FA7C1B0CD47302D9A8D9 /* Pods_RxSwift_Template.framework */; };
 /* End PBXBuildFile section */
 
@@ -49,6 +57,14 @@
 		48727A1D75BF273435CEB3BC /* Pods-RxSwift_Template-RxSwift_TemplateUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RxSwift_Template-RxSwift_TemplateUITests.release.xcconfig"; path = "Target Support Files/Pods-RxSwift_Template-RxSwift_TemplateUITests/Pods-RxSwift_Template-RxSwift_TemplateUITests.release.xcconfig"; sourceTree = "<group>"; };
 		559FC68E27FE2233B82C320C /* Pods-RxSwift_Template.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RxSwift_Template.release.xcconfig"; path = "Target Support Files/Pods-RxSwift_Template/Pods-RxSwift_Template.release.xcconfig"; sourceTree = "<group>"; };
 		6BD3E2BC24F32BA1C6821AE6 /* Pods-RxSwift_Template.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RxSwift_Template.debug.xcconfig"; path = "Target Support Files/Pods-RxSwift_Template/Pods-RxSwift_Template.debug.xcconfig"; sourceTree = "<group>"; };
+		840E7ED729516EC200004F66 /* Movie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Movie.swift; sourceTree = "<group>"; };
+		840E7ED929516F0F00004F66 /* MovieViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieViewController.swift; sourceTree = "<group>"; };
+		840E7EDA29516F0F00004F66 /* MovieViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MovieViewController.xib; sourceTree = "<group>"; };
+		840E7EDD29516FD100004F66 /* MovieViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieViewModel.swift; sourceTree = "<group>"; };
+		840E7EE0295170B300004F66 /* MovieTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieTableViewCell.swift; sourceTree = "<group>"; };
+		840E7EE1295170B300004F66 /* MovieTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MovieTableViewCell.xib; sourceTree = "<group>"; };
+		840E7EE4295170BF00004F66 /* MovieCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieCellViewModel.swift; sourceTree = "<group>"; };
+		84BBDBE82952F9FA0078EF3B /* ApiManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiManager.swift; sourceTree = "<group>"; };
 		A9997A620243BFD969FC6200 /* Pods_RxSwift_Template_RxSwift_TemplateUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RxSwift_Template_RxSwift_TemplateUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F5B2704B7B47B3CE3ACA6821 /* Pods-RxSwift_Template-RxSwift_TemplateUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RxSwift_Template-RxSwift_TemplateUITests.debug.xcconfig"; path = "Target Support Files/Pods-RxSwift_Template-RxSwift_TemplateUITests/Pods-RxSwift_Template-RxSwift_TemplateUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		F86B02262B20149B2FE76F51 /* Pods-RxSwift_TemplateTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RxSwift_TemplateTests.release.xcconfig"; path = "Target Support Files/Pods-RxSwift_TemplateTests/Pods-RxSwift_TemplateTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -117,6 +133,7 @@
 		3833F1A02935A8FE008A20E8 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				840E7ED629516EAF00004F66 /* Movies */,
 				3833F1A52935AC8A008A20E8 /* Home */,
 			);
 			path = View;
@@ -153,6 +170,7 @@
 			children = (
 				3833F1AC2935AD39008A20E8 /* ApiNetWorkManager.swift */,
 				3833F1AE2935AD64008A20E8 /* ApiTarget.swift */,
+				84BBDBE82952F9FA0078EF3B /* ApiManager.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -161,6 +179,7 @@
 			isa = PBXGroup;
 			children = (
 				38FA719A2935BA91005CB18B /* User.swift */,
+				840E7ED729516EC200004F66 /* Movie.swift */,
 			);
 			path = Scheme;
 			sourceTree = "<group>";
@@ -203,6 +222,27 @@
 				F86B02262B20149B2FE76F51 /* Pods-RxSwift_TemplateTests.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		840E7ED629516EAF00004F66 /* Movies */ = {
+			isa = PBXGroup;
+			children = (
+				840E7EDF2951709F00004F66 /* Cell */,
+				840E7ED929516F0F00004F66 /* MovieViewController.swift */,
+				840E7EDA29516F0F00004F66 /* MovieViewController.xib */,
+				840E7EDD29516FD100004F66 /* MovieViewModel.swift */,
+			);
+			path = Movies;
+			sourceTree = "<group>";
+		};
+		840E7EDF2951709F00004F66 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				840E7EE0295170B300004F66 /* MovieTableViewCell.swift */,
+				840E7EE1295170B300004F66 /* MovieTableViewCell.xib */,
+				840E7EE4295170BF00004F66 /* MovieCellViewModel.swift */,
+			);
+			path = Cell;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -291,8 +331,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				3833F17D29359922008A20E8 /* LaunchScreen.storyboard in Resources */,
+				840E7EE3295170B300004F66 /* MovieTableViewCell.xib in Resources */,
 				3833F17A29359922008A20E8 /* Assets.xcassets in Resources */,
 				3833F1A42935A913008A20E8 /* HomeViewController.xib in Resources */,
+				840E7EDC29516F0F00004F66 /* MovieViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -392,7 +434,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				3833F17129359920008A20E8 /* AppDelegate.swift in Sources */,
+				840E7EDB29516F0F00004F66 /* MovieViewController.swift in Sources */,
+				840E7EE2295170B300004F66 /* MovieTableViewCell.swift in Sources */,
+				840E7EE5295170BF00004F66 /* MovieCellViewModel.swift in Sources */,
 				3833F1A32935A913008A20E8 /* HomeViewController.swift in Sources */,
+				84BBDBE92952F9FA0078EF3B /* ApiManager.swift in Sources */,
+				840E7EDE29516FD100004F66 /* MovieViewModel.swift in Sources */,
+				840E7ED829516EC200004F66 /* Movie.swift in Sources */,
 				3833F1AD2935AD39008A20E8 /* ApiNetWorkManager.swift in Sources */,
 				38FA719B2935BA91005CB18B /* User.swift in Sources */,
 				3833F1AF2935AD64008A20E8 /* ApiTarget.swift in Sources */,
