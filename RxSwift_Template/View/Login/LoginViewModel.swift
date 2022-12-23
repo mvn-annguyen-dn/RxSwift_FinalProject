@@ -18,14 +18,14 @@ final class LoginViewModel {
     var loginTap: PublishSubject<Void> = PublishSubject<Void>()
     
     var isValidUsername: Driver<String?> {
-        return    userName.asObservable().map { username in
+        return    userName.map { username in
             username.count < 6 ? Config.isValidUserName : nil
         }
         .asDriver(onErrorJustReturn: nil)
     }
     
     var isValidPassword: Driver<String?> {
-        return passWord.asObservable().map {
+        return passWord.map {
             password in
             password.count < 6 ? Config.isValidPassWord : nil
         }
@@ -38,17 +38,16 @@ final class LoginViewModel {
             .asDriver(onErrorJustReturn: false)
     }
     
-    var loginDone: Driver<Music?> = .just(nil)
+    var loginDone: Observable<Music?> = .just(nil)
     
     init() {
-        let usernameAndPasswordObservable: Observable<(String, String)> = Observable.combineLatest(userName.asObservable(), passWord.asObservable()) {($0, $1)}
+        let usernameAndPasswordObservable: Observable<(String, String)> = Observable.combineLatest(userName, passWord) {($0, $1)}
         let request = loginTap
             .withLatestFrom(usernameAndPasswordObservable)
             .flatMap { self.getApiMusic(userName: $0.0, password: $0.1) }
         loginDone = request
             .compactMap {$0.results?.first}
             .debug()
-            .asDriver(onErrorJustReturn: nil)
     }
     
     func getApiMusic(userName: String, password: String) -> Single<FeedResults> {

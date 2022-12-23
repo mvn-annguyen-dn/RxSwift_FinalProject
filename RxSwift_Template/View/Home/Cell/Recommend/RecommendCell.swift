@@ -33,8 +33,7 @@ final class RecommendCell: UITableViewCell {
         collectionView.rx.setDelegate(self).disposed(by: viewModel.bag)
 
         viewModel.musicBehaviorRelays.bind(to: collectionView.rx.items(cellIdentifier: "RecommendCollectionViewCell", cellType: RecommendCollectionViewCell.self)) { (index, element, cell) in
-            let indexPath = IndexPath(item: index, section: 0)
-            cell.viewModel = self.viewModel?.getDataRecommendCollectionCell(indexPath: indexPath)
+            cell.viewModel = self.viewModel?.getDataRecommendCollectionCell(index: index)
         }
         .disposed(by: viewModel.bag)
     }

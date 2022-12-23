@@ -18,7 +18,7 @@ final class RecommendCellViewModel {
         musicBehaviorRelays.accept(music)
     }
 
-    func getDataRecommendCollectionCell(indexPath: IndexPath) -> RecommendCollectionViewCellViewModel {
-        return RecommendCollectionViewCellViewModel(music: musicBehaviorRelays.value[indexPath.row])
+    func getDataRecommendCollectionCell(index: Int) -> RecommendCollectionViewCellViewModel {
+        return RecommendCollectionViewCellViewModel(music: musicBehaviorRelays.value[index])
     }
 }

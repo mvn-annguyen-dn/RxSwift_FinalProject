@@ -12,7 +12,7 @@ import RxSwift
 final class RecommendCollectionViewCellViewModel {
     
     let bag: DisposeBag = DisposeBag()
-    var musicBehaviorRelay: BehaviorRelay<Music> = .init(value: Music())
+    var musicBehaviorRelay: BehaviorRelay<Music?> = .init(value: nil)
 
     init(music: Music) {
         musicBehaviorRelay.accept(music)

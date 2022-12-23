@@ -18,18 +18,28 @@ final class HomeViewModel {
     func getApiMusic() -> Single<FeedResults> {
         return ApiManager.shared.loadAPI(method: .get)
     }
-
-    func loadApiMusic(completion: @escaping APICompletion) {
-        getApiMusic().subscribe { data in
-            self.musicBehaviorRelay.accept(data.results ?? [])
-            completion(.success)
-        } onFailure: { error in
-            completion(.failure(error))
+    
+    func loadApiMusic() -> Single<FeedResults> {
+        return Single<FeedResults>.create { [weak self] single -> Disposable in
+            guard let this = self else {
+                return Disposables.create {}
+            }
+            this.getApiMusic().subscribe { result in
+                switch result {
+                case .success(let value):
+                    self?.musicBehaviorRelay.accept(value.results ?? [])
+                    single(.success(value))
+                case .failure(let error):
+                    single(.failure(error))
+                }
+            }
+            .disposed(by: this.bag)
+            return Disposables.create()
         }
-        .disposed(by: bag)
+        .observe(on: MainScheduler.instance)
     }
     
-    func getDataRecommendCell(indexPath: IndexPath) -> RecommendCellViewModel {
+    func getDataRecommendCell(index: Int) -> RecommendCellViewModel {
         return RecommendCellViewModel(music: musicBehaviorRelay.value)
     }
 }

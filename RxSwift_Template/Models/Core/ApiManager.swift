@@ -8,14 +8,6 @@
 import Foundation
 import RxCocoa
 import RxSwift
-import UIKit
-
-typealias APICompletion = (APIResult) -> Void
-
-enum APIResult {
-    case success
-    case failure(Error)
-}
 
 class ApiManager {
     static let shared: ApiManager = ApiManager()

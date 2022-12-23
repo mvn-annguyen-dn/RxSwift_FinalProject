@@ -34,37 +34,29 @@ final class LoginViewController: UIViewController {
             .bind(to: viewModel.passWord)
             .disposed(by: viewModel.bag)
 
-        viewModel.isValidUsername.drive { isValid in
-            self.errorLabel.text = isValid
-        }
+        viewModel.isValidUsername.drive(errorLabel.rx.text)
         .disposed(by: viewModel.bag)
 
-        viewModel.isValidPassword.drive { isValid in
-            self.errorLabel.text = isValid
-        }
+        viewModel.isValidPassword.drive(errorLabel.rx.text)
         .disposed(by: viewModel.bag)
 
         viewModel.isValid
-            .drive(loginButton.rx.enableButton)
+            .drive(loginButton.rx.enableAndChangeColorButton)
             .disposed(by: viewModel.bag)
         
         loginButton.rx.tap
             .bind(to: viewModel.loginTap)
             .disposed(by: viewModel.bag)
-        
-        viewModel.loginDone
-            .asObservable()
-            .subscribe(onNext: { music in
-                if let name = music?.name, !name.isEmpty {
-                    AppDelegate.shared.setRoot(root: .tabbar)
-                }
-            })
-            .disposed(by: viewModel.bag)
+
+        viewModel.loginDone.subscribe(onNext: { _ in
+            AppDelegate.shared.setRoot(root: .tabbar)
+        })
+        .disposed(by: viewModel.bag)
     }
 }
 
 extension Reactive where Base: UIButton {
-    var enableButton: Binder<Bool> {
+    var enableAndChangeColorButton: Binder<Bool> {
         return Binder(base.self) { btn, isEnabled in
             btn.backgroundColor = isEnabled ? .red : UIColor.gray
         }

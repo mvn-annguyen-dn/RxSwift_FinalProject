@@ -25,15 +25,15 @@ final class RecommendCollectionViewCell: UICollectionViewCell {
 
     private func updateCell() {
         guard let viewModel = viewModel else { return }
-        viewModel.musicBehaviorRelay.asObservable()
-            .map { $0.name }
+        viewModel.musicBehaviorRelay
+            .map { $0?.name }
             .bind(to: nameProductLabel.rx.text)
             .disposed(by: viewModel.bag)
-        viewModel.musicBehaviorRelay.asObservable()
-            .map { $0.artistName }
+        viewModel.musicBehaviorRelay
+            .map { $0?.artistName }
             .bind(to: priceProductLabel.rx.text)
             .disposed(by: viewModel.bag)
-        viewModel.musicBehaviorRelay.asObservable().map { $0.artworkUrl100 ?? "" }.subscribe(onNext: { element in
+        viewModel.musicBehaviorRelay.map { $0?.artworkUrl100 ?? "" }.subscribe(onNext: { element in
             UIImage.dowloadImageWithRxSwift(url: element).subscribe { image in
                 self.productImageView.image = image
             }.disposed(by: viewModel.bag)
