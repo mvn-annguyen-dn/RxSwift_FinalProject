@@ -9,7 +9,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-
+///Created Delegate Proxy
 class PickerViewDelegateProxy: DelegateProxy<UIPickerView, UIPickerViewDelegate>, UIPickerViewDelegate, DelegateProxyType {
     
     weak private(set) var pickerView: UIPickerView?
@@ -63,7 +63,7 @@ extension Reactive where Base: UIPickerView {
 
 class PickerViewController: UIViewController {
 
-    @IBOutlet weak var pickerView: UIPickerView!
+    @IBOutlet private weak var pickerView: UIPickerView!
     
     let bag = DisposeBag()
     
@@ -81,7 +81,8 @@ class PickerViewController: UIViewController {
         pickerView.rx.didSelectRow.subscribe(onNext: {(row, element) in
             print("Phong--->123")
 
-        }).disposed(by: bag)
+        })
+        .disposed(by: bag)
     }
 
 }
