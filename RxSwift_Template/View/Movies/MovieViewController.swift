@@ -52,13 +52,13 @@ final class MovieViewController: UIViewController {
                         contentView.layer.cornerRadius = 10
                     })
                     .disposed(by: cell.disposedBag)
-//                cell.rx.didTap
-//                    .subscribe { [weak self] _ in
-//                        guard let this = self else { return }
-//                        this.deleteItems(indexPath: indexPath)
-//                    }
-//                    .disposed(by: cell.disposedBag)
-                cell.rx.setDelegate(this).disposed(by: cell.disposedBag)
+                cell.rx.didTap
+                    .subscribe { [weak self] _ in
+                        guard let this = self else { return }
+                        this.deleteItems(indexPath: indexPath)
+                    }
+                    .disposed(by: cell.disposedBag)
+//                cell.rx.setDelegate(this).disposed(by: cell.disposedBag)
                 cell.viewModel = this.viewModel.viewModelForItem(element: element)
                 return cell
             }
@@ -109,36 +109,49 @@ extension Reactive where Base: UITableViewCell {
     }
 }
 
-extension MovieViewController: MovieCellDelegate {
-    func cell(_ cell: MovieTableViewCell) {
-        guard let indexPath = tableView.indexPath(for: cell) else { return }
-        viewModel.movies
-            .subscribe { movies in
-                print("Movie: ", movies[indexPath.row].title ?? "")
-            }
-            .disposed(by: disposeBag)
-    }
-}
-
 extension Reactive where Base: MovieTableViewCell {
-    func setDelegate(_ delegate: MovieCellDelegate) -> Disposable {
-        return RxMKMovieCellDelegateProxy.installForwardDelegate(delegate, retainDelegate: false, onProxyForObject: self.base)
+    var delegate : DelegateProxy<MovieTableViewCell, MovieCellDelegate> {
+        return MovieCellDelegateProxy.proxy(for: base)
+    }
+    
+    var didTap: Observable<Void> {
+        return delegate.methodInvoked(#selector(MovieCellDelegate.removeCell(_:)))
+            .map { parameters in
+                return parameters[0] as? Void ?? ()
+            }
     }
 }
 
-extension MovieTableViewCell: HasDelegate {
-    public typealias Delegate = MovieCellDelegate
-}
-
-class RxMKMovieCellDelegateProxy: DelegateProxy<MovieTableViewCell, MovieCellDelegate>, DelegateProxyType, MovieCellDelegate {
-    weak public private(set) var movieCell: MovieTableViewCell?
-    
-    public init(movieCell: ParentObject) {
-        self.movieCell = movieCell
-        super.init(parentObject: movieCell, delegateProxy: RxMKMovieCellDelegateProxy.self)
-    }
-    
-    static func registerKnownImplementations() {
-        self.register { RxMKMovieCellDelegateProxy(movieCell: $0) }
-    }
-}
+//extension MovieViewController: MovieCellDelegate {
+//    func cell(_ cell: MovieTableViewCell) {
+//        guard let indexPath = tableView.indexPath(for: cell) else { return }
+//        viewModel.movies
+//            .subscribe { movies in
+//                print("Movie: ", movies[indexPath.row].title ?? "")
+//            }
+//            .disposed(by: disposeBag)
+//    }
+//}
+//
+//extension Reactive where Base: MovieTableViewCell {
+//    func setDelegate(_ delegate: MovieCellDelegate) -> Disposable {
+//        return RxMKMovieCellDelegateProxy.installForwardDelegate(delegate, retainDelegate: false, onProxyForObject: self.base)
+//    }
+//}
+//
+//extension MovieTableViewCell: HasDelegate {
+//    public typealias Delegate = MovieCellDelegate
+//}
+//
+//class RxMKMovieCellDelegateProxy: DelegateProxy<MovieTableViewCell, MovieCellDelegate>, DelegateProxyType, MovieCellDelegate {
+//    weak public private(set) var movieCell: MovieTableViewCell?
+//    
+//    public init(movieCell: ParentObject) {
+//        self.movieCell = movieCell
+//        super.init(parentObject: movieCell, delegateProxy: RxMKMovieCellDelegateProxy.self)
+//    }
+//    
+//    static func registerKnownImplementations() {
+//        self.register { RxMKMovieCellDelegateProxy(movieCell: $0) }
+//    }
+//}

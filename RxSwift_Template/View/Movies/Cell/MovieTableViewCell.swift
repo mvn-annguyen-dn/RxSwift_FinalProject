@@ -10,44 +10,37 @@ import RxSwift
 import RxCocoa
 import RxGesture
 
-//@objc
-//protocol MovieCellDelegate {
-//    @objc optional func cell(
-//        _ cell: MovieTableViewCell,
-//        needPerform action: MovieTableViewCell.Action
-//    ) -> Void
-//}
-
-//final class MovieCellDelegateProxy:
-//    DelegateProxy<MovieTableViewCell, MovieCellDelegate>,
-//    DelegateProxyType,
-//    MovieCellDelegate {
-//
-//    static func registerKnownImplementations() {
-//        self.register { parent in
-//            MovieCellDelegateProxy(parentObject: parent, delegateProxy: self)
-//        }
-//    }
-//
-//    static func currentDelegate(for object: MovieTableViewCell) -> MovieCellDelegate? {
-//        return object.delegate
-//    }
-//
-//    static func setCurrentDelegate(_ delegate: MovieCellDelegate?, to object: MovieTableViewCell) {
-//        object.delegate = delegate
-//    }
-//}
-
 @objc
-protocol MovieCellDelegate : NSObjectProtocol {
-    @objc optional func cell(_ cell: MovieTableViewCell)
+protocol MovieCellDelegate {
+    @objc optional func removeCell(_ cell: MovieTableViewCell)
 }
 
-final class MovieTableViewCell: UITableViewCell {
+final class MovieCellDelegateProxy:
+    DelegateProxy<MovieTableViewCell, MovieCellDelegate>,
+    DelegateProxyType,
+    MovieCellDelegate {
     
-    @objc enum Action: Int {
-        case didTap
+    static func registerKnownImplementations() {
+        self.register { parent in
+            MovieCellDelegateProxy(parentObject: parent, delegateProxy: self)
+        }
     }
+    
+    static func currentDelegate(for object: MovieTableViewCell) -> MovieCellDelegate? {
+        return object.delegate
+    }
+    
+    static func setCurrentDelegate(_ delegate: MovieCellDelegate?, to object: MovieTableViewCell) {
+        object.delegate = delegate
+    }
+}
+
+//@objc
+//protocol MovieCellDelegate : NSObjectProtocol {
+//    @objc optional func cell(_ cell: MovieTableViewCell)
+//}
+
+final class MovieTableViewCell: UITableViewCell {
 
     @IBOutlet private weak var movieImageView: UIImageView!
     @IBOutlet private weak var movieNameLabel: UILabel!
@@ -81,7 +74,7 @@ final class MovieTableViewCell: UITableViewCell {
             .map(\.title)
             .subscribe { [weak self] element in
                 guard let this = self else { return }
-                this.delegate?.cell?(this)
+                this.delegate?.removeCell?(this)
             }
             .disposed(by: disposedBag)
     }
