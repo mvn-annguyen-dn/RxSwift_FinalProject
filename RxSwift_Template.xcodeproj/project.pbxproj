@@ -25,6 +25,15 @@
 		840E7EE3295170B300004F66 /* MovieTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 840E7EE1295170B300004F66 /* MovieTableViewCell.xib */; };
 		840E7EE5295170BF00004F66 /* MovieCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840E7EE4295170BF00004F66 /* MovieCellViewModel.swift */; };
 		84BBDBE92952F9FA0078EF3B /* ApiManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BBDBE82952F9FA0078EF3B /* ApiManager.swift */; };
+		84BBDBED2955540C0078EF3B /* TODOViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BBDBEB2955540C0078EF3B /* TODOViewController.swift */; };
+		84BBDBEE2955540C0078EF3B /* TODOViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84BBDBEC2955540C0078EF3B /* TODOViewController.xib */; };
+		84BBDBF0295554170078EF3B /* TODOViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BBDBEF295554170078EF3B /* TODOViewModel.swift */; };
+		84BBDBF32955546A0078EF3B /* TODOCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BBDBF12955546A0078EF3B /* TODOCell.swift */; };
+		84BBDBF42955546A0078EF3B /* TODOCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84BBDBF22955546A0078EF3B /* TODOCell.xib */; };
+		84BBDBF72955547E0078EF3B /* TODOCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BBDBF62955547E0078EF3B /* TODOCellViewModel.swift */; };
+		84BBDBF9295555310078EF3B /* TODO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BBDBF8295555310078EF3B /* TODO.swift */; };
+		84FDEB4C295A89F900C5A8BB /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84FDEB4A295A89F900C5A8BB /* MapViewController.swift */; };
+		84FDEB4D295A89F900C5A8BB /* MapViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84FDEB4B295A89F900C5A8BB /* MapViewController.xib */; };
 		8F76F4D8D159F1B42DDBE003 /* Pods_RxSwift_Template.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 09A0FA7C1B0CD47302D9A8D9 /* Pods_RxSwift_Template.framework */; };
 /* End PBXBuildFile section */
 
@@ -65,6 +74,15 @@
 		840E7EE1295170B300004F66 /* MovieTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MovieTableViewCell.xib; sourceTree = "<group>"; };
 		840E7EE4295170BF00004F66 /* MovieCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieCellViewModel.swift; sourceTree = "<group>"; };
 		84BBDBE82952F9FA0078EF3B /* ApiManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiManager.swift; sourceTree = "<group>"; };
+		84BBDBEB2955540C0078EF3B /* TODOViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TODOViewController.swift; sourceTree = "<group>"; };
+		84BBDBEC2955540C0078EF3B /* TODOViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TODOViewController.xib; sourceTree = "<group>"; };
+		84BBDBEF295554170078EF3B /* TODOViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TODOViewModel.swift; sourceTree = "<group>"; };
+		84BBDBF12955546A0078EF3B /* TODOCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TODOCell.swift; sourceTree = "<group>"; };
+		84BBDBF22955546A0078EF3B /* TODOCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TODOCell.xib; sourceTree = "<group>"; };
+		84BBDBF62955547E0078EF3B /* TODOCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TODOCellViewModel.swift; sourceTree = "<group>"; };
+		84BBDBF8295555310078EF3B /* TODO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TODO.swift; sourceTree = "<group>"; };
+		84FDEB4A295A89F900C5A8BB /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
+		84FDEB4B295A89F900C5A8BB /* MapViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MapViewController.xib; sourceTree = "<group>"; };
 		A9997A620243BFD969FC6200 /* Pods_RxSwift_Template_RxSwift_TemplateUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RxSwift_Template_RxSwift_TemplateUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F5B2704B7B47B3CE3ACA6821 /* Pods-RxSwift_Template-RxSwift_TemplateUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RxSwift_Template-RxSwift_TemplateUITests.debug.xcconfig"; path = "Target Support Files/Pods-RxSwift_Template-RxSwift_TemplateUITests/Pods-RxSwift_Template-RxSwift_TemplateUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		F86B02262B20149B2FE76F51 /* Pods-RxSwift_TemplateTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RxSwift_TemplateTests.release.xcconfig"; path = "Target Support Files/Pods-RxSwift_TemplateTests/Pods-RxSwift_TemplateTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -133,6 +151,8 @@
 		3833F1A02935A8FE008A20E8 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				8491329C29597E130091BE3F /* Delegate Proxy */,
+				84BBDBEA295553EB0078EF3B /* TODO */,
 				840E7ED629516EAF00004F66 /* Movies */,
 				3833F1A52935AC8A008A20E8 /* Home */,
 			);
@@ -180,6 +200,7 @@
 			children = (
 				38FA719A2935BA91005CB18B /* User.swift */,
 				840E7ED729516EC200004F66 /* Movie.swift */,
+				84BBDBF8295555310078EF3B /* TODO.swift */,
 			);
 			path = Scheme;
 			sourceTree = "<group>";
@@ -241,6 +262,36 @@
 				840E7EE0295170B300004F66 /* MovieTableViewCell.swift */,
 				840E7EE1295170B300004F66 /* MovieTableViewCell.xib */,
 				840E7EE4295170BF00004F66 /* MovieCellViewModel.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		8491329C29597E130091BE3F /* Delegate Proxy */ = {
+			isa = PBXGroup;
+			children = (
+				84FDEB4A295A89F900C5A8BB /* MapViewController.swift */,
+				84FDEB4B295A89F900C5A8BB /* MapViewController.xib */,
+			);
+			path = "Delegate Proxy";
+			sourceTree = "<group>";
+		};
+		84BBDBEA295553EB0078EF3B /* TODO */ = {
+			isa = PBXGroup;
+			children = (
+				84BBDBF52955546F0078EF3B /* Cell */,
+				84BBDBEB2955540C0078EF3B /* TODOViewController.swift */,
+				84BBDBEC2955540C0078EF3B /* TODOViewController.xib */,
+				84BBDBEF295554170078EF3B /* TODOViewModel.swift */,
+			);
+			path = TODO;
+			sourceTree = "<group>";
+		};
+		84BBDBF52955546F0078EF3B /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				84BBDBF12955546A0078EF3B /* TODOCell.swift */,
+				84BBDBF22955546A0078EF3B /* TODOCell.xib */,
+				84BBDBF62955547E0078EF3B /* TODOCellViewModel.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -333,7 +384,10 @@
 				3833F17D29359922008A20E8 /* LaunchScreen.storyboard in Resources */,
 				840E7EE3295170B300004F66 /* MovieTableViewCell.xib in Resources */,
 				3833F17A29359922008A20E8 /* Assets.xcassets in Resources */,
+				84FDEB4D295A89F900C5A8BB /* MapViewController.xib in Resources */,
+				84BBDBF42955546A0078EF3B /* TODOCell.xib in Resources */,
 				3833F1A42935A913008A20E8 /* HomeViewController.xib in Resources */,
+				84BBDBEE2955540C0078EF3B /* TODOViewController.xib in Resources */,
 				840E7EDC29516F0F00004F66 /* MovieViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -437,13 +491,19 @@
 				840E7EDB29516F0F00004F66 /* MovieViewController.swift in Sources */,
 				840E7EE2295170B300004F66 /* MovieTableViewCell.swift in Sources */,
 				840E7EE5295170BF00004F66 /* MovieCellViewModel.swift in Sources */,
+				84BBDBED2955540C0078EF3B /* TODOViewController.swift in Sources */,
+				84BBDBF0295554170078EF3B /* TODOViewModel.swift in Sources */,
 				3833F1A32935A913008A20E8 /* HomeViewController.swift in Sources */,
 				84BBDBE92952F9FA0078EF3B /* ApiManager.swift in Sources */,
 				840E7EDE29516FD100004F66 /* MovieViewModel.swift in Sources */,
 				840E7ED829516EC200004F66 /* Movie.swift in Sources */,
 				3833F1AD2935AD39008A20E8 /* ApiNetWorkManager.swift in Sources */,
+				84BBDBF9295555310078EF3B /* TODO.swift in Sources */,
 				38FA719B2935BA91005CB18B /* User.swift in Sources */,
 				3833F1AF2935AD64008A20E8 /* ApiTarget.swift in Sources */,
+				84BBDBF32955546A0078EF3B /* TODOCell.swift in Sources */,
+				84BBDBF72955547E0078EF3B /* TODOCellViewModel.swift in Sources */,
+				84FDEB4C295A89F900C5A8BB /* MapViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

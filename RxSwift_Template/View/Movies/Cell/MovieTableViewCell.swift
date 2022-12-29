@@ -7,8 +7,47 @@
 
 import UIKit
 import RxSwift
+import RxCocoa
+import RxGesture
+
+//@objc
+//protocol MovieCellDelegate {
+//    @objc optional func cell(
+//        _ cell: MovieTableViewCell,
+//        needPerform action: MovieTableViewCell.Action
+//    ) -> Void
+//}
+
+//final class MovieCellDelegateProxy:
+//    DelegateProxy<MovieTableViewCell, MovieCellDelegate>,
+//    DelegateProxyType,
+//    MovieCellDelegate {
+//
+//    static func registerKnownImplementations() {
+//        self.register { parent in
+//            MovieCellDelegateProxy(parentObject: parent, delegateProxy: self)
+//        }
+//    }
+//
+//    static func currentDelegate(for object: MovieTableViewCell) -> MovieCellDelegate? {
+//        return object.delegate
+//    }
+//
+//    static func setCurrentDelegate(_ delegate: MovieCellDelegate?, to object: MovieTableViewCell) {
+//        object.delegate = delegate
+//    }
+//}
+
+@objc
+protocol MovieCellDelegate : NSObjectProtocol {
+    @objc optional func cell(_ cell: MovieTableViewCell)
+}
 
 final class MovieTableViewCell: UITableViewCell {
+    
+    @objc enum Action: Int {
+        case didTap
+    }
 
     @IBOutlet private weak var movieImageView: UIImageView!
     @IBOutlet private weak var movieNameLabel: UILabel!
@@ -21,9 +60,30 @@ final class MovieTableViewCell: UITableViewCell {
     }
     var disposedBag = DisposeBag()
     
+    weak var delegate: MovieCellDelegate?
+    
     override func prepareForReuse() {
         super.prepareForReuse()
         disposedBag = DisposeBag()
+    }
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(imageTapped(tapGestureRecognizer:)))
+        movieImageView.isUserInteractionEnabled = true
+        movieImageView.addGestureRecognizer(tapGestureRecognizer)
+    }
+
+    @objc func imageTapped(tapGestureRecognizer: UITapGestureRecognizer) {
+        guard let viewModel = viewModel else { return }
+        let movie = viewModel.movieSub.compactMap { $0 }
+        movie
+            .map(\.title)
+            .subscribe { [weak self] element in
+                guard let this = self else { return }
+                this.delegate?.cell?(this)
+            }
+            .disposed(by: disposedBag)
     }
 
     private func updateCell() {
@@ -42,7 +102,7 @@ final class MovieTableViewCell: UITableViewCell {
         
         movie
             .map(\.posterPath)
-            .flatMap { self.downloadImage(url: "https://image.tmdb.org/t/p/w500/\($0 ?? "")") }
+            .flatMap { self.downloadImage(url: "https://image.tmdb.org/t/p/w500\($0 ?? "")") }
             .subscribe { [weak self] image in
                 guard let this = self else { return }
                 this.movieImageView.rx

@@ -26,7 +26,8 @@ final class MovieViewController: UIViewController {
         configTableView()
         configSearchBar()
         viewModel.loadingData
-            .bind(to: activityIndicatorView.rx.isHidden)
+            .asDriver(onErrorJustReturn: true)
+            .drive(activityIndicatorView.rx.isHidden)
             .disposed(by: disposeBag)
     }
 
@@ -51,15 +52,34 @@ final class MovieViewController: UIViewController {
                         contentView.layer.cornerRadius = 10
                     })
                     .disposed(by: cell.disposedBag)
+//                cell.rx.didTap
+//                    .subscribe { [weak self] _ in
+//                        guard let this = self else { return }
+//                        this.deleteItems(indexPath: indexPath)
+//                    }
+//                    .disposed(by: cell.disposedBag)
+                cell.rx.setDelegate(this).disposed(by: cell.disposedBag)
                 cell.viewModel = this.viewModel.viewModelForItem(element: element)
                 return cell
             }
             .disposed(by: disposeBag)
         tableView.rx
             .modelSelected(Movie.self)
-            .subscribe(onNext: { model in
-                self.navigationItem.rx.title.onNext(model.title)
-            })
+            .map(\.title)
+            .bind(to: navigationItem.rx.title)
+            .disposed(by: disposeBag)
+    }
+
+    private func deleteItems(indexPath: IndexPath) {
+        let itemDeleted = BehaviorSubject(value: indexPath)
+        itemDeleted.withLatestFrom(viewModel.movies, resultSelector: { ($0, $1) })
+            .map {
+                var (indexPath, movies) = $0
+                movies.remove(at: indexPath.row)
+                self.tableView.reloadRows(at: [indexPath], with: .left)
+                return movies
+            }
+            .bind(to: viewModel.movies)
             .disposed(by: disposeBag)
     }
 
@@ -70,7 +90,7 @@ final class MovieViewController: UIViewController {
             .subscribe(onNext: { [weak self] query in
                 guard let this = self,
                       let query = query else { return }
-                this.searchData(query)
+                this.viewModel.searchData(query)
             })
             .disposed(by: disposeBag)
     }
@@ -82,23 +102,43 @@ extension MovieViewController: UITableViewDelegate {
     }
 }
 
-extension MovieViewController {
-    private func searchData(_ query: String) {
-        let searchText = query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
-        viewModel.loadingData.onNext(false)
-        viewModel.searchMovies(searchText ?? "")
-            .subscribe { [weak self] data in
-                guard let this = self else { return }
-                this.viewModel.loadingData.onNext(true)
-                this.viewModel.movies.onNext(data.results ?? [])
+extension Reactive where Base: UITableViewCell {
+    var setSelected: Observable<(selected: Bool, animated: Bool)> {
+        base.rx.methodInvoked(#selector(UITableViewCell.setSelected(_:animated:)))
+            .map { (selected: $0[0] as? Bool ?? false, animated: $0[1] as? Bool ?? false) }
+    }
+}
+
+extension MovieViewController: MovieCellDelegate {
+    func cell(_ cell: MovieTableViewCell) {
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
+        viewModel.movies
+            .subscribe { movies in
+                print("Movie: ", movies[indexPath.row].title ?? "")
             }
             .disposed(by: disposeBag)
     }
 }
 
-extension Reactive where Base: UITableViewCell {
-    var setSelected: Observable<(selected: Bool, animated: Bool)> {
-        base.rx.methodInvoked(#selector(UITableViewCell.setSelected(_:animated:)))
-            .map { (selected: $0[0] as? Bool ?? false, animated: $0[1] as? Bool ?? false) }
+extension Reactive where Base: MovieTableViewCell {
+    func setDelegate(_ delegate: MovieCellDelegate) -> Disposable {
+        return RxMKMovieCellDelegateProxy.installForwardDelegate(delegate, retainDelegate: false, onProxyForObject: self.base)
+    }
+}
+
+extension MovieTableViewCell: HasDelegate {
+    public typealias Delegate = MovieCellDelegate
+}
+
+class RxMKMovieCellDelegateProxy: DelegateProxy<MovieTableViewCell, MovieCellDelegate>, DelegateProxyType, MovieCellDelegate {
+    weak public private(set) var movieCell: MovieTableViewCell?
+    
+    public init(movieCell: ParentObject) {
+        self.movieCell = movieCell
+        super.init(parentObject: movieCell, delegateProxy: RxMKMovieCellDelegateProxy.self)
+    }
+    
+    static func registerKnownImplementations() {
+        self.register { RxMKMovieCellDelegateProxy(movieCell: $0) }
     }
 }
