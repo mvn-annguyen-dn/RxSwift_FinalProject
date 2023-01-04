@@ -27,7 +27,7 @@ class CaseTwoViewController: UIViewController {
     }
 
     private func configTableView() {
-        title = "DataSource"
+        title = "1 Section with Multiple Cell Type"
         let firstCell = UINib(nibName: "FirstCell", bundle: Bundle.main)
         tableView.register(firstCell, forCellReuseIdentifier: "FirstCell")
         let secondCell = UINib(nibName: "CaseOneCell", bundle: Bundle.main)
