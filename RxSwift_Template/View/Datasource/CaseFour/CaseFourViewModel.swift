@@ -1,5 +1,5 @@
 //
-//  CaseTwoViewModel.swift
+//  CaseFourViewModel.swift
 //  RxSwift_Template
 //
 //  Created by Phong Huynh N. VN.Danang on 04/01/2023.
@@ -8,7 +8,7 @@
 import RxSwift
 import RxCocoa
 
-final class CaseTwoViewModel {
+final class CaseFourViewModel {
     
     let bag: DisposeBag = DisposeBag()
     var musicBehaviorRelay: BehaviorRelay<[Music]> = .init(value: [])
@@ -24,7 +24,7 @@ final class CaseTwoViewModel {
             switch result {
             case .success(let value):
                 self.musicBehaviorRelay.accept(value.results ?? [])
-                self.sectionRelay.accept([AnimalSection(header: "First Section", items: self.musicBehaviorRelay.value)])
+                self.sectionRelay.accept([AnimalSection(header: "First Section", items: self.musicBehaviorRelay.value), AnimalSection(header: "Second Section", items: self.musicBehaviorRelay.value)])
             case .failure(let error):
                 self.errorMusicBehaviorRelay.accept(error.localizedDescription)
             }

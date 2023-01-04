@@ -36,6 +36,9 @@
 		CBCB2667296565F0008EDA1D /* CaseThreeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBCB2665296565F0008EDA1D /* CaseThreeViewController.swift */; };
 		CBCB2668296565F0008EDA1D /* CaseThreeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CBCB2666296565F0008EDA1D /* CaseThreeViewController.xib */; };
 		CBCB266A29656607008EDA1D /* CaseThreeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBCB266929656607008EDA1D /* CaseThreeViewModel.swift */; };
+		CBCB266E29656D17008EDA1D /* CaseFourViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBCB266C29656D17008EDA1D /* CaseFourViewController.swift */; };
+		CBCB266F29656D17008EDA1D /* CaseFourViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CBCB266D29656D17008EDA1D /* CaseFourViewController.xib */; };
+		CBCB267129656D2F008EDA1D /* CaseFourViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBCB267029656D2F008EDA1D /* CaseFourViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -86,6 +89,9 @@
 		CBCB2665296565F0008EDA1D /* CaseThreeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaseThreeViewController.swift; sourceTree = "<group>"; };
 		CBCB2666296565F0008EDA1D /* CaseThreeViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CaseThreeViewController.xib; sourceTree = "<group>"; };
 		CBCB266929656607008EDA1D /* CaseThreeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaseThreeViewModel.swift; sourceTree = "<group>"; };
+		CBCB266C29656D17008EDA1D /* CaseFourViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaseFourViewController.swift; sourceTree = "<group>"; };
+		CBCB266D29656D17008EDA1D /* CaseFourViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CaseFourViewController.xib; sourceTree = "<group>"; };
+		CBCB267029656D2F008EDA1D /* CaseFourViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaseFourViewModel.swift; sourceTree = "<group>"; };
 		F5B2704B7B47B3CE3ACA6821 /* Pods-RxSwift_Template-RxSwift_TemplateUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RxSwift_Template-RxSwift_TemplateUITests.debug.xcconfig"; path = "Target Support Files/Pods-RxSwift_Template-RxSwift_TemplateUITests/Pods-RxSwift_Template-RxSwift_TemplateUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		F86B02262B20149B2FE76F51 /* Pods-RxSwift_TemplateTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RxSwift_TemplateTests.release.xcconfig"; path = "Target Support Files/Pods-RxSwift_TemplateTests/Pods-RxSwift_TemplateTests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -256,6 +262,7 @@
 		CB3CBA972965403E005B845D /* Datasource */ = {
 			isa = PBXGroup;
 			children = (
+				CBCB266B29656CFA008EDA1D /* CaseFour */,
 				CBCB2664296565C4008EDA1D /* CaseThree */,
 				CB3CBAA629655BE0005B845D /* CaseTwo */,
 				CB3CBA9829654053005B845D /* CaseOne */,
@@ -313,6 +320,16 @@
 				CBCB266929656607008EDA1D /* CaseThreeViewModel.swift */,
 			);
 			path = CaseThree;
+			sourceTree = "<group>";
+		};
+		CBCB266B29656CFA008EDA1D /* CaseFour */ = {
+			isa = PBXGroup;
+			children = (
+				CBCB266C29656D17008EDA1D /* CaseFourViewController.swift */,
+				CBCB266D29656D17008EDA1D /* CaseFourViewController.xib */,
+				CBCB267029656D2F008EDA1D /* CaseFourViewModel.swift */,
+			);
+			path = CaseFour;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -404,6 +421,7 @@
 				CBCB265A29655D15008EDA1D /* FirstCell.xib in Resources */,
 				CB3CBAAA29655C13005B845D /* CaseTwoViewController.xib in Resources */,
 				3833F17A29359922008A20E8 /* Assets.xcassets in Resources */,
+				CBCB266F29656D17008EDA1D /* CaseFourViewController.xib in Resources */,
 				3833F1A42935A913008A20E8 /* HomeViewController.xib in Resources */,
 				CB3CBA9C296540BF005B845D /* CaseOneViewController.xib in Resources */,
 				CB3CBAA3296540FF005B845D /* CaseOneCell.xib in Resources */,
@@ -517,12 +535,14 @@
 				3833F1AF2935AD64008A20E8 /* ApiTarget.swift in Sources */,
 				CBCB266A29656607008EDA1D /* CaseThreeViewModel.swift in Sources */,
 				CB3CBA9229653E48005B845D /* UIImageExt.swift in Sources */,
+				CBCB266E29656D17008EDA1D /* CaseFourViewController.swift in Sources */,
 				CBCB2667296565F0008EDA1D /* CaseThreeViewController.swift in Sources */,
 				CBCB265529655CCF008EDA1D /* CaseTwoViewModel.swift in Sources */,
 				CB3CBA9629653E92005B845D /* Music.swift in Sources */,
 				CB3CBA9B296540BF005B845D /* CaseOneViewController.swift in Sources */,
 				CB3CBA9E296540CC005B845D /* CaseOneViewModel.swift in Sources */,
 				CB3CBAA5296558CC005B845D /* CaseOneCellViewModel.swift in Sources */,
+				CBCB267129656D2F008EDA1D /* CaseFourViewModel.swift in Sources */,
 				CBCB265929655D15008EDA1D /* FirstCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
