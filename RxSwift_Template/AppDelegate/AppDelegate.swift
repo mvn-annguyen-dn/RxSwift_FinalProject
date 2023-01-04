@@ -33,7 +33,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     private func setRootLogin() {
-        let vc = CaseOneViewController()
+        let vc = CaseTwoViewController()
         let navi = UINavigationController(rootViewController: vc)
         window?.rootViewController = navi
     }
