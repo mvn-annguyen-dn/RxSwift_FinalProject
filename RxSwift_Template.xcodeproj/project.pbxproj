@@ -18,6 +18,15 @@
 		38FA719B2935BA91005CB18B /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38FA719A2935BA91005CB18B /* User.swift */; };
 		460F65BE2E18B1C51E18FA5F /* Pods_RxSwift_TemplateTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2CEE637A8909295BC4720782 /* Pods_RxSwift_TemplateTests.framework */; };
 		8F76F4D8D159F1B42DDBE003 /* Pods_RxSwift_Template.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 09A0FA7C1B0CD47302D9A8D9 /* Pods_RxSwift_Template.framework */; };
+		CB3CBA9229653E48005B845D /* UIImageExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3CBA9129653E48005B845D /* UIImageExt.swift */; };
+		CB3CBA9429653E72005B845D /* ApiManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3CBA9329653E72005B845D /* ApiManager.swift */; };
+		CB3CBA9629653E92005B845D /* Music.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3CBA9529653E92005B845D /* Music.swift */; };
+		CB3CBA9B296540BF005B845D /* CaseOneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3CBA99296540BF005B845D /* CaseOneViewController.swift */; };
+		CB3CBA9C296540BF005B845D /* CaseOneViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB3CBA9A296540BF005B845D /* CaseOneViewController.xib */; };
+		CB3CBA9E296540CC005B845D /* CaseOneViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3CBA9D296540CC005B845D /* CaseOneViewModel.swift */; };
+		CB3CBAA2296540FF005B845D /* CaseOneCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3CBAA0296540FF005B845D /* CaseOneCell.swift */; };
+		CB3CBAA3296540FF005B845D /* CaseOneCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB3CBAA1296540FF005B845D /* CaseOneCell.xib */; };
+		CB3CBAA5296558CC005B845D /* CaseOneCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3CBAA4296558CC005B845D /* CaseOneCellViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,6 +59,15 @@
 		559FC68E27FE2233B82C320C /* Pods-RxSwift_Template.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RxSwift_Template.release.xcconfig"; path = "Target Support Files/Pods-RxSwift_Template/Pods-RxSwift_Template.release.xcconfig"; sourceTree = "<group>"; };
 		6BD3E2BC24F32BA1C6821AE6 /* Pods-RxSwift_Template.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RxSwift_Template.debug.xcconfig"; path = "Target Support Files/Pods-RxSwift_Template/Pods-RxSwift_Template.debug.xcconfig"; sourceTree = "<group>"; };
 		A9997A620243BFD969FC6200 /* Pods_RxSwift_Template_RxSwift_TemplateUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RxSwift_Template_RxSwift_TemplateUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CB3CBA9129653E48005B845D /* UIImageExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageExt.swift; sourceTree = "<group>"; };
+		CB3CBA9329653E72005B845D /* ApiManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiManager.swift; sourceTree = "<group>"; };
+		CB3CBA9529653E92005B845D /* Music.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Music.swift; sourceTree = "<group>"; };
+		CB3CBA99296540BF005B845D /* CaseOneViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaseOneViewController.swift; sourceTree = "<group>"; };
+		CB3CBA9A296540BF005B845D /* CaseOneViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CaseOneViewController.xib; sourceTree = "<group>"; };
+		CB3CBA9D296540CC005B845D /* CaseOneViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaseOneViewModel.swift; sourceTree = "<group>"; };
+		CB3CBAA0296540FF005B845D /* CaseOneCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaseOneCell.swift; sourceTree = "<group>"; };
+		CB3CBAA1296540FF005B845D /* CaseOneCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CaseOneCell.xib; sourceTree = "<group>"; };
+		CB3CBAA4296558CC005B845D /* CaseOneCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaseOneCellViewModel.swift; sourceTree = "<group>"; };
 		F5B2704B7B47B3CE3ACA6821 /* Pods-RxSwift_Template-RxSwift_TemplateUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RxSwift_Template-RxSwift_TemplateUITests.debug.xcconfig"; path = "Target Support Files/Pods-RxSwift_Template-RxSwift_TemplateUITests/Pods-RxSwift_Template-RxSwift_TemplateUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		F86B02262B20149B2FE76F51 /* Pods-RxSwift_TemplateTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RxSwift_TemplateTests.release.xcconfig"; path = "Target Support Files/Pods-RxSwift_TemplateTests/Pods-RxSwift_TemplateTests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -97,6 +115,7 @@
 		3833F16F29359920008A20E8 /* RxSwift_Template */ = {
 			isa = PBXGroup;
 			children = (
+				CB3CBA9029653E1A005B845D /* Ext */,
 				3833F1A62935AC97008A20E8 /* AppDelegate */,
 				3833F1A72935ACE5008A20E8 /* Models */,
 				3833F1AB2935AD11008A20E8 /* Resources */,
@@ -117,6 +136,7 @@
 		3833F1A02935A8FE008A20E8 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				CB3CBA972965403E005B845D /* Datasource */,
 				3833F1A52935AC8A008A20E8 /* Home */,
 			);
 			path = View;
@@ -153,6 +173,7 @@
 			children = (
 				3833F1AC2935AD39008A20E8 /* ApiNetWorkManager.swift */,
 				3833F1AE2935AD64008A20E8 /* ApiTarget.swift */,
+				CB3CBA9329653E72005B845D /* ApiManager.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -161,6 +182,7 @@
 			isa = PBXGroup;
 			children = (
 				38FA719A2935BA91005CB18B /* User.swift */,
+				CB3CBA9529653E92005B845D /* Music.swift */,
 			);
 			path = Scheme;
 			sourceTree = "<group>";
@@ -203,6 +225,43 @@
 				F86B02262B20149B2FE76F51 /* Pods-RxSwift_TemplateTests.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		CB3CBA9029653E1A005B845D /* Ext */ = {
+			isa = PBXGroup;
+			children = (
+				CB3CBA9129653E48005B845D /* UIImageExt.swift */,
+			);
+			path = Ext;
+			sourceTree = "<group>";
+		};
+		CB3CBA972965403E005B845D /* Datasource */ = {
+			isa = PBXGroup;
+			children = (
+				CB3CBA9829654053005B845D /* CaseOne */,
+			);
+			path = Datasource;
+			sourceTree = "<group>";
+		};
+		CB3CBA9829654053005B845D /* CaseOne */ = {
+			isa = PBXGroup;
+			children = (
+				CB3CBA9F296540E5005B845D /* Cell */,
+				CB3CBA99296540BF005B845D /* CaseOneViewController.swift */,
+				CB3CBA9A296540BF005B845D /* CaseOneViewController.xib */,
+				CB3CBA9D296540CC005B845D /* CaseOneViewModel.swift */,
+			);
+			path = CaseOne;
+			sourceTree = "<group>";
+		};
+		CB3CBA9F296540E5005B845D /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				CB3CBAA0296540FF005B845D /* CaseOneCell.swift */,
+				CB3CBAA1296540FF005B845D /* CaseOneCell.xib */,
+				CB3CBAA4296558CC005B845D /* CaseOneCellViewModel.swift */,
+			);
+			path = Cell;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -293,6 +352,8 @@
 				3833F17D29359922008A20E8 /* LaunchScreen.storyboard in Resources */,
 				3833F17A29359922008A20E8 /* Assets.xcassets in Resources */,
 				3833F1A42935A913008A20E8 /* HomeViewController.xib in Resources */,
+				CB3CBA9C296540BF005B845D /* CaseOneViewController.xib in Resources */,
+				CB3CBAA3296540FF005B845D /* CaseOneCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -392,10 +453,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				3833F17129359920008A20E8 /* AppDelegate.swift in Sources */,
+				CB3CBAA2296540FF005B845D /* CaseOneCell.swift in Sources */,
 				3833F1A32935A913008A20E8 /* HomeViewController.swift in Sources */,
 				3833F1AD2935AD39008A20E8 /* ApiNetWorkManager.swift in Sources */,
+				CB3CBA9429653E72005B845D /* ApiManager.swift in Sources */,
 				38FA719B2935BA91005CB18B /* User.swift in Sources */,
 				3833F1AF2935AD64008A20E8 /* ApiTarget.swift in Sources */,
+				CB3CBA9229653E48005B845D /* UIImageExt.swift in Sources */,
+				CB3CBA9629653E92005B845D /* Music.swift in Sources */,
+				CB3CBA9B296540BF005B845D /* CaseOneViewController.swift in Sources */,
+				CB3CBA9E296540CC005B845D /* CaseOneViewModel.swift in Sources */,
+				CB3CBAA5296558CC005B845D /* CaseOneCellViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
