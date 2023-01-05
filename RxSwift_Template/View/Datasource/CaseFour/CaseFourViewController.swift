@@ -22,6 +22,7 @@ final class CaseFourViewController: UIViewController {
 
         callApi()
         configTableView()
+        configDataSource()
     }
 
     private func callApi() {
@@ -35,6 +36,20 @@ final class CaseFourViewController: UIViewController {
         let secondCell = UINib(nibName: "CaseOneCell", bundle: Bundle.main)
         tableView.register(secondCell, forCellReuseIdentifier: "CaseOneCell")
 
+        tableView.rx.modelSelected(HomeSectionItem.self)
+            .asDriver()
+            .drive(onNext: { model in
+                switch model {
+                case .ItemOne(musics: _):
+                    self.presentAlert("", message: "Alert multiple section One")
+                case .ItemTwo(title: let title, musics: _):
+                    self.presentAlert(title, message: "Alert multiple section Two")
+                }
+            })
+            .disposed(by: bag)
+    }
+    
+    private func configDataSource() {
         let datasource = RxTableViewSectionedReloadDataSource<HomeSectionModel>(configureCell: { datasource, tableview, indexpath, item in
             switch datasource[indexpath] {
             case let .ItemOne(musics: musics):
@@ -50,20 +65,8 @@ final class CaseFourViewController: UIViewController {
             let section = dataSource[index]
             return section.title
         })
-
+        
         viewModel.sectionModelsDriver.drive(tableView.rx.items(dataSource: datasource)).disposed(by: bag)
-
-        tableView.rx.modelSelected(HomeSectionItem.self)
-            .asDriver()
-            .drive(onNext: { model in
-                switch model {
-                case .ItemOne(musics: _):
-                    self.presentAlert("", message: "Alert multiple section One")
-                case .ItemTwo(title: let title, musics: _):
-                    self.presentAlert(title, message: "Alert multiple section Two")
-                }
-            })
-            .disposed(by: bag)
     }
 
     private func presentAlert(_ title: String, message: String) {

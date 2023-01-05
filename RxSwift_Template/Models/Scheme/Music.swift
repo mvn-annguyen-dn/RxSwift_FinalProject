@@ -25,12 +25,7 @@ final class Music: Decodable {
     }
 
     enum CodingKeys: String, CodingKey {
-        case artistName
-        case id
-        case name
-        case releaseDate
-        case copyright
-        case artworkUrl100
+        case artistName, id, name, releaseDate, copyright, artworkUrl100
     }
 
     init(from decoder: Decoder) throws {

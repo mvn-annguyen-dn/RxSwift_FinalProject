@@ -11,8 +11,8 @@ import RxCocoa
 
 final class CaseOneCell: UITableViewCell {
     
-    @IBOutlet weak var musicImageView: UIImageView!
-    @IBOutlet  weak var nameLabel: UILabel!
+    @IBOutlet private weak var musicImageView: UIImageView!
+    @IBOutlet private weak var nameLabel: UILabel!
 
     var viewModel: CaseOneCellViewModel? {
         didSet {
@@ -22,12 +22,16 @@ final class CaseOneCell: UITableViewCell {
 
     private func updateCell() {
         guard let viewModel = viewModel else { return }
-        viewModel.musicBehaviorRelay
-            .map { $0?.name }
+        let music = viewModel.musicBehaviorRelay
+            .compactMap { $0 }
+        music
+            .map(\.name)
             .bind(to: nameLabel.rx.text)
             .disposed(by: viewModel.bag)
-        viewModel.musicBehaviorRelay.map { $0?.artworkUrl100 ?? "" }.subscribe(onNext: { element in
-            UIImage.dowloadImageWithRxSwift(url: element).subscribe { image in
+
+        music
+            .map(\.artworkUrl100).subscribe(onNext: { element in
+                UIImage.dowloadImageWithRxSwift(url: element ?? "").subscribe { image in
                 self.musicImageView.image = image
             }.disposed(by: viewModel.bag)
         })

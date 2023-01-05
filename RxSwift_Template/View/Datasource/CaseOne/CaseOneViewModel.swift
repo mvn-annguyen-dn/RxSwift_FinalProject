@@ -36,19 +36,4 @@ final class CaseOneViewModel {
     func getDataFirstCell(indexPath: IndexPath) -> CaseOneCellViewModel {
         return CaseOneCellViewModel(music: musicBehaviorRelay.value[indexPath.row])
     }
-
-}
-
-struct AnimalSection {
-    var header: String
-    var items: [Item]
-}
-
-extension AnimalSection: SectionModelType {
-    typealias Item = Music
-
-    init(original: AnimalSection, items: [Item]) {
-        self = original
-        self.items = items
-    }
 }

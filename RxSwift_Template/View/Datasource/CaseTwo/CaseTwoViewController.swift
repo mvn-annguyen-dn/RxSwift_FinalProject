@@ -9,7 +9,7 @@ import RxSwift
 import RxCocoa
 import RxDataSources
 
-class CaseTwoViewController: UIViewController {
+final class CaseTwoViewController: UIViewController {
 
     @IBOutlet private weak var tableView: UITableView!
     
