@@ -11,8 +11,8 @@ import RxCocoa
 
 final class FirstCell: UITableViewCell {
 
-    @IBOutlet weak var firstNameLabel: UILabel!
-    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet private weak var firstNameLabel: UILabel!
+    @IBOutlet private weak var titleLabel: UILabel!
 
     var viewModel: FirstCellViewModel? {
         didSet {
@@ -22,8 +22,10 @@ final class FirstCell: UITableViewCell {
 
     private func updateCell() {
         guard let viewModel = viewModel else { return }
-        viewModel.musicBehaviorRelay
-            .map { $0?.name }
+        let music = viewModel.musicBehaviorRelay
+            .compactMap { $0 }
+        music
+            .map(\.name)
             .bind(to: firstNameLabel.rx.text)
             .disposed(by: viewModel.bag)
         titleLabel.text = viewModel.title
