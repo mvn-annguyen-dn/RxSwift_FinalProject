@@ -24,19 +24,18 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3tf-vP-Doo">
-                        <rect key="frame" x="265" y="58.333333333333336" width="50" height="25.333333333333336"/>
+                        <rect key="frame" x="86.333333333333329" y="58.000000000000007" width="49.999999999999986" height="25.333333333333336"/>
                         <fontDescription key="fontDescription" type="system" pointSize="21"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="yaC-MF-2dW" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="5" id="Ba1-Lp-Hk8"/>
-                    <constraint firstItem="yaC-MF-2dW" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="Yyb-EB-ORc"/>
-                    <constraint firstAttribute="trailing" secondItem="3tf-vP-Doo" secondAttribute="trailing" constant="5" id="djt-zk-SPe"/>
-                    <constraint firstItem="3tf-vP-Doo" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="yaC-MF-2dW" secondAttribute="trailing" constant="30" id="jiQ-4l-dSJ"/>
-                    <constraint firstItem="3tf-vP-Doo" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="o0B-SM-vZ5"/>
-                    <constraint firstItem="yaC-MF-2dW" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="y5S-0v-hua"/>
+                    <constraint firstItem="yaC-MF-2dW" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="58" id="2Py-SS-I0C"/>
+                    <constraint firstAttribute="bottom" secondItem="yaC-MF-2dW" secondAttribute="bottom" constant="57.670000000000002" id="6td-CY-pW0"/>
+                    <constraint firstItem="yaC-MF-2dW" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="5" id="A2L-pO-ohq"/>
+                    <constraint firstItem="3tf-vP-Doo" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="58" id="baJ-xq-Fqq"/>
+                    <constraint firstItem="3tf-vP-Doo" firstAttribute="leading" secondItem="yaC-MF-2dW" secondAttribute="trailing" constant="30" id="iEj-Lz-urL"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>

@@ -33,7 +33,7 @@ final class CaseTwoViewModel {
     }
     
     func getDataFirstCell(indexPath: IndexPath) -> FirstCellViewModel {
-        return FirstCellViewModel(music: musicBehaviorRelay.value[indexPath.row])
+        return FirstCellViewModel(music: musicBehaviorRelay.value[indexPath.row], title: nil)
     }
     
     func getDataSecondCell(indexPath: IndexPath) -> CaseOneCellViewModel {

@@ -32,14 +32,14 @@ final class CaseFourViewModel {
                 self.musicBehaviorRelay.accept(value.results ?? [])
                 let sections: [HomeSectionModel] = [
                     .informationSectionOne(title: "Section 1", items: [
-                        .ItemOne(musics: self.musicBehaviorRelay.value),
-                        .ItemOne(musics: self.musicBehaviorRelay.value),
-                        .ItemOne(musics: self.musicBehaviorRelay.value)
+                        .ItemOne(musics: self.musicBehaviorRelay.value.randomElement() ?? Music()),
+                        .ItemOne(musics: self.musicBehaviorRelay.value.randomElement() ?? Music()),
+                        .ItemOne(musics: self.musicBehaviorRelay.value.randomElement() ?? Music())
                     ]),
                     .informationSectionTwo(title: "Section 2", items: [
-                        .ItemTwo(title: "Item section 2", musics: self.musicBehaviorRelay.value),
-                        .ItemOne(musics: self.musicBehaviorRelay.value),
-                        .ItemOne(musics: self.musicBehaviorRelay.value)
+                        .ItemTwo(title: "Item section 2", musics: self.musicBehaviorRelay.value.randomElement() ?? Music()),
+                        .ItemOne(musics: self.musicBehaviorRelay.value.randomElement() ?? Music()),
+                        .ItemOne(musics: self.musicBehaviorRelay.value.randomElement() ?? Music())
                     ])
                 ]
                 
@@ -56,8 +56,8 @@ final class CaseFourViewModel {
         return CaseOneCellViewModel(music: music)
     }
     
-    func getDataSecondCell(music: Music, indexPath: IndexPath) -> FirstCellViewModel {
-        return FirstCellViewModel(music: music)
+    func getDataSecondCell(music: Music, indexPath: IndexPath, title: String) -> FirstCellViewModel {
+        return FirstCellViewModel(music: music, title: title)
     }
 }
 
@@ -67,8 +67,8 @@ enum HomeSectionModel {
 }
 
 enum HomeSectionItem {
-    case ItemOne(musics: [Music])
-    case ItemTwo(title: String, musics: [Music])
+    case ItemOne(musics: Music)
+    case ItemTwo(title: String, musics: Music)
 }
 
 extension HomeSectionModel: SectionModelType {

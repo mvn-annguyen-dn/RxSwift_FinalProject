@@ -39,16 +39,11 @@ final class CaseFourViewController: UIViewController {
             switch datasource[indexpath] {
             case let .ItemOne(musics: musics):
                 guard let cell = tableview.dequeueReusableCell(withIdentifier: "CaseOneCell", for: indexpath) as? CaseOneCell else { return UITableViewCell() }
-                musics.map { music in
-                    cell.viewModel = self.viewModel.getDataFirstCell(music: music, indexPath: indexpath)
-                }
+                cell.viewModel = self.viewModel.getDataFirstCell(music: musics, indexPath: indexpath)
                 return cell
             case let .ItemTwo(title: title, musics: musics):
                 guard let cell = tableview.dequeueReusableCell(withIdentifier: "FirstCell", for: indexpath) as? FirstCell else { return UITableViewCell() }
-                musics.map { music in
-                    cell.titleLabel.text = title
-                    cell.viewModel = self.viewModel.getDataSecondCell(music: music, indexPath: indexpath)
-                }
+                cell.viewModel = self.viewModel.getDataSecondCell(music: musics, indexPath: indexpath, title: title)
                 return cell
             }
         }, titleForHeaderInSection: { dataSource, index in

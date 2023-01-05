@@ -12,8 +12,10 @@ final class FirstCellViewModel {
     
     let bag: DisposeBag = DisposeBag()
     var musicBehaviorRelay: BehaviorRelay<Music?> = .init(value: nil)
+    var title: String?
 
-    init(music: Music) {
+    init(music: Music, title: String?) {
         musicBehaviorRelay.accept(music)
+        self.title = title
     }
 }

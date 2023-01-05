@@ -26,5 +26,6 @@ final class FirstCell: UITableViewCell {
             .map { $0?.name }
             .bind(to: firstNameLabel.rx.text)
             .disposed(by: viewModel.bag)
+        titleLabel.text = viewModel.title
     }
 }
