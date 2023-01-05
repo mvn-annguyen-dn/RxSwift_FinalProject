@@ -7,13 +7,19 @@
 
 import RxSwift
 import RxCocoa
+import RxDataSources
 
 final class CaseFourViewModel {
     
     let bag: DisposeBag = DisposeBag()
     var musicBehaviorRelay: BehaviorRelay<[Music]> = .init(value: [])
     var errorMusicBehaviorRelay: BehaviorRelay<String?> = .init(value: nil)
-    let sectionRelay = BehaviorRelay<[AnimalSection]>.init(value: [])
+    
+    // multiple sections
+    var sectionModels: BehaviorSubject<[HomeSectionModel]> = BehaviorSubject(value: [])
+    var sectionModelsDriver: Driver<[HomeSectionModel]> {
+        return sectionModels.asDriver(onErrorJustReturn: [])
+    }
     
     func getApiMusic() -> Single<FeedResults> {
         return ApiManager.shared.loadAPI(method: .get)
@@ -24,7 +30,21 @@ final class CaseFourViewModel {
             switch result {
             case .success(let value):
                 self.musicBehaviorRelay.accept(value.results ?? [])
-                self.sectionRelay.accept([AnimalSection(header: "First Section", items: self.musicBehaviorRelay.value), AnimalSection(header: "Second Section", items: self.musicBehaviorRelay.value)])
+                let sections: [HomeSectionModel] = [
+                    .informationSectionOne(title: "Section 1", items: [
+                        .ItemOne(musics: self.musicBehaviorRelay.value),
+                        .ItemOne(musics: self.musicBehaviorRelay.value),
+                        .ItemOne(musics: self.musicBehaviorRelay.value)
+                    ]),
+                    .informationSectionTwo(title: "Section 2", items: [
+                        .ItemTwo(title: "Item section 2", musics: self.musicBehaviorRelay.value),
+                        .ItemOne(musics: self.musicBehaviorRelay.value),
+                        .ItemOne(musics: self.musicBehaviorRelay.value)
+                    ])
+                ]
+                
+                self.sectionModels.onNext(sections)
+                
             case .failure(let error):
                 self.errorMusicBehaviorRelay.accept(error.localizedDescription)
             }
@@ -32,11 +52,54 @@ final class CaseFourViewModel {
         .disposed(by: bag)
     }
     
-    func getDataFirstCell(indexPath: IndexPath) -> FirstCellViewModel {
-        return FirstCellViewModel(music: musicBehaviorRelay.value[indexPath.row])
+    func getDataFirstCell(music: Music, indexPath: IndexPath) -> CaseOneCellViewModel {
+        return CaseOneCellViewModel(music: music)
     }
     
-    func getDataSecondCell(indexPath: IndexPath) -> CaseOneCellViewModel {
-        return CaseOneCellViewModel(music: musicBehaviorRelay.value[indexPath.row])
+    func getDataSecondCell(music: Music, indexPath: IndexPath) -> FirstCellViewModel {
+        return FirstCellViewModel(music: music)
+    }
+}
+
+enum HomeSectionModel {
+    case informationSectionOne(title: String, items: [HomeSectionItem])
+    case informationSectionTwo(title: String, items: [HomeSectionItem])
+}
+
+enum HomeSectionItem {
+    case ItemOne(musics: [Music])
+    case ItemTwo(title: String, musics: [Music])
+}
+
+extension HomeSectionModel: SectionModelType {
+    typealias Item = HomeSectionItem
+    
+    var items: [HomeSectionItem] {
+        switch self {
+        case .informationSectionOne(title: _, items: let items):
+            return items.map { $0 }
+        case .informationSectionTwo(title: _, items: let items):
+            return items.map { $0 }
+        }
+    }
+    
+    init(original: HomeSectionModel, items: [HomeSectionItem]) {
+        switch original {
+        case let .informationSectionOne(title: title, items: _):
+            self = .informationSectionOne(title: title, items: items)
+        case let .informationSectionTwo(title: title, items: _):
+            self = .informationSectionTwo(title: title, items: items)
+        }
+    }
+}
+
+extension HomeSectionModel {
+    var title: String {
+        switch self {
+        case .informationSectionOne(title: let title, items: _):
+            return title
+        case .informationSectionTwo(title: let title, items: _):
+            return title
+        }
     }
 }

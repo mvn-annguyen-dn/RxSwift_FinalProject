@@ -11,7 +11,8 @@ import RxCocoa
 
 final class FirstCell: UITableViewCell {
 
-    @IBOutlet private weak var firstNameLabel: UILabel!
+    @IBOutlet weak var firstNameLabel: UILabel!
+    @IBOutlet weak var titleLabel: UILabel!
 
     var viewModel: FirstCellViewModel? {
         didSet {

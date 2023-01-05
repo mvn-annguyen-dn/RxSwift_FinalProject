@@ -11,8 +11,8 @@ import RxCocoa
 
 final class CaseOneCell: UITableViewCell {
     
-    @IBOutlet private weak var musicImageView: UIImageView!
-    @IBOutlet private weak var nameLabel: UILabel!
+    @IBOutlet weak var musicImageView: UIImageView!
+    @IBOutlet  weak var nameLabel: UILabel!
 
     var viewModel: CaseOneCellViewModel? {
         didSet {
