@@ -32,19 +32,17 @@ final class CaseFourViewModel {
                 self.musicBehaviorRelay.accept(value.results ?? [])
                 let sections: [HomeSectionModel] = [
                     .informationSectionOne(title: "Section 1", items: [
-                        .ItemOne(musics: self.musicBehaviorRelay.value.randomElement() ?? Music()),
-                        .ItemOne(musics: self.musicBehaviorRelay.value.randomElement() ?? Music()),
-                        .ItemOne(musics: self.musicBehaviorRelay.value.randomElement() ?? Music())
+                        .itemOne(musics: self.musicBehaviorRelay.value.randomElement() ?? Music()),
+                        .itemOne(musics: self.musicBehaviorRelay.value.randomElement() ?? Music()),
+                        .itemOne(musics: self.musicBehaviorRelay.value.randomElement() ?? Music())
                     ]),
                     .informationSectionTwo(title: "Section 2", items: [
-                        .ItemTwo(title: "Item section 2", musics: self.musicBehaviorRelay.value.randomElement() ?? Music()),
-                        .ItemOne(musics: self.musicBehaviorRelay.value.randomElement() ?? Music()),
-                        .ItemOne(musics: self.musicBehaviorRelay.value.randomElement() ?? Music())
+                        .itemTwo(title: "Item section 2", musics: self.musicBehaviorRelay.value.randomElement() ?? Music()),
+                        .itemOne(musics: self.musicBehaviorRelay.value.randomElement() ?? Music()),
+                        .itemOne(musics: self.musicBehaviorRelay.value.randomElement() ?? Music())
                     ])
                 ]
-                
                 self.sectionModels.onNext(sections)
-                
             case .failure(let error):
                 self.errorMusicBehaviorRelay.accept(error.localizedDescription)
             }

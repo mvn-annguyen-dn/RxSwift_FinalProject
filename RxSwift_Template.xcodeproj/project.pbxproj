@@ -29,8 +29,8 @@
 		CB3CBAA5296558CC005B845D /* CaseOneCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3CBAA4296558CC005B845D /* CaseOneCellViewModel.swift */; };
 		CB3CBAA929655C13005B845D /* CaseTwoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3CBAA729655C13005B845D /* CaseTwoViewController.swift */; };
 		CB3CBAAA29655C13005B845D /* CaseTwoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB3CBAA829655C13005B845D /* CaseTwoViewController.xib */; };
-		CB59FF812966BCAA00C09A5A /* MultipleSectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB59FF802966BCAA00C09A5A /* MultipleSectionViewModel.swift */; };
-		CB59FF832966BD6700C09A5A /* OneSectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB59FF822966BD6700C09A5A /* OneSectionViewModel.swift */; };
+		CB59FF812966BCAA00C09A5A /* HomeSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB59FF802966BCAA00C09A5A /* HomeSection.swift */; };
+		CB59FF832966BD6700C09A5A /* AnimalSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB59FF822966BD6700C09A5A /* AnimalSection.swift */; };
 		CBCB265529655CCF008EDA1D /* CaseTwoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBCB265429655CCF008EDA1D /* CaseTwoViewModel.swift */; };
 		CBCB265929655D15008EDA1D /* FirstCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBCB265729655D15008EDA1D /* FirstCell.swift */; };
 		CBCB265A29655D15008EDA1D /* FirstCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CBCB265829655D15008EDA1D /* FirstCell.xib */; };
@@ -84,8 +84,8 @@
 		CB3CBAA4296558CC005B845D /* CaseOneCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaseOneCellViewModel.swift; sourceTree = "<group>"; };
 		CB3CBAA729655C13005B845D /* CaseTwoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaseTwoViewController.swift; sourceTree = "<group>"; };
 		CB3CBAA829655C13005B845D /* CaseTwoViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CaseTwoViewController.xib; sourceTree = "<group>"; };
-		CB59FF802966BCAA00C09A5A /* MultipleSectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipleSectionViewModel.swift; sourceTree = "<group>"; };
-		CB59FF822966BD6700C09A5A /* OneSectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneSectionViewModel.swift; sourceTree = "<group>"; };
+		CB59FF802966BCAA00C09A5A /* HomeSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSection.swift; sourceTree = "<group>"; };
+		CB59FF822966BD6700C09A5A /* AnimalSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimalSection.swift; sourceTree = "<group>"; };
 		CBCB265429655CCF008EDA1D /* CaseTwoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaseTwoViewModel.swift; sourceTree = "<group>"; };
 		CBCB265729655D15008EDA1D /* FirstCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstCell.swift; sourceTree = "<group>"; };
 		CBCB265829655D15008EDA1D /* FirstCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FirstCell.xib; sourceTree = "<group>"; };
@@ -211,8 +211,8 @@
 			children = (
 				38FA719A2935BA91005CB18B /* User.swift */,
 				CB3CBA9529653E92005B845D /* Music.swift */,
-				CB59FF802966BCAA00C09A5A /* MultipleSectionViewModel.swift */,
-				CB59FF822966BD6700C09A5A /* OneSectionViewModel.swift */,
+				CB59FF802966BCAA00C09A5A /* HomeSection.swift */,
+				CB59FF822966BD6700C09A5A /* AnimalSection.swift */,
 			);
 			path = Scheme;
 			sourceTree = "<group>";
@@ -543,9 +543,9 @@
 				CB3CBA9229653E48005B845D /* UIImageExt.swift in Sources */,
 				CBCB266E29656D17008EDA1D /* CaseFourViewController.swift in Sources */,
 				CBCB2667296565F0008EDA1D /* CaseThreeViewController.swift in Sources */,
-				CB59FF812966BCAA00C09A5A /* MultipleSectionViewModel.swift in Sources */,
+				CB59FF812966BCAA00C09A5A /* HomeSection.swift in Sources */,
 				CBCB265529655CCF008EDA1D /* CaseTwoViewModel.swift in Sources */,
-				CB59FF832966BD6700C09A5A /* OneSectionViewModel.swift in Sources */,
+				CB59FF832966BD6700C09A5A /* AnimalSection.swift in Sources */,
 				CB3CBA9629653E92005B845D /* Music.swift in Sources */,
 				CB3CBA9B296540BF005B845D /* CaseOneViewController.swift in Sources */,
 				CB3CBA9E296540CC005B845D /* CaseOneViewModel.swift in Sources */,

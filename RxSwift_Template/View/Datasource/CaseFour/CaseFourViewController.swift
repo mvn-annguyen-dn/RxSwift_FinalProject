@@ -14,7 +14,6 @@ final class CaseFourViewController: UIViewController {
 
     @IBOutlet private weak var tableView: UITableView!
     
-    let bag = DisposeBag()
     var viewModel: CaseFourViewModel = CaseFourViewModel()
 
     override func viewDidLoad() {
@@ -40,23 +39,23 @@ final class CaseFourViewController: UIViewController {
             .asDriver()
             .drive(onNext: { model in
                 switch model {
-                case .ItemOne(musics: _):
+                case .itemOne(musics: _):
                     self.presentAlert("", message: "Alert multiple section One")
-                case .ItemTwo(title: let title, musics: _):
+                case .itemTwo(title: let title, musics: _):
                     self.presentAlert(title, message: "Alert multiple section Two")
                 }
             })
-            .disposed(by: bag)
+            .disposed(by: viewModel.bag)
     }
     
     private func configDataSource() {
         let datasource = RxTableViewSectionedReloadDataSource<HomeSectionModel>(configureCell: { datasource, tableview, indexpath, item in
             switch datasource[indexpath] {
-            case let .ItemOne(musics: musics):
+            case let .itemOne(musics: musics):
                 guard let cell = tableview.dequeueReusableCell(withIdentifier: "CaseOneCell", for: indexpath) as? CaseOneCell else { return UITableViewCell() }
                 cell.viewModel = self.viewModel.getDataFirstCell(music: musics, indexPath: indexpath)
                 return cell
-            case let .ItemTwo(title: title, musics: musics):
+            case let .itemTwo(title: title, musics: musics):
                 guard let cell = tableview.dequeueReusableCell(withIdentifier: "FirstCell", for: indexpath) as? FirstCell else { return UITableViewCell() }
                 cell.viewModel = self.viewModel.getDataSecondCell(music: musics, indexPath: indexpath, title: title)
                 return cell
@@ -66,7 +65,9 @@ final class CaseFourViewController: UIViewController {
             return section.title
         })
         
-        viewModel.sectionModelsDriver.drive(tableView.rx.items(dataSource: datasource)).disposed(by: bag)
+        viewModel.sectionModelsDriver
+            .drive(tableView.rx.items(dataSource: datasource))
+            .disposed(by: viewModel.bag)
     }
 
     private func presentAlert(_ title: String, message: String) {
