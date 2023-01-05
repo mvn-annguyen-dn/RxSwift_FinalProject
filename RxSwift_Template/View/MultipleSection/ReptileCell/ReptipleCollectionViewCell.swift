@@ -30,8 +30,17 @@ final class ReptipleCollectionViewCell: UICollectionViewCell {
         cellBag = DisposeBag()
     }
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
+    private func updateCell() {
+        guard let viewModel = viewModel else { return }
+        let card = viewModel.cardRelay.compactMap { $0 }
+        card
+            .map(\.image)
+            .subscribe({ event in
+                guard let image = event.element else { return }
+                self.cardImageView.image = UIImage(named: image)
+            })
+            .disposed(by: cellBag)
+        
         contentView.rx.tapGesture()
             .when(.recognized)
             .subscribe { [weak self] _ in
@@ -42,18 +51,6 @@ final class ReptipleCollectionViewCell: UICollectionViewCell {
                 }
                 this.showingBack = !this.showingBack
             }
-            .disposed(by: cellBag)
-    }
-
-    private func updateCell() {
-        guard let viewModel = viewModel else { return }
-        let card = viewModel.cardRelay.compactMap { $0 }
-        card
-            .map(\.image)
-            .subscribe({ event in
-                guard let image = event.element else { return }
-                self.cardImageView.image = UIImage(named: image)
-            })
             .disposed(by: cellBag)
     }
 }

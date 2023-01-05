@@ -11,7 +11,7 @@ import RxDataSources
 
 final class MultipleSectionViewController: UIViewController {
 
-    @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet private weak var collectionView: UICollectionView!
     
     var viewModel: MultipleSectionViewModel = MultipleSectionViewModel()
     var disposeBag: DisposeBag = DisposeBag()
@@ -66,7 +66,7 @@ final class MultipleSectionViewController: UIViewController {
                       let header = this.collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: this.headerView, for: indexPath) as? HeaderCollectionReusableView else {
                     return UICollectionReusableView()
                 }
-                header.headerNameLabel.text = dataSource[indexPath.section].header.type
+                header.viewModel = this.viewModel.viewHeaderForItem(at: indexPath)
                 return header
             }, canMoveItemAtIndexPath: { _, _ in
                     return true

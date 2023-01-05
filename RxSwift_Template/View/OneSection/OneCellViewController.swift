@@ -30,16 +30,6 @@ final class OneCellViewController: UIViewController {
     }
 
     private func configDataSource() {
-//        viewModel.dataRelay
-//            .bind(to: tableView.rx.items) { tableView, index, element in
-//                let indexPath = IndexPath(row: index, section: 0)
-//                let cell = tableView.dequeueReusableCell(withIdentifier: "CellName", for: indexPath)
-//                cell.textLabel?.text = element.name
-//                cell.selectionStyle = .none
-//                return cell
-//            }
-//            .disposed(by: disposeBag)
-        
         viewModel.dataRelay2
             .bind(to: tableView.rx.items) { [weak self]  (_, index, element) -> UITableViewCell in
                 guard let this = self else { return UITableViewCell() }

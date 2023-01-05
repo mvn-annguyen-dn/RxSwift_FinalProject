@@ -22,4 +22,8 @@ final class MultipleSectionViewModel {
     func viewModelForItem2(at element: BackCard) -> TitleCellViewModel {
         return TitleCellViewModel(card: element)
     }
+
+    func viewHeaderForItem(at indexPath: IndexPath) -> HeaderCellViewModel {
+        return HeaderCellViewModel(title: dataRelay.value[indexPath.section].header)
+    }
 }

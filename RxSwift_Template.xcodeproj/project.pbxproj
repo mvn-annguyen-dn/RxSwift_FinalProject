@@ -20,6 +20,7 @@
 		841B768229653B700080E9F0 /* TitleCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841B768029653B700080E9F0 /* TitleCollectionViewCell.swift */; };
 		841B768329653B700080E9F0 /* TitleCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 841B768129653B700080E9F0 /* TitleCollectionViewCell.xib */; };
 		841B768629653B9E0080E9F0 /* TitleCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841B768529653B9E0080E9F0 /* TitleCellViewModel.swift */; };
+		841B76882966BA1A0080E9F0 /* HeaderCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841B76872966BA1A0080E9F0 /* HeaderCellViewModel.swift */; };
 		849AD1EE2963CEE200AB0C1D /* OneCellViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849AD1EC2963CEE200AB0C1D /* OneCellViewController.swift */; };
 		849AD1EF2963CEE200AB0C1D /* OneCellViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 849AD1ED2963CEE200AB0C1D /* OneCellViewController.xib */; };
 		849AD1F12963D6C400AB0C1D /* OneCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849AD1F02963D6C400AB0C1D /* OneCellViewModel.swift */; };
@@ -68,6 +69,7 @@
 		841B768029653B700080E9F0 /* TitleCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleCollectionViewCell.swift; sourceTree = "<group>"; };
 		841B768129653B700080E9F0 /* TitleCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TitleCollectionViewCell.xib; sourceTree = "<group>"; };
 		841B768529653B9E0080E9F0 /* TitleCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleCellViewModel.swift; sourceTree = "<group>"; };
+		841B76872966BA1A0080E9F0 /* HeaderCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderCellViewModel.swift; sourceTree = "<group>"; };
 		849AD1EC2963CEE200AB0C1D /* OneCellViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneCellViewController.swift; sourceTree = "<group>"; };
 		849AD1ED2963CEE200AB0C1D /* OneCellViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OneCellViewController.xib; sourceTree = "<group>"; };
 		849AD1F02963D6C400AB0C1D /* OneCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneCellViewModel.swift; sourceTree = "<group>"; };
@@ -289,6 +291,7 @@
 			children = (
 				849AD20B2964340D00AB0C1D /* HeaderCollectionReusableView.swift */,
 				849AD20C2964340D00AB0C1D /* HeaderCollectionReusableView.xib */,
+				841B76872966BA1A0080E9F0 /* HeaderCellViewModel.swift */,
 			);
 			path = HeaderView;
 			sourceTree = "<group>";
@@ -493,6 +496,7 @@
 				3833F1A32935A913008A20E8 /* HomeViewController.swift in Sources */,
 				849AD1F32963D91C00AB0C1D /* MultipleSection.swift in Sources */,
 				3833F1AD2935AD39008A20E8 /* ApiNetWorkManager.swift in Sources */,
+				841B76882966BA1A0080E9F0 /* HeaderCellViewModel.swift in Sources */,
 				849AD1EE2963CEE200AB0C1D /* OneCellViewController.swift in Sources */,
 				38FA719B2935BA91005CB18B /* User.swift in Sources */,
 				849AD2092964279100AB0C1D /* ReptipleCellViewModel.swift in Sources */,
