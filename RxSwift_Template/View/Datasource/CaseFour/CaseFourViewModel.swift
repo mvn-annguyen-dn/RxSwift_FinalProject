@@ -29,7 +29,7 @@ final class CaseFourViewModel {
                 self.musicBehaviorRelay.accept(value.results ?? [])
                 let sections: [HomeSectionModel] = [
                     .informationSectionOne(title: "Section 1", items: [
-                        .itemOne(music: self.musicBehaviorRelay.value.randomElement() ?? Music()),
+                        .itemOne(music: self.musicBehaviorRelay.value[3]),
                         .itemOne(music: self.musicBehaviorRelay.value.randomElement() ?? Music()),
                         .itemOne(music: self.musicBehaviorRelay.value.randomElement() ?? Music())
                     ]),
@@ -47,11 +47,11 @@ final class CaseFourViewModel {
         .disposed(by: bag)
     }
     
-    func getDataFirstCell(music: Music, indexPath: IndexPath) -> CaseOneCellViewModel {
+    func getDataFirstCell(music: Music) -> CaseOneCellViewModel {
         return CaseOneCellViewModel(music: music)
     }
     
-    func getDataSecondCell(music: Music, indexPath: IndexPath, title: String) -> FirstCellViewModel {
+    func getDataSecondCell(music: Music, title: String) -> FirstCellViewModel {
         return FirstCellViewModel(music: music, title: title)
     }
 }

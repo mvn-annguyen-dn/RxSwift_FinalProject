@@ -14,7 +14,7 @@ final class CaseOneViewModel {
     let bag: DisposeBag = DisposeBag()
     var musicBehaviorRelay: BehaviorRelay<[Music]> = .init(value: [])
     var errorMusicBehaviorRelay: BehaviorRelay<String?> = .init(value: nil)
-    let sectionRelay = BehaviorRelay<[AnimalSection]>.init(value: [])
+    let sectionRelay = BehaviorRelay<[MusicSection]>.init(value: [])
     
     func getApiMusic() -> Single<FeedResults> {
         return ApiManager.shared.loadAPI(method: .get)
@@ -25,7 +25,7 @@ final class CaseOneViewModel {
             switch result {
             case .success(let value):
                 self.musicBehaviorRelay.accept(value.results ?? [])
-                self.sectionRelay.accept([AnimalSection(header: "first Section", items: self.musicBehaviorRelay.value)])
+                self.sectionRelay.accept([MusicSection(header: "first Section", items: self.musicBehaviorRelay.value)])
             case .failure(let error):
                 self.errorMusicBehaviorRelay.accept(error.localizedDescription)
             }

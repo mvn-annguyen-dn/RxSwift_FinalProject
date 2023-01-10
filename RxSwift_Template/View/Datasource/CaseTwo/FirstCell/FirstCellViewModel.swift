@@ -10,7 +10,7 @@ import RxCocoa
 
 final class FirstCellViewModel {
     
-    let bag: DisposeBag = DisposeBag()
+    var bag: DisposeBag = DisposeBag()
     var musicBehaviorRelay: BehaviorRelay<Music?> = .init(value: nil)
     var title: String?
 

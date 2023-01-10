@@ -32,7 +32,7 @@ final class CaseThreeViewController: UIViewController {
         let firstCell = UINib(nibName: "FirstCell", bundle: Bundle.main)
         tableView.register(firstCell, forCellReuseIdentifier: "FirstCell")
         
-        let dataSource = RxTableViewSectionedReloadDataSource<AnimalSection>(configureCell: { datasource, tableview, indexpath, item in
+        let dataSource = RxTableViewSectionedReloadDataSource<MusicSection>(configureCell: { datasource, tableview, indexpath, item in
             guard let cell = tableview.dequeueReusableCell(withIdentifier: "FirstCell", for: indexpath) as? FirstCell else { return UITableViewCell() }
             cell.viewModel = self.viewModel.getDataFirstCell(indexPath: indexpath)
             return cell

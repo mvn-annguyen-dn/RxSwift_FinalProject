@@ -28,7 +28,7 @@ final class CaseOneViewController: UIViewController {
         let firstCell = UINib(nibName: "CaseOneCell", bundle: Bundle.main)
         tableView.register(firstCell, forCellReuseIdentifier: "CaseOneCell")
 
-        let dataSource = RxTableViewSectionedReloadDataSource<AnimalSection>(configureCell: { datasource, tableview, indexpath, item in
+        let dataSource = RxTableViewSectionedReloadDataSource<MusicSection>(configureCell: { datasource, tableview, indexpath, item in
             guard let cell = tableview.dequeueReusableCell(withIdentifier: "CaseOneCell", for: indexpath) as? CaseOneCell else { return UITableViewCell() }
             cell.viewModel = self.viewModel.getDataFirstCell(indexPath: indexpath)
             return cell

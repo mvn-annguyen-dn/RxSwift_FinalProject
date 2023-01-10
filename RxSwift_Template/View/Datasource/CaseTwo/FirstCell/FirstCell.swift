@@ -19,6 +19,11 @@ final class FirstCell: UITableViewCell {
             updateCell()
         }
     }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        viewModel?.bag = DisposeBag()
+    }
 
     private func updateCell() {
         guard let viewModel = viewModel else { return }

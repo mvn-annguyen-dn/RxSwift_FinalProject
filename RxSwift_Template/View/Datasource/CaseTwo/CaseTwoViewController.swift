@@ -33,7 +33,7 @@ final class CaseTwoViewController: UIViewController {
         let secondCell = UINib(nibName: "CaseOneCell", bundle: Bundle.main)
         tableView.register(secondCell, forCellReuseIdentifier: "CaseOneCell")
 
-        let dataSource = RxTableViewSectionedReloadDataSource<AnimalSection>(configureCell: { datasource, tableview, indexpath, item in
+        let dataSource = RxTableViewSectionedReloadDataSource<MusicSection>(configureCell: { datasource, tableview, indexpath, item in
             if indexpath.row == 0 {
                 guard let cell = tableview.dequeueReusableCell(withIdentifier: "FirstCell", for: indexpath) as? FirstCell else { return UITableViewCell() }
                 cell.viewModel = self.viewModel.getDataFirstCell(indexPath: indexpath)

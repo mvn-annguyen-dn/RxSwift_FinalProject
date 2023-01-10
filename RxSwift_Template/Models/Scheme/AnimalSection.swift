@@ -8,15 +8,15 @@
 import RxSwift
 import RxDataSources
 
-struct AnimalSection {
+struct MusicSection {
     var header: String
     var items: [Item]
 }
 
-extension AnimalSection: SectionModelType {
+extension MusicSection: SectionModelType {
     typealias Item = Music
 
-    init(original: AnimalSection, items: [Item]) {
+    init(original: MusicSection, items: [Item]) {
         self = original
         self.items = items
     }
