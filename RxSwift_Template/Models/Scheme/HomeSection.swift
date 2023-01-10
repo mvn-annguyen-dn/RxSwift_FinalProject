@@ -14,8 +14,8 @@ enum HomeSectionModel {
 }
 
 enum HomeSectionItem {
-    case itemOne(musics: Music)
-    case itemTwo(title: String, musics: Music)
+    case itemOne(music: Music)
+    case itemTwo(title: String, music: Music)
 }
 
 extension HomeSectionModel: SectionModelType {

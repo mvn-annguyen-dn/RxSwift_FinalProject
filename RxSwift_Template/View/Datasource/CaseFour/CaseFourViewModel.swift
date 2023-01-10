@@ -29,14 +29,14 @@ final class CaseFourViewModel {
                 self.musicBehaviorRelay.accept(value.results ?? [])
                 let sections: [HomeSectionModel] = [
                     .informationSectionOne(title: "Section 1", items: [
-                        .itemOne(musics: self.musicBehaviorRelay.value.randomElement() ?? Music()),
-                        .itemOne(musics: self.musicBehaviorRelay.value.randomElement() ?? Music()),
-                        .itemOne(musics: self.musicBehaviorRelay.value.randomElement() ?? Music())
+                        .itemOne(music: self.musicBehaviorRelay.value.randomElement() ?? Music()),
+                        .itemOne(music: self.musicBehaviorRelay.value.randomElement() ?? Music()),
+                        .itemOne(music: self.musicBehaviorRelay.value.randomElement() ?? Music())
                     ]),
                     .informationSectionTwo(title: "Section 2", items: [
-                        .itemTwo(title: "Item section 2", musics: self.musicBehaviorRelay.value.randomElement() ?? Music()),
-                        .itemOne(musics: self.musicBehaviorRelay.value.randomElement() ?? Music()),
-                        .itemOne(musics: self.musicBehaviorRelay.value.randomElement() ?? Music())
+                        .itemTwo(title: "Item section 2", music: self.musicBehaviorRelay.value.randomElement() ?? Music()),
+                        .itemOne(music: self.musicBehaviorRelay.value.randomElement() ?? Music()),
+                        .itemOne(music: self.musicBehaviorRelay.value.randomElement() ?? Music())
                     ])
                 ]
                 self.sectionModels.accept(sections)

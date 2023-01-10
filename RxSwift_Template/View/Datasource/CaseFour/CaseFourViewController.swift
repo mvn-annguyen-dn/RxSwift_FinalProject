@@ -39,9 +39,9 @@ final class CaseFourViewController: UIViewController {
             .asDriver()
             .drive(onNext: { model in
                 switch model {
-                case .itemOne(musics: _):
+                case .itemOne(music: _):
                     self.presentAlert("", message: "Alert multiple section One")
-                case .itemTwo(title: let title, musics: _):
+                case .itemTwo(title: let title, music: _):
                     self.presentAlert(title, message: "Alert multiple section Two")
                 }
             })
@@ -51,13 +51,13 @@ final class CaseFourViewController: UIViewController {
     private func configDataSource() {
         let datasource = RxTableViewSectionedReloadDataSource<HomeSectionModel>(configureCell: { datasource, tableview, indexpath, item in
             switch datasource[indexpath] {
-            case .itemOne(musics: let musics):
+            case .itemOne(music: let music):
                 guard let cell = tableview.dequeueReusableCell(withIdentifier: "CaseOneCell", for: indexpath) as? CaseOneCell else { return UITableViewCell() }
-                cell.viewModel = self.viewModel.getDataFirstCell(music: musics, indexPath: indexpath)
+                cell.viewModel = self.viewModel.getDataFirstCell(music: music, indexPath: indexpath)
                 return cell
-            case .itemTwo(title: let title, musics: let musics):
+            case .itemTwo(title: let title, music: let music):
                 guard let cell = tableview.dequeueReusableCell(withIdentifier: "FirstCell", for: indexpath) as? FirstCell else { return UITableViewCell() }
-                cell.viewModel = self.viewModel.getDataSecondCell(music: musics, indexPath: indexpath, title: title)
+                cell.viewModel = self.viewModel.getDataSecondCell(music: music, indexPath: indexpath, title: title)
                 return cell
             }
         }, titleForHeaderInSection: { dataSource, index in
