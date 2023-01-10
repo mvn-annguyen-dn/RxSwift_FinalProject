@@ -9,8 +9,8 @@ import RxSwift
 import RxDataSources
 
 enum HomeSectionModel {
-    case informationSectionOne(title: String, items: [HomeSectionItem])
-    case informationSectionTwo(title: String, items: [HomeSectionItem])
+    case informationSectionOne(title: String, items: [Item])
+    case informationSectionTwo(title: String, items: [Item])
 }
 
 enum HomeSectionItem {
@@ -30,7 +30,7 @@ extension HomeSectionModel: SectionModelType {
         }
     }
     
-    init(original: HomeSectionModel, items: [HomeSectionItem]) {
+    init(original: HomeSectionModel, items: [Item]) {
         switch original {
         case let .informationSectionOne(title: title, items: _):
             self = .informationSectionOne(title: title, items: items)

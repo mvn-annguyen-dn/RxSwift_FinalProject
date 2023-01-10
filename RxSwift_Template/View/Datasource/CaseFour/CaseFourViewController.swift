@@ -51,11 +51,11 @@ final class CaseFourViewController: UIViewController {
     private func configDataSource() {
         let datasource = RxTableViewSectionedReloadDataSource<HomeSectionModel>(configureCell: { datasource, tableview, indexpath, item in
             switch datasource[indexpath] {
-            case let .itemOne(musics: musics):
+            case .itemOne(musics: let musics):
                 guard let cell = tableview.dequeueReusableCell(withIdentifier: "CaseOneCell", for: indexpath) as? CaseOneCell else { return UITableViewCell() }
                 cell.viewModel = self.viewModel.getDataFirstCell(music: musics, indexPath: indexpath)
                 return cell
-            case let .itemTwo(title: title, musics: musics):
+            case .itemTwo(title: let title, musics: let musics):
                 guard let cell = tableview.dequeueReusableCell(withIdentifier: "FirstCell", for: indexpath) as? FirstCell else { return UITableViewCell() }
                 cell.viewModel = self.viewModel.getDataSecondCell(music: musics, indexPath: indexpath, title: title)
                 return cell
