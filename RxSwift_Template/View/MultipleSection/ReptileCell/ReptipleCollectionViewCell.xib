@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="ReptipleCollectionViewCell" customModule="RxSwift_Template" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="200" height="200"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="200" height="200"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZKo-iP-Zjc" userLabel="View Front Card">
+                        <rect key="frame" x="0.0" y="0.0" width="200" height="200"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="reptile-back-01" translatesAutoresizingMaskIntoConstraints="NO" id="kT9-R4-nH9">
+                                <rect key="frame" x="0.0" y="0.0" width="200" height="200"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="kT9-R4-nH9" secondAttribute="trailing" id="MEa-dD-CoW"/>
+                            <constraint firstAttribute="bottom" secondItem="kT9-R4-nH9" secondAttribute="bottom" id="fcJ-Ef-pr7"/>
+                            <constraint firstItem="kT9-R4-nH9" firstAttribute="leading" secondItem="ZKo-iP-Zjc" secondAttribute="leading" id="nby-QS-nGY"/>
+                            <constraint firstItem="kT9-R4-nH9" firstAttribute="top" secondItem="ZKo-iP-Zjc" secondAttribute="top" id="o8j-l8-71e"/>
+                        </constraints>
+                    </view>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pga-h8-8a2" userLabel="View Back Card">
+                        <rect key="frame" x="0.0" y="0.0" width="200" height="200"/>
+                        <color key="backgroundColor" systemColor="systemMintColor"/>
+                    </view>
+                </subviews>
+            </view>
+            <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="pga-h8-8a2" secondAttribute="trailing" id="5Rd-Np-Zux"/>
+                <constraint firstAttribute="bottom" secondItem="ZKo-iP-Zjc" secondAttribute="bottom" id="9rd-Ri-Hvt"/>
+                <constraint firstAttribute="bottom" secondItem="pga-h8-8a2" secondAttribute="bottom" id="Fm0-K3-e3U"/>
+                <constraint firstItem="pga-h8-8a2" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="PWB-Iw-oah"/>
+                <constraint firstAttribute="trailing" secondItem="ZKo-iP-Zjc" secondAttribute="trailing" id="Vrk-A9-2IZ"/>
+                <constraint firstItem="pga-h8-8a2" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="etO-VR-4KO"/>
+                <constraint firstItem="ZKo-iP-Zjc" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="met-a9-n84"/>
+                <constraint firstItem="ZKo-iP-Zjc" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="vXw-LB-4ud"/>
+            </constraints>
+            <connections>
+                <outlet property="backCardView" destination="pga-h8-8a2" id="an1-je-uLL"/>
+                <outlet property="cardImageView" destination="kT9-R4-nH9" id="Fcj-Q9-oTR"/>
+                <outlet property="frontCardView" destination="ZKo-iP-Zjc" id="Djl-gy-hGw"/>
+            </connections>
+            <point key="canvasLocation" x="138.93129770992365" y="19.718309859154932"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <image name="reptile-back-01" width="390" height="390"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemMintColor">
+            <color red="0.0" green="0.7803921568627451" blue="0.74509803921568629" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+    </resources>
+</document>

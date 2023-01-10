@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionReusableView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="U6b-Vx-4bR" customClass="HeaderCollectionReusableView" customModule="RxSwift_Template" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rPO-Uq-2rg">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cd8-Tt-qoK">
+                            <rect key="frame" x="3" y="3" width="314" height="44"/>
+                            <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" systemColor="systemMintColor"/>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="cd8-Tt-qoK" secondAttribute="trailing" constant="3" id="Pnm-YJ-Tuo"/>
+                        <constraint firstItem="cd8-Tt-qoK" firstAttribute="leading" secondItem="rPO-Uq-2rg" secondAttribute="leading" constant="3" id="pPb-qp-55E"/>
+                        <constraint firstAttribute="bottom" secondItem="cd8-Tt-qoK" secondAttribute="bottom" constant="3" id="wvQ-oj-GM5"/>
+                        <constraint firstItem="cd8-Tt-qoK" firstAttribute="top" secondItem="rPO-Uq-2rg" secondAttribute="top" constant="3" id="ym1-E3-ypp"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="VXr-Tz-HHm"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="rPO-Uq-2rg" secondAttribute="bottom" id="HZp-Wp-Ix6"/>
+                <constraint firstItem="rPO-Uq-2rg" firstAttribute="top" secondItem="U6b-Vx-4bR" secondAttribute="top" id="TtO-tX-3gu"/>
+                <constraint firstItem="VXr-Tz-HHm" firstAttribute="trailing" secondItem="rPO-Uq-2rg" secondAttribute="trailing" id="p2M-2h-j7K"/>
+                <constraint firstItem="rPO-Uq-2rg" firstAttribute="leading" secondItem="VXr-Tz-HHm" secondAttribute="leading" id="ybI-oh-2hs"/>
+            </constraints>
+            <connections>
+                <outlet property="headerNameLabel" destination="cd8-Tt-qoK" id="pt7-Px-D6X"/>
+            </connections>
+            <point key="canvasLocation" x="138.93129770992365" y="19.718309859154932"/>
+        </collectionReusableView>
+    </objects>
+    <resources>
+        <systemColor name="systemMintColor">
+            <color red="0.0" green="0.7803921568627451" blue="0.74509803921568629" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+    </resources>
+</document>
