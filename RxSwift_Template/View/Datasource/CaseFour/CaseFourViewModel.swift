@@ -16,10 +16,7 @@ final class CaseFourViewModel {
     var errorMusicBehaviorRelay: BehaviorRelay<String?> = .init(value: nil)
     
     // multiple sections
-    var sectionModels: BehaviorSubject<[HomeSectionModel]> = BehaviorSubject(value: [])
-    var sectionModelsDriver: Driver<[HomeSectionModel]> {
-        return sectionModels.asDriver(onErrorJustReturn: [])
-    }
+    var sectionModels: BehaviorRelay<[HomeSectionModel]> = .init(value: [])
     
     func getApiMusic() -> Single<FeedResults> {
         return ApiManager.shared.loadAPI(method: .get)
@@ -42,7 +39,7 @@ final class CaseFourViewModel {
                         .itemOne(musics: self.musicBehaviorRelay.value.randomElement() ?? Music())
                     ])
                 ]
-                self.sectionModels.onNext(sections)
+                self.sectionModels.accept(sections)
             case .failure(let error):
                 self.errorMusicBehaviorRelay.accept(error.localizedDescription)
             }

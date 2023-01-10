@@ -37,7 +37,9 @@ final class CaseOneViewController: UIViewController {
             return dataSource.sectionModels[index].header
         }
 
-        viewModel.sectionRelay.bind(to: tableView.rx.items(dataSource: dataSource)).disposed(by: viewModel.bag)
+        viewModel.sectionRelay.asDriver()
+            .drive(tableView.rx.items(dataSource: dataSource))
+            .disposed(by: viewModel.bag)
     }
 
     private func callApi() {

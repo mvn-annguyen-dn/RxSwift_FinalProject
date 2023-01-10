@@ -65,7 +65,7 @@ final class CaseFourViewController: UIViewController {
             return section.title
         })
         
-        viewModel.sectionModelsDriver
+        viewModel.sectionModels.asDriver()
             .drive(tableView.rx.items(dataSource: datasource))
             .disposed(by: viewModel.bag)
     }
