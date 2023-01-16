@@ -8,12 +8,12 @@
 import Moya
 
 enum ApiTarget {
-    
+    case getMusic
 }
 
 extension ApiTarget: TargetType {
     var baseURL: URL {
-        guard let baseUrl: URL = URL(string: "") else {
+        guard let baseUrl: URL = URL(string: ConfigNetWork.baseURL) else {
             fatalError(ApiError.pathError.localizedDescription)
         }
         return baseUrl
@@ -63,4 +63,8 @@ enum ApiError: Error {
             return errorMessage
         }
     }
+}
+
+struct ConfigNetWork {
+    public static let baseURL: String = "https://rss.applemarketingtools.com/api/v2/us/music/most-played/10/albums.json"
 }
