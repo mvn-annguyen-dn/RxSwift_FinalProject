@@ -25,7 +25,11 @@ final class CaseFourViewController: UIViewController {
     }
 
     private func callApi() {
-        viewModel.loadApiMusic()
+        viewModel.loadApiWithMoya()
+        viewModel.errorMusicBehaviorRelay.subscribe(onNext: { error in
+            self.presentAlert("FAILURE", message: error.localizedDescription)
+        })
+        .disposed(by: viewModel.bag)
     }
 
     private func configTableView() {

@@ -13,7 +13,7 @@ final class CaseFourViewModel {
     
     let bag: DisposeBag = DisposeBag()
     var musicBehaviorRelay: BehaviorRelay<[Music]> = .init(value: [])
-    var errorMusicBehaviorRelay: BehaviorRelay<String?> = .init(value: nil)
+    var errorMusicBehaviorRelay: PublishRelay<Error> = .init()
     
     // multiple sections
     var sectionModels: BehaviorRelay<[HomeSectionModel]> = .init(value: [])
@@ -22,9 +22,9 @@ final class CaseFourViewModel {
         return ApiManager.shared.loadAPI(method: .get)
     }
     
-    func loadApiMusic() {
-        getApiMusic().subscribe { result in
-            switch result {
+    func loadApiWithMoya() {
+        ApiNetWorkManager.shared.request(FeedResults.self, .getMusic).subscribe { event in
+            switch event {
             case .success(let value):
                 self.musicBehaviorRelay.accept(value.results ?? [])
                 let sections: [HomeSectionModel] = [
@@ -41,7 +41,7 @@ final class CaseFourViewModel {
                 ]
                 self.sectionModels.accept(sections)
             case .failure(let error):
-                self.errorMusicBehaviorRelay.accept(error.localizedDescription)
+                self.errorMusicBehaviorRelay.accept(error)
             }
         }
         .disposed(by: bag)
