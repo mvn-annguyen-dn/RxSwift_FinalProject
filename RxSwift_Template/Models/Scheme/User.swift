@@ -7,6 +7,6 @@
 
 import Foundation
 
-final class User {
+final class User: Decodable {
     
 }

@@ -11,34 +11,34 @@ import RxCocoa
 
 final class ApiNetWorkManager {
     static let shared: ApiNetWorkManager = ApiNetWorkManager()
-    
+
     // Provider
     private let provider: MoyaProvider<ApiTarget> = {
         return MoyaProvider<ApiTarget>()
-//        let configuration =  URLSessionConfiguration.default
-//        let session = Moya.Session(configuration: configuration, startRequestsImmediately: false)
-//        return MoyaProvider<APITarget>(session: session)
     }()
-    
-    func request<T: Decodable>(_ target: ApiTarget) -> Single<T> {
-        return Single<T>.create { [weak self] single -> Disposable in
-            guard let this = self else {
-                return Disposables.create()
-            }
-            this.provider.request(target) { result in
-                switch result {
-                case .success(let response):
-                    do {
-                        let modal: T = try JSONDecoder().decode(T.self, from: response.data)
-                        single(.success(modal))
-                    } catch {
-                        single(.failure(error))
-                    }
-                case .failure(let error):
-                    single(.failure(error))
+
+    func request<T: Decodable>(_ type: T.Type, _ target: ApiTarget) -> Single<T> {
+        return provider.rx.request(target).filterSuccessfulStatusCodes()
+            .map { response in
+                do {
+                    return try JSONDecoder().decode(T.self, from: response.data)
+                } catch {
+                    throw APIError.error("FAILURE API")
                 }
             }
-            return Disposables.create()
+    }
+}
+
+enum APIError: Error {
+    case pathError
+    case error(String)
+
+    var localizedDescription: String {
+        switch self {
+        case .pathError:
+            return "URL not found"
+        case .error(let errorMessage):
+            return errorMessage
         }
     }
 }

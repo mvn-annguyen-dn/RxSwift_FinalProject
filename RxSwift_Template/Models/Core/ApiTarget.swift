@@ -8,37 +8,37 @@
 import Moya
 
 enum ApiTarget {
-    
+    case login(userName: String, password: String)
 }
 
 extension ApiTarget: TargetType {
+
     var baseURL: URL {
-        guard let baseUrl: URL = URL(string: "") else {
-            fatalError(ApiError.pathError.localizedDescription)
-        }
-        return baseUrl
+        return URL(string: "https://rss.applemarketingtools.com/api/v2/us/music/most-played/10/albums.json").unsafelyUnwrapped
     }
-    
+
     var path: String {
         switch self {
-        default: return ""
+        case .login:
+            return "login"
         }
     }
-    
+
     var method: Moya.Method {
         switch self {
-        default:
+        case .login:
             return .get
         }
     }
-    
+
     var task: Moya.Task {
         switch self {
-        default:
-            return .requestPlain
+        case .login(let userName, let password):
+            return .requestParameters(parameters: ["user": userName,
+                                                   "pw": password], encoding: URLEncoding.default)
         }
     }
-    
+
     var headers: [String : String]? {
         switch self {
         default:
@@ -47,8 +47,6 @@ extension ApiTarget: TargetType {
             ]
         }
     }
-    
-    
 }
 
 enum ApiError: Error {
