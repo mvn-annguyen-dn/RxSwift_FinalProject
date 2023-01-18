@@ -11,6 +11,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MovieViewController" customModule="RxSwift_Template" customModuleProvider="target">
             <connections>
+                <outlet property="activityIndicatorView" destination="leZ-0M-mQ1" id="Dgz-k8-ALA"/>
                 <outlet property="tableView" destination="F4J-fa-D84" id="fWF-UA-LU4"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -23,14 +24,24 @@
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" estimatedSectionHeaderHeight="-1" sectionFooterHeight="28" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="F4J-fa-D84">
                     <rect key="frame" x="0.0" y="59" width="393" height="793"/>
                 </tableView>
+                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="leZ-0M-mQ1">
+                    <rect key="frame" x="171.66666666666666" y="401" width="50" height="50"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="50" id="HoV-JQ-jkJ"/>
+                        <constraint firstAttribute="height" constant="50" id="dae-EK-NRL"/>
+                    </constraints>
+                    <color key="color" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </activityIndicatorView>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
                 <constraint firstItem="F4J-fa-D84" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="Hxr-nh-Hyr"/>
                 <constraint firstItem="F4J-fa-D84" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="KH8-Od-u4W"/>
+                <constraint firstItem="leZ-0M-mQ1" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="Qz1-jp-e7C"/>
                 <constraint firstItem="F4J-fa-D84" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="gAK-PZ-ELe"/>
                 <constraint firstAttribute="bottom" secondItem="F4J-fa-D84" secondAttribute="bottom" id="jCJ-Xn-iPx"/>
+                <constraint firstItem="leZ-0M-mQ1" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="wJc-jk-gSn"/>
             </constraints>
             <point key="canvasLocation" x="139.69465648854961" y="19.718309859154932"/>
         </view>

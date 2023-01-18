@@ -47,3 +47,4 @@ final class NonTitleTableViewCell: UITableViewCell {
             .disposed(by: cellBag)
     }
 }
+
