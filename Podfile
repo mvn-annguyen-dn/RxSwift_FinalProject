@@ -11,6 +11,8 @@ target 'RxSwift_Template' do
     pod 'RxDataSources'
     pod "RxGesture"
     pod 'SwiftLint'
+    pod 'RxRealm'
+    pod 'Moya/RxSwift' 
 
   # Pods for RxSwift_Template
 
