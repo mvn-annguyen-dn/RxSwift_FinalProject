@@ -26,7 +26,6 @@ extension ApiTarget: TargetType {
             return "/movie/upcoming"
         case .trending:
             return "trending/all/day"
-//        default: return ""
         }
     }
     
@@ -34,8 +33,6 @@ extension ApiTarget: TargetType {
         switch self {
         case .trending, .upcoming:
             return .get
-//        default:
-//            return .get
         }
     }
     
@@ -43,8 +40,6 @@ extension ApiTarget: TargetType {
         switch self {
         case .trending, .upcoming:
             return .requestParameters(parameters: ["api_key": "216da5281cfea1ed5f0ba025ace614b4"], encoding: URLEncoding.queryString)
-//        default:
-//            return .requestPlain
         }
     }
     

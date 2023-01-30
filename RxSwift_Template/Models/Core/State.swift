@@ -8,6 +8,7 @@
 import RxSwift
 import RxCocoa
 
+#warning("WIP State")
 struct State {
     // MARK: Input MovieViewModel
     var moviesStateRelay: BehaviorRelay<[MySectionModel]>
@@ -25,11 +26,11 @@ protocol MovieRepo {
 
 final class MovieRepoImpl: MovieRepo {
     func getMoviesTreding() -> RxSwift.Single<MovieResponse> {
-        ApiNetWorkManager.shared.request(.trending)
+        ApiNetWorkManager.shared.request(MovieResponse.self, .trending)
     }
     
     func getMoviesUpcoming() -> RxSwift.Single<MovieResponse> {
-        ApiNetWorkManager.shared.request(.upcoming)
+        ApiNetWorkManager.shared.request(MovieResponse.self, .upcoming)
     }
 }
 

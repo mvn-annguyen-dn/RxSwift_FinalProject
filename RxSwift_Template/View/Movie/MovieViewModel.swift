@@ -15,17 +15,17 @@ final class MovieViewModel {
     var trendingData: [SectionItem] = []
     var upcomingData: [SectionItem] = []
 
-    var error: PublishRelay<String> = .init()
+    var error: PublishRelay<ApiError?> = .init()
     var isLoading: PublishSubject<Bool> = .init()
 
     let bagModel: DisposeBag = DisposeBag()
 
     private func getApiTrending() -> Single<MovieResponse> {
-        return ApiNetWorkManager.shared.request(.trending)
+        return ApiNetWorkManager.shared.request(MovieResponse.self, .trending)
     }
 
     private func getApiUpcoming() -> Single<MovieResponse> {
-        return ApiNetWorkManager.shared.request(.upcoming)
+        return ApiNetWorkManager.shared.request(MovieResponse.self, .upcoming)
     }
 
     func viewModelForTrending(at element: Movie) -> TitledCellViewModel {
@@ -51,7 +51,7 @@ extension MovieViewModel {
             }, onFailure: { [weak self] err in
                 guard let this = self else { return }
                 this.isLoading.onNext(true)
-                this.error.accept(String(describing: err))
+                this.error.accept(err as? ApiError)
             })
             .disposed(by: bagModel)
     }

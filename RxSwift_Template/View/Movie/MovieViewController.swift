@@ -9,7 +9,6 @@ import UIKit
 import RxCocoa
 import RxSwift
 import RxDataSources
-import Combine
 
 final class MovieViewController: UIViewController {
 
@@ -29,14 +28,14 @@ final class MovieViewController: UIViewController {
             .drive(activityIndicatorView.rx.isHidden)
             .disposed(by: diposeBag)
         viewModel.error
-            .asDriver(onErrorJustReturn: "")
+            .asDriver(onErrorJustReturn: .none)
             .drive(onNext: { [weak self] error in
-                guard let this = self else { return }
-//                this.showAlert(title: "WARNING", message: error).subscribe { _ in
-//                    exit(0)
-//                }
-//                .disposed(by: this.diposeBag)
-                this.rx.showError.onNext(error)
+                guard let this = self,
+                      let error = error else { return }
+                this.showAlert(title: "WARNING", message: error.localizedDescription).subscribe { _ in
+                    exit(0)
+                }
+                .disposed(by: this.diposeBag)
             })
             .disposed(by: diposeBag)
         configDataSource()
@@ -111,39 +110,5 @@ extension MovieViewController {
 extension MovieViewController: UITableViewDelegate, UIScrollViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 120
-    }
-}
-
-
-extension UIViewController {
-    public func showAlert(title: String, message: String) -> Completable {
-        return Completable.create { observer in
-            let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-            let okButton = UIAlertAction(title: "OK", style: .default, handler: { _ in
-                observer(.completed)
-            })
-            let cancelButton = UIAlertAction(title: "Cancel", style: .cancel) { _ in
-                observer(.completed)
-            }
-            alert.addAction(okButton)
-            alert.addAction(cancelButton)
-            self.present(alert, animated: true)
-            return Disposables.create()
-        }
-    }
-
-    public func showError(message: String) {
-        let alert = UIAlertController(title: "ERROR", message: message, preferredStyle: .alert)
-        let okButton = UIAlertAction(title: "OK", style: .default, handler: nil)
-        alert.addAction(okButton)
-        self.present(alert, animated: true)
-    }
-}
-
-extension Reactive where Base: UIViewController {
-    var showError: Binder<String> {
-        return Binder(base) { vc, erorr in
-            vc.showError(message: erorr)
-        }
     }
 }
