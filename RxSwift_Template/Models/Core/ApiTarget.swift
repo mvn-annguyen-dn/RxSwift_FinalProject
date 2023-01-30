@@ -8,12 +8,13 @@
 import Moya
 
 enum ApiTarget {
-    
+    case trending
+    case upcoming
 }
 
 extension ApiTarget: TargetType {
     var baseURL: URL {
-        guard let baseUrl: URL = URL(string: "") else {
+        guard let baseUrl: URL = URL(string: "https://api.themoviedb.org/3") else {
             fatalError(ApiError.pathError.localizedDescription)
         }
         return baseUrl
@@ -21,21 +22,24 @@ extension ApiTarget: TargetType {
     
     var path: String {
         switch self {
-        default: return ""
+        case .upcoming:
+            return "/movie/upcoming"
+        case .trending:
+            return "trending/all/day"
         }
     }
     
     var method: Moya.Method {
         switch self {
-        default:
+        case .trending, .upcoming:
             return .get
         }
     }
     
     var task: Moya.Task {
         switch self {
-        default:
-            return .requestPlain
+        case .trending, .upcoming:
+            return .requestParameters(parameters: ["api_key": "216da5281cfea1ed5f0ba025ace614b4"], encoding: URLEncoding.queryString)
         }
     }
     
