@@ -17,6 +17,8 @@ final class ApiNetWorkManager {
         return MoyaProvider<MultiTarget>()
     }()
     
+    private init() {}
+
     func request<T: Decodable>(_ type: T.Type, _ target: MultiTarget) -> Single<T> {
         return provider.rx.request(.target(target))
             .map { response in

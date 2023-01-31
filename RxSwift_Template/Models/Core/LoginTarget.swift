@@ -14,7 +14,7 @@ enum LoginTarget {
 extension LoginTarget: TargetType {
     
     var baseURL: URL {
-        return URL(string: "https://rss.applemarketingtools.com/api/v2/us/music/most-played/10/albums.json").unsafelyUnwrapped
+        return URL(string: "http://127.0.0.1:8000/api/v1/user/").unsafelyUnwrapped
     }
     
     var path: String {

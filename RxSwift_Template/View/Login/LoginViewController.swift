@@ -95,7 +95,8 @@ final class LoginViewController: UIViewController {
             .disposed(by: viewModel.bag)
         
         viewModel.loginDone.subscribe { _ in
-            AppDelegate.shared.setRoot(root: .tabbar)
+            AppDelegate.shared.setRoot(root: .home)
+            #warning("Handle Later")
         }
         .disposed(by: viewModel.bag)
     }

@@ -12,7 +12,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     enum RootType {
         case login
-        case tabbar
+        case home
     }
 
     static var shared: AppDelegate = {
@@ -47,7 +47,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         switch root {
         case .login:
             setRootLogin()
-        case .tabbar:
+        case .home:
             setRootTabbar()
         }
     }
