@@ -11,14 +11,14 @@ import RxCocoa
 
 final class ApiNetWorkManager {
     static let shared: ApiNetWorkManager = ApiNetWorkManager()
-
+    
     // Provider
-    private let provider: MoyaProvider<ApiTarget> = {
-        return MoyaProvider<ApiTarget>()
+    private let provider: MoyaProvider<MultiTarget> = {
+        return MoyaProvider<MultiTarget>()
     }()
-
-    func request<T: Decodable>(_ type: T.Type, _ target: ApiTarget) -> Single<T> {
-        return provider.rx.request(target)
+    
+    func request<T: Decodable>(_ type: T.Type, _ target: MultiTarget) -> Single<T> {
+        return provider.rx.request(.target(target))
             .map { response in
                 switch response.statusCode {
                 case 200...299:

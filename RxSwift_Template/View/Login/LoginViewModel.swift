@@ -63,7 +63,8 @@ final class LoginViewModel {
     }
     
     func getApiUser(userName: String, passWord: String) -> Single<User> {
-       return ApiNetWorkManager.shared.request(User.self, .login(userName: userName, password: passWord))
+        return ApiNetWorkManager.shared
+            .request(User.self, .target(LoginTarget.login(userName: userName, password: passWord)))
     }
 }
 
