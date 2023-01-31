@@ -1,21 +1,25 @@
 //
-//  ApiTarget.swift
+//  LoginApiTarget.swift
 //  RxSwift_Template
 //
-//  Created by An Nguyen Q. VN.Danang on 29/11/2022.
+//  Created by Luong Tran M. VN.Danang on 31/01/2023.
 //
 
 import Moya
 
-enum ApiTarget {
-    case login(userName: String, password: String)
+enum LoginApiTarget {
+    case login
 }
 
-extension ApiTarget: TargetType {
+extension LoginApiTarget: TargetType {
 
     var baseURL: URL {
-        return URL(string: "https://rss.applemarketingtools.com/api/v2/us/music/most-played/10/albums.json").unsafelyUnwrapped
+        guard let baseUrl: URL = URL(string: "http://127.0.0.1:8000/api/v1/user/") else {
+            fatalError(ApiError.badRequest.localizedDescription)
+        }
+        return baseUrl
     }
+
 
     var path: String {
         switch self {
@@ -33,9 +37,8 @@ extension ApiTarget: TargetType {
 
     var task: Moya.Task {
         switch self {
-        case .login(let userName, let password):
-            return .requestParameters(parameters: ["user": userName,
-                                                   "pw": password], encoding: URLEncoding.default)
+        case .login:
+            return .requestPlain
         }
     }
 
@@ -48,4 +51,3 @@ extension ApiTarget: TargetType {
         }
     }
 }
-

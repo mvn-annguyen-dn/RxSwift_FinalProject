@@ -103,7 +103,6 @@
 		3833F16F29359920008A20E8 /* RxSwift_Template */ = {
 			isa = PBXGroup;
 			children = (
-				CB46E1C12942D7ED00A49656 /* Utilities */,
 				3833F1A62935AC97008A20E8 /* AppDelegate */,
 				3833F1A72935ACE5008A20E8 /* Models */,
 				3833F1AB2935AD11008A20E8 /* Resources */,
@@ -211,13 +210,6 @@
 				F86B02262B20149B2FE76F51 /* Pods-RxSwift_TemplateTests.release.xcconfig */,
 			);
 			path = Pods;
-			sourceTree = "<group>";
-		};
-		CB46E1C12942D7ED00A49656 /* Utilities */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Utilities;
 			sourceTree = "<group>";
 		};
 		CBF25A43293F2795005FE6E3 /* Login */ = {

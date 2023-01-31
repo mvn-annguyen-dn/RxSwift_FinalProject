@@ -18,27 +18,46 @@ final class ApiNetWorkManager {
     }()
 
     func request<T: Decodable>(_ type: T.Type, _ target: ApiTarget) -> Single<T> {
-        return provider.rx.request(target).filterSuccessfulStatusCodes()
+        return provider.rx.request(target)
             .map { response in
-                do {
-                    return try JSONDecoder().decode(T.self, from: response.data)
-                } catch {
-                    throw APIError.error("FAILURE API")
+                switch response.statusCode {
+                case 200...299:
+                    do {
+                        return try JSONDecoder().decode(T.self, from: response.data)
+                    } catch {
+                        throw ApiError.noData
+                    }
+                case 400...499:
+                    throw ApiError.badRequest
+                default:
+                    throw ApiError.unknown
                 }
             }
     }
 }
 
-enum APIError: Error {
-    case pathError
-    case error(String)
-
+enum ApiError: Error {
+    case noData
+    case invalidResponse
+    case badRequest
+    case parseError
+    case noInternet
+    case unknown
+    
     var localizedDescription: String {
         switch self {
-        case .pathError:
-            return "URL not found"
-        case .error(let errorMessage):
-            return errorMessage
+        case .noInternet:
+            return "No Internet"
+        case .noData:
+            return "No data"
+        case .invalidResponse:
+            return "Invalid Response"
+        case .badRequest:
+            return "Bad request"
+        case .parseError:
+            return "Parse Json Error"
+        case .unknown:
+            return "Unknown Error"
         }
     }
 }
