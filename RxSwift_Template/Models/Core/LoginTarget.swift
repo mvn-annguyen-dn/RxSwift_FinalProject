@@ -38,16 +38,16 @@ extension LoginTarget: TargetType {
     var task: Moya.Task {
         switch self {
         case .login(let userName, let password):
-            return .requestParameters(parameters: ["user": userName,
-                                                   "pw": password], encoding: URLEncoding.default)
+            return .requestParameters(parameters: ["email": userName,
+                                                   "password": password], encoding: URLEncoding.default)
         }
     }
     
     var headers: [String : String]? {
         switch self {
-        default:
+        case .login:
             return [
-                "Content-Type": "application/json; charset=utf-8"
+                "Content-Type": "application/json"
             ]
         }
     }
