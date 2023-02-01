@@ -14,7 +14,11 @@ enum LoginTarget {
 extension LoginTarget: TargetType {
     
     var baseURL: URL {
-        return URL(string: "http://127.0.0.1:8000/api/v1/user/").unsafelyUnwrapped
+        guard let baseUrl: URL = URL(string: "http://127.0.0.1:8000/api/v1/user/") else {
+            fatalError(ApiError.unknown.localizedDescription)
+        }
+        return baseUrl
+
     }
     
     var path: String {

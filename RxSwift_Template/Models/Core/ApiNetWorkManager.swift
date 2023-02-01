@@ -21,19 +21,16 @@ final class ApiNetWorkManager {
 
     func request<T: Decodable>(_ type: T.Type, _ target: MultiTarget) -> Single<T> {
         return provider.rx.request(.target(target))
+            .filterStatusCodes()
             .map { response in
-                switch response.statusCode {
-                case 200...299:
-                    do {
-                        return try JSONDecoder().decode(T.self, from: response.data)
-                    } catch {
-                        throw ApiError.noData
-                    }
-                case 400...499:
-                    throw ApiError.badRequest
-                default:
-                    throw ApiError.unknown
+                do {
+                    return try JSONDecoder().decode(T.self, from: response.data)
+                } catch {
+                    throw ApiError.noData
                 }
+            }
+            .catch { error in
+                throw error
             }
     }
 }
@@ -60,6 +57,22 @@ enum ApiError: Error {
             return "Parse Json Error"
         case .unknown:
             return "Unknown Error"
+        }
+    }
+}
+
+
+public extension PrimitiveSequence where Trait == SingleTrait, Element == Response {
+    func filterStatusCodes() -> Single<Element> {
+        flatMap { res in
+            switch res.statusCode {
+            case 200...299:
+                return .just(res)
+            case 400...499:
+                throw ApiError.badRequest
+            default:
+                throw ApiError.unknown
+            }
         }
     }
 }
