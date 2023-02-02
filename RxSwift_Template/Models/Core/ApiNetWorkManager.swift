@@ -17,8 +17,6 @@ final class ApiNetWorkManager {
         return MoyaProvider<MultiTarget>()
     }()
     
-    private init() {}
-    
     func request<T: Decodable>(_ type: T.Type, _ target: MultiTarget) -> Single<T> {
         return multiProvider.rx.request(.target(target))
             .filterStatusCodes()
