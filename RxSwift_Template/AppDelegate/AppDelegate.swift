@@ -38,9 +38,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.rootViewController = navi
     }
 
-    private func setRootTabbar() {
-        configTabbar()
-        window?.rootViewController = tabbarController
+    private func setRootHome() {
+        let tabbarVC = BaseTabbarViewController()
+        tabbarVC.configTabbar()
+        window?.rootViewController = tabbarVC
     }
 
     func setRoot(root: RootType) {
@@ -48,14 +49,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         case .login:
             setRootLogin()
         case .home:
-            setRootTabbar()
+            setRootHome()
         }
-    }
-
-    private func configTabbar() {
-        let homeVC = HomeViewController()
-        let homeNavi = UINavigationController(rootViewController: homeVC)
-        homeNavi.tabBarItem = UITabBarItem(title: "BasicRxSwift", image: UIImage(systemName: "avatar_name"), tag: 1)
-        tabbarController.setViewControllers([homeNavi], animated: true)
     }
 }
