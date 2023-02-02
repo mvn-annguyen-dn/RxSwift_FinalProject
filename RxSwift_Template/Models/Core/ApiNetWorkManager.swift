@@ -13,14 +13,14 @@ final class ApiNetWorkManager {
     static let shared: ApiNetWorkManager = ApiNetWorkManager()
     
     // Provider
-    private let provider: MoyaProvider<MultiTarget> = {
+    private let multiProvider: MoyaProvider<MultiTarget> = {
         return MoyaProvider<MultiTarget>()
     }()
     
     private init() {}
-
+    
     func request<T: Decodable>(_ type: T.Type, _ target: MultiTarget) -> Single<T> {
-        return provider.rx.request(.target(target))
+        return multiProvider.rx.request(.target(target))
             .filterStatusCodes()
             .map { response in
                 do {

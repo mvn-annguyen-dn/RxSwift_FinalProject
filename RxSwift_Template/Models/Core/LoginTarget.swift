@@ -8,13 +8,13 @@
 import Moya
 
 enum LoginTarget {
-    case login(userName: String, password: String)
+    case example
 }
 
 extension LoginTarget: TargetType {
     
     var baseURL: URL {
-        guard let baseUrl: URL = URL(string: "http://127.0.0.1:8000/api/v1/user/") else {
+        guard let baseUrl: URL = URL(string: "https://rss.applemarketingtools.com/api/v2/us/music/") else {
             fatalError(ApiError.unknown.localizedDescription)
         }
         return baseUrl
@@ -23,29 +23,28 @@ extension LoginTarget: TargetType {
     
     var path: String {
         switch self {
-        case .login:
-            return "login"
+        case .example:
+            return "most-played/10/albums.json/"
         }
     }
     
     var method: Moya.Method {
         switch self {
-        case .login:
+        case .example:
             return .get
         }
     }
     
     var task: Moya.Task {
         switch self {
-        case .login(let userName, let password):
-            return .requestParameters(parameters: ["email": userName,
-                                                   "password": password], encoding: URLEncoding.default)
+        case .example:
+            return .requestPlain
         }
     }
     
     var headers: [String : String]? {
         switch self {
-        case .login:
+        case .example:
             return [
                 "Content-Type": "application/json"
             ]

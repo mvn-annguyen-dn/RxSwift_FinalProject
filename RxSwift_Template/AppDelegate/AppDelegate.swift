@@ -27,35 +27,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         window = UIWindow(frame: UIScreen.main.bounds)
+        let vc = ExampleViewController()
+        window?.rootViewController = vc
         window?.makeKeyAndVisible()
-        setRoot(root: .login)
         return true
-    }
-
-    private func setRootLogin() {
-        let vc = LoginViewController()
-        let navi = UINavigationController(rootViewController: vc)
-        window?.rootViewController = navi
-    }
-
-    private func setRootTabbar() {
-        configTabbar()
-        window?.rootViewController = tabbarController
-    }
-
-    func setRoot(root: RootType) {
-        switch root {
-        case .login:
-            setRootLogin()
-        case .home:
-            setRootTabbar()
-        }
-    }
-
-    private func configTabbar() {
-        let homeVC = HomeViewController()
-        let homeNavi = UINavigationController(rootViewController: homeVC)
-        homeNavi.tabBarItem = UITabBarItem(title: "BasicRxSwift", image: UIImage(systemName: "avatar_name"), tag: 1)
-        tabbarController.setViewControllers([homeNavi], animated: true)
     }
 }
