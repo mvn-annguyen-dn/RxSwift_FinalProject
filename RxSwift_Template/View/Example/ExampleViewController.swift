@@ -9,7 +9,7 @@ import UIKit
 import RxCocoa
 import RxSwift
 
-class ExampleViewController: UIViewController {
+class ExampleViewController: BaseViewController {
 
     @IBOutlet weak var tapButton: UIButton!
     
@@ -29,7 +29,7 @@ class ExampleViewController: UIViewController {
                 print("AAA", res.results ?? [])
             }, onFailure: { error in
                 let apiError = error as? ApiError ?? .unknown
-                print("AAA", apiError.localizedDescription)
+                self.normalAlert(message: apiError.localizedDescription)
             })
             .disposed(by: disposeBag)
     }
