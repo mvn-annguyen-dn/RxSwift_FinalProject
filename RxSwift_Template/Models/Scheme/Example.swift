@@ -25,12 +25,7 @@ struct Music: Decodable {
      }
 
      enum CodingKeys: String, CodingKey {
-         case artistName
-         case id
-         case name
-         case releaseDate
-         case copyright
-         case artworkUrl100
+         case artistName, id, name, releaseDate, copyright, artworkUrl100
      }
 
      init(from decoder: Decoder) throws {
@@ -52,8 +47,7 @@ struct Music: Decodable {
      }
 
      enum CodingKeys: String, CodingKey {
-         case feed
-         case results
+         case feed, results
      }
 
      init(from decoder: Decoder) throws {

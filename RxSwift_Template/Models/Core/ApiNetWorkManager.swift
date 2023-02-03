@@ -16,6 +16,11 @@ final class ApiNetWorkManager {
     private let multiProvider: MoyaProvider<MultiTarget> = {
         return MoyaProvider<MultiTarget>()
     }()
+
+    func getDefaultHTTPHeaders() -> [String: String] {
+        return [
+            "Content-type": "application/json"]
+    }
     
     func request<T: Decodable>(_ type: T.Type, _ target: MultiTarget) -> Single<T> {
         return multiProvider.rx.request(.target(target))

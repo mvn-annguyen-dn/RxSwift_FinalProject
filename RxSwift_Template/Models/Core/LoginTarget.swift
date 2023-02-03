@@ -15,7 +15,7 @@ extension LoginTarget: TargetType {
     
     var baseURL: URL {
         guard let baseUrl: URL = URL(string: "https://rss.applemarketingtools.com/api/v2/us/music/") else {
-            fatalError(ApiError.unknown.localizedDescription)
+            return URL(string: "").unsafelyUnwrapped
         }
         return baseUrl
 
@@ -44,11 +44,8 @@ extension LoginTarget: TargetType {
     
     var headers: [String : String]? {
         switch self {
-        case .example:
-            return [
-                "Content-Type": "application/json"
-            ]
+        default:
+            return ApiNetWorkManager.shared.getDefaultHTTPHeaders()
         }
     }
 }
-
