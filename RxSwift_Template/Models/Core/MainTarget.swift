@@ -1,17 +1,17 @@
 //
-//  ApiTarget.swift
+//  MainTarget.swift
 //  RxSwift_Template
 //
-//  Created by An Nguyen Q. VN.Danang on 29/11/2022.
+//  Created by Luong Tran M. VN.Danang on 03/02/2023.
 //
 
 import Moya
 
-enum LoginTarget {
-    case example
+enum MainTarget {
+    #warning("Handle Later")
 }
 
-extension LoginTarget: TargetType {
+extension MainTarget: TargetType {
     
     var baseURL: URL {
         return ApiNetWorkManager.shared.baseURL
@@ -19,29 +19,26 @@ extension LoginTarget: TargetType {
     
     var path: String {
         switch self {
-        case .example:
-            return "most-played/10/albums.json/"
+            #warning("Handle Later")
         }
     }
     
     var method: Moya.Method {
         switch self {
-        case .example:
-            return .get
+            #warning("Handle Later")
         }
     }
     
     var task: Moya.Task {
         switch self {
-        case .example:
-            return .requestPlain
+            #warning("Handle Later")
         }
     }
     
     var headers: [String : String]? {
         switch self {
         default:
-            return ApiNetWorkManager.shared.defaultHTTPHeaders
+            return ApiNetWorkManager.shared.defaultHTTPHeadersWithToken
         }
     }
 }
