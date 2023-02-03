@@ -63,19 +63,3 @@ enum ApiError: Error {
         }
     }
 }
-
-
-public extension PrimitiveSequence where Trait == SingleTrait, Element == Response {
-    func filterStatusCodes() -> Single<Element> {
-        flatMap { res in
-            switch res.statusCode {
-            case 200...299:
-                return .just(res)
-            case 400...499:
-                throw ApiError.badRequest
-            default:
-                throw ApiError.unknown
-            }
-        }
-    }
-}
