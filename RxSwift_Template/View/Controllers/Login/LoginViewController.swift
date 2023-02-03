@@ -8,7 +8,7 @@
 import UIKit
 import RxSwift
 
-class LoginViewController: UIViewController {
+final class LoginViewController: UIViewController {
 
     // MARK: - IBOutlets
     @IBOutlet private weak var usernameTextField: UITextField!
@@ -18,68 +18,34 @@ class LoginViewController: UIViewController {
     @IBOutlet private weak var errorPassWordLabel: UILabel!
 
     // MARK: - Properties
+    var bag: DisposeBag = DisposeBag()
     var viewModel: LoginViewModel = LoginViewModel()
 
     // MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        configUI()
+        bindingViewModel()
     }
+    
+    // MARK: - Private func
+    private func bindingViewModel() {
+        usernameTextField.rx.text.orEmpty
+            .bind(to: viewModel.userName)
+            .disposed(by: viewModel.bag)
 
-    // MARK: - Private methods
-    private func configUI() {
-        configGradient()
-        configTextField()
-        configButton()
-    }
+        passwordTextField.rx.text.orEmpty
+            .bind(to: viewModel.passWord)
+            .disposed(by: viewModel.bag)
 
-    private func configGradient() {
-        let gradientLayer = CAGradientLayer()
-        gradientLayer.frame = CGRect(origin: .zero,
-                                     size: CGSize(width: self.view.frame.size.width + 20,
-                                                  height: self.view.frame.size.height))
-        gradientLayer.rx.colors.onNext(Define.gradientColor)
-        view.layer.insertSublayer(gradientLayer, at: 0)
-    }
+        viewModel.isValidUsername.drive(errorUserNameLabel.rx.text)
+            .disposed(by: viewModel.bag)
 
-    private func configTextField() {
-        usernameTextField.layer.rx
-            .cornerRadius
-            .onNext(Define.cornerRadius)
-        usernameTextField.layer.rx
-            .borderWidth
-            .onNext(Define.borderWidth)
-        usernameTextField.layer.rx
-            .borderColor
-            .onNext(Define.borderColor)
-        passwordTextField.layer.rx
-            .cornerRadius
-            .onNext(Define.cornerRadius)
-        passwordTextField.layer.rx
-            .borderWidth
-            .onNext(Define.borderWidth)
-        passwordTextField.layer.rx
-            .borderColor
-            .onNext(Define.borderColor)
-    }
+        viewModel.isValidPassword.drive(errorPassWordLabel.rx.text)
+            .disposed(by: viewModel.bag)
 
-    private func configButton() {
-        loginButton.layer.rx
-            .cornerRadius
-            .onNext(Define.cornerRadius)
-    }
-}
-
-// MARK: - Define
-extension LoginViewController {
-    private struct Define {
-        static var cornerRadius: CGFloat = 5.0
-        static var borderWidth: CGFloat = 1.0
-        static var borderColor: CGColor = UIColor.systemGreen.cgColor
-        static var gradientColor: [CGColor] = [
-            CGColor(_colorLiteralRed: 0.69, green: 0.95, blue: 0.95, alpha: 1.00),
-            CGColor(_colorLiteralRed: 1.00, green: 1.00, blue: 1.00, alpha: 1.00)
-        ]
+        viewModel.isValidate
+            .drive(loginButton.rx.isEnabled)
+            .disposed(by: viewModel.bag)
     }
 }
