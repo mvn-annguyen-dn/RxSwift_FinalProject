@@ -8,7 +8,7 @@
 import UIKit
 import RxSwift
 
-final class LoginViewController: UIViewController {
+final class LoginViewController: BaseViewController {
 
     // MARK: - IBOutlets
     @IBOutlet private weak var usernameTextField: UITextField!
@@ -19,7 +19,7 @@ final class LoginViewController: UIViewController {
 
     // MARK: - Properties
     var bag: DisposeBag = DisposeBag()
-    var viewModel: LoginViewModel = LoginViewModel()
+    var viewModel: LoginViewModel?
 
     // MARK: - Life cycle
     override func viewDidLoad() {
@@ -30,6 +30,8 @@ final class LoginViewController: UIViewController {
     
     // MARK: - Private func
     private func bindingViewModel() {
+        guard let viewModel = viewModel else { return }
+
         usernameTextField.rx.text.orEmpty
             .bind(to: viewModel.userName)
             .disposed(by: viewModel.bag)
@@ -47,5 +49,18 @@ final class LoginViewController: UIViewController {
         viewModel.isValidate
             .drive(loginButton.rx.isEnabled)
             .disposed(by: viewModel.bag)
+
+        loginButton.rx.tap
+            .subscribe(onNext: { _ in
+                guard let viewModel = self.viewModel else { return }
+                viewModel.handleLoginResponse()
+            })
+            .disposed(by: bag)
+
+        viewModel.errorStatus
+            .subscribe(onNext: { error in
+                self.normalAlert(message: error.localizedDescription)
+            })
+            .disposed(by: bag)
     }
 }
