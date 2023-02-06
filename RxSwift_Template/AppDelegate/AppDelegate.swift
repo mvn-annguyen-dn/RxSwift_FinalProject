@@ -9,16 +9,14 @@ import UIKit
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
+
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
-        self.window = UIWindow(frame: UIScreen.main.bounds)
-        // Provide your apps root view controller
-        let naviVC = UINavigationController(rootViewController: HomeViewController())
-        window?.rootViewController = naviVC
+        window = UIWindow(frame: UIScreen.main.bounds)
+        let vc = ExampleViewController()
+        window?.rootViewController = vc
         window?.makeKeyAndVisible()
         return true
     }
 }
-

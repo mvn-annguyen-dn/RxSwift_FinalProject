@@ -1,5 +1,5 @@
 # Uncomment the next line to define a global platform for your project
-# platform :ios, '9.0'
+platform :ios, '10.0'
 
 target 'RxSwift_Template' do
   # Comment the next line if you don't want to use dynamic frameworks
@@ -7,10 +7,11 @@ target 'RxSwift_Template' do
 
     pod 'RxSwift'
     pod 'RxCocoa'
-    pod 'Moya'
     pod 'RxDataSources'
     pod "RxGesture"
     pod 'SwiftLint'
+    pod 'Moya/RxSwift'
+    pod 'SwifterSwift'
 
   # Pods for RxSwift_Template
 
