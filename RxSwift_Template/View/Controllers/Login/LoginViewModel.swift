@@ -19,7 +19,7 @@ final class LoginViewModel {
     let errorStatus: PublishSubject<ApiError> = .init()
 
     var isValidUsername: Driver<String?> {
-        return    userName.map { username in
+        return userName.map { username in
             username.count < 6 && username.count > 0 ? Define.isValidUserName : nil
         }
         .asDriver(onErrorJustReturn: nil)
@@ -63,6 +63,7 @@ extension LoginViewModel {
         requestLoginAPI()
             .subscribe(onSuccess: { respose in
                 Session.shared.token = respose.data?.accessToken ?? ""
+                AppDelegate.shared.setRoot(rootType: .home)
             }, onFailure: { error in
                 self.errorStatus.onNext(error as? ApiError ?? .unknown)
             })
