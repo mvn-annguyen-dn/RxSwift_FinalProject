@@ -17,10 +17,26 @@ final class BaseTabbarController: UITabBarController {
         let homeNavigationController = UINavigationController(rootViewController: examVC)
 
         // Custom Style For Tabbar
-        tabBar.layer.borderWidth = 1
-        tabBar.layer.borderColor = .init(red: 0.93, green: 0.93, blue: 0.93, alpha: 1.00)
-        tabBar.tintColor = .red
+        tabBar.layer.rx
+            .borderWidth
+            .onNext(Define.borderWidth)
+        tabBar.layer.rx
+            .borderColor
+            .onNext(Define.borderColor)
+        tabBar.rx
+            .tintColor
+            .onNext(Define.tintColor)
         
-        self.viewControllers = [homeNavigationController]
+        self.rx
+            .viewControllers
+            .onNext([homeNavigationController])
+    }
+}
+
+extension BaseTabbarController {
+    private struct Define {
+        static var borderWidth: CGFloat = 1
+        static var borderColor: CGColor = .init(red: 0.93, green: 0.93, blue: 0.93, alpha: 1.00)
+        static var tintColor: UIColor = .red
     }
 }
