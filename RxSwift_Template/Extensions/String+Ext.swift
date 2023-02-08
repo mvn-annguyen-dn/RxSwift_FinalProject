@@ -7,4 +7,11 @@
 
 import Foundation
 
-extension String { }
+extension String {
+    
+    func validateUsername() -> Bool {
+        let usernameRegex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[com]{3}"
+        let predicate = NSPredicate(format:"SELF MATCHES %@", usernameRegex)
+        return predicate.evaluate(with: self)
+    }
+}

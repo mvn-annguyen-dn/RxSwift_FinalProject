@@ -11,24 +11,19 @@ import RxCocoa
 
 final class LoginViewModel {
     
-    var bag: DisposeBag = DisposeBag()
-    private(set) var userName: BehaviorSubject<String> = .init(value: "")
+    private var bag: DisposeBag = DisposeBag()
+    private(set) var userName: BehaviorRelay<String> = .init(value: "")
     private(set) var passWord: BehaviorSubject<String> = .init(value: "")
     private(set) var isValidate: Driver<Bool> = .just(false)
-
+    
     var isValidUsername: Driver<String?> {
-        return    userName.map { username in
-            username.count < 6 && username.count > 0 ? Config.isValidUserName : nil
-        }
-        .asDriver(onErrorJustReturn: nil)
+        return userName.map { !$0.validateUsername() ? Config.isValidUserName : nil }
+            .asDriver(onErrorJustReturn: nil)
     }
     
     var isValidPassword: Driver<String?> {
-        return passWord.map {
-            password in
-            password.count < 6 && password.count > 0 ? Config.isValidPassWord : nil
-        }
-        .asDriver(onErrorJustReturn: nil)
+        return passWord.map { $0.count < 6 ? Config.isValidPassWord : nil }
+            .asDriver(onErrorJustReturn: nil)
     }
     
     var isEmpty: Observable<Bool> {

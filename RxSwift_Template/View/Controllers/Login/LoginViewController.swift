@@ -7,8 +7,9 @@
 
 import UIKit
 import RxSwift
+import RxCocoa
 
-final class LoginViewController: UIViewController {
+final class LoginViewController: BaseViewController {
 
     // MARK: - IBOutlets
     @IBOutlet private weak var usernameTextField: UITextField!
@@ -18,7 +19,7 @@ final class LoginViewController: UIViewController {
     @IBOutlet private weak var errorPassWordLabel: UILabel!
 
     // MARK: - Properties
-    var bag: DisposeBag = DisposeBag()
+    private var bag: DisposeBag = DisposeBag()
     var viewModel: LoginViewModel = LoginViewModel()
 
     // MARK: - Life cycle
@@ -28,24 +29,40 @@ final class LoginViewController: UIViewController {
         bindingViewModel()
     }
     
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        view.endEditing(true)
+    }
+
     // MARK: - Private func
     private func bindingViewModel() {
         usernameTextField.rx.text.orEmpty
             .bind(to: viewModel.userName)
-            .disposed(by: viewModel.bag)
+            .disposed(by: bag)
 
         passwordTextField.rx.text.orEmpty
             .bind(to: viewModel.passWord)
-            .disposed(by: viewModel.bag)
-
-        viewModel.isValidUsername.drive(errorUserNameLabel.rx.text)
-            .disposed(by: viewModel.bag)
-
-        viewModel.isValidPassword.drive(errorPassWordLabel.rx.text)
-            .disposed(by: viewModel.bag)
+            .disposed(by: bag)
 
         viewModel.isValidate
             .drive(loginButton.rx.isEnabled)
-            .disposed(by: viewModel.bag)
+            .disposed(by: bag)
+        
+        usernameTextField.rx.controlEvent(.editingDidBegin).subscribe { [weak self] _ in
+            guard let this = self else { return }
+            this.usernameTextField.becomeFirstResponder()
+            this.viewModel.isValidUsername
+                .drive(this.errorUserNameLabel.rx.text)
+                .disposed(by: this.bag)
+        }
+        .disposed(by: bag)
+        
+        passwordTextField.rx.controlEvent(.editingDidBegin).subscribe { [weak self] _ in
+            guard let this = self else { return }
+            this.passwordTextField.becomeFirstResponder()
+            this.viewModel.isValidPassword
+                .drive(this.errorPassWordLabel.rx.text)
+                .disposed(by: this.bag)
+        }
+        .disposed(by: bag)
     }
 }
