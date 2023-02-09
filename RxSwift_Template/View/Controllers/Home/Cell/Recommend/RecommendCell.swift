@@ -18,15 +18,17 @@ final class RecommendCell: UITableViewCell {
     
     // MARK: - Properties
     private var bag: DisposeBag = DisposeBag()
-    var viewModel = RecommendCellViewModel()
+    var viewModel: RecommendCellViewModel? {
+        didSet {
+            configDataSource()
+        }
+    }
     
     // MARK: - Life cycle
     override func awakeFromNib() {
         super.awakeFromNib()
         
         configCollectionView()
-        configDataSource()
-        fetchData()
     }
     
     // MARK: - Private func
@@ -37,13 +39,11 @@ final class RecommendCell: UITableViewCell {
     }
     
     private func configDataSource() {
-        viewModel.recommendBehaviorRelay.bind(to: collectionView.rx.items(cellIdentifier: Define.cellName, cellType: RecommendCollectionViewCell.self)) { indexPath, datasource, cell in
+        guard let viewModel = viewModel else { return }
+        viewModel.recommends.bind(to: collectionView.rx.items(cellIdentifier: Define.cellName, cellType: RecommendCollectionViewCell.self)) { index, recommend, cell in
+            cell.viewModel = viewModel.viewModelForItem(index: index)
         }
         .disposed(by: bag)
-    }
-    
-    private func fetchData() {
-        viewModel.fetchData()
     }
 }
 

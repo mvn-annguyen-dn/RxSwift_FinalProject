@@ -17,15 +17,17 @@ final class SliderCell: UITableViewCell {
     @IBOutlet private weak var pageControl: UIPageControl!
     
     private var bag: DisposeBag = DisposeBag()
-    var viewModel = SliderCellViewModel()
+    var viewModel: SliderCellViewModel? {
+        didSet {
+            configDataSource()
+        }
+    }
     
     // MARK: - Life cycle
     override func awakeFromNib() {
         super.awakeFromNib()
         
         configCollectionView()
-        configDataSource()
-        fetchData()
     }
     
     // MARK: - Private func
@@ -36,13 +38,11 @@ final class SliderCell: UITableViewCell {
     }
     
     private func configDataSource() {
-        viewModel.sliderBehaviorRelay.bind(to: collectionView.rx.items(cellIdentifier: Define.cellName, cellType: SlideCollectionViewCell.self)) { indexPath, datasource, cell in
+        guard let viewModel = viewModel else { return }
+        viewModel.shops.bind(to: collectionView.rx.items(cellIdentifier: Define.cellName, cellType: SlideCollectionViewCell.self)) { index, element, cell in
+            cell.viewModel = viewModel.viewModelForItem(index: index)
         }
         .disposed(by: bag)
-    }
-    
-    private func fetchData() {
-        viewModel.fetchData()
     }
 }
 

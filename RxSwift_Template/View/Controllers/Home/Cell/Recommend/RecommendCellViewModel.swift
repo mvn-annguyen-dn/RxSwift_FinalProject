@@ -11,11 +11,13 @@ import RxCocoa
 
 final class RecommendCellViewModel {
     
-    var recommendBehaviorRelay: BehaviorRelay<[HomeSectionModel]> = .init(value: [])
-
-    let recommendSections: [HomeSectionModel] = [.sectionRecommend(items: [.recommend]), .sectionRecommend(items: [.recommend]), .sectionRecommend(items: [.recommend])]
+    var recommends: BehaviorRelay<[Product]> = .init(value: [])
     
-    func fetchData() {
-        recommendBehaviorRelay.accept(recommendSections)
+    init(recommends: [Product]) {
+        self.recommends.accept(recommends)
+    }
+    
+    func viewModelForItem(index: Int) -> RecommendCollectionViewCellViewModel {
+        return RecommendCollectionViewCellViewModel(recommend: recommends.value[index])
     }
 }

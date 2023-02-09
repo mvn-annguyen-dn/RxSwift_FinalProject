@@ -17,15 +17,17 @@ final class PopularCell: UITableViewCell {
     
     // MARK: - Properties
     private var bag: DisposeBag = DisposeBag()
-    var viewModel = PopularCellViewModel()
+    var viewModel: PopularCellViewModel? {
+        didSet {
+            configDataSource()
+        }
+    }
     
     // MARK: - Life cycle
     override func awakeFromNib() {
         super.awakeFromNib()
         
         configCollectionView()
-        configDataSource()
-        fetchData()
     }
     
     // MARK: - Private func
@@ -37,13 +39,11 @@ final class PopularCell: UITableViewCell {
     }
     
     private func configDataSource() {
-        viewModel.popularBehaviorRelay.bind(to: collectionView.rx.items(cellIdentifier: Define.cellName, cellType: PopularCollectionViewCell.self)) { indexPath, datasource, cell in
+        guard let viewModel = viewModel else { return }
+        viewModel.populars.bind(to: collectionView.rx.items(cellIdentifier: Define.cellName, cellType: PopularCollectionViewCell.self)) { index, element, cell in
+            cell.viewModel = viewModel.viewModelForItem(index: index)
         }
         .disposed(by: bag)
-    }
-    
-    private func fetchData() {
-        viewModel.fetchData()
     }
 }
 

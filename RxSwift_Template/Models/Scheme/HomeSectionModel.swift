@@ -14,10 +14,10 @@ enum HomeSectionModel {
     case sectionPopular(items: [Item])
 }
 
-enum HomeSectionItem: Int {
-    case slider
-    case recommend
-    case popular
+enum HomeSectionItem {
+    case slider(shop: [Shop])
+    case recommend(recommendProducts: [Product])
+    case popular(popularProducts: [Product])
 }
 
 extension HomeSectionModel: SectionModelType {

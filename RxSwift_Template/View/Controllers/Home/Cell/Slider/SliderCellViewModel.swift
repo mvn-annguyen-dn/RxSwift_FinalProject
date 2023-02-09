@@ -10,13 +10,14 @@ import RxSwift
 import RxCocoa
 
 final class SliderCellViewModel {
-    
-    var sliderBehaviorRelay: BehaviorRelay<[HomeSectionModel]> = .init(value: [])
 
-    let sliderSections: [HomeSectionModel] = [.sectionSlider(items: [.slider]), .sectionSlider(items: [.slider]), .sectionSlider(items: [.slider])]
-
+    var shops: BehaviorRelay<[Shop]> = .init(value: [])
     
-    func fetchData() {
-        sliderBehaviorRelay.accept(sliderSections)
+    init(shops: [Shop]) {
+        self.shops.accept(shops)
+    }
+    
+    func viewModelForItem(index: Int) -> SlideCollectionViewCellViewModel {
+        return SlideCollectionViewCellViewModel(shop: shops.value[index])
     }
 }

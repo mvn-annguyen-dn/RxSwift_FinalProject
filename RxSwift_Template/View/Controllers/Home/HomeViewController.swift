@@ -45,14 +45,17 @@ final class HomeViewController: UIViewController {
     private func configDataSource() {
         let datasource = RxTableViewSectionedReloadDataSource<HomeSectionModel>(configureCell: { datasource, tableview, indexpath, item in
             switch datasource[indexpath] {
-            case .slider:
+            case .slider(shop: let shop):
                 guard let cell = tableview.dequeueReusableCell(withIdentifier: "SliderCell", for: indexpath) as? SliderCell else { return UITableViewCell() }
+                cell.viewModel = SliderCellViewModel(shops: shop)
                 return cell
-            case .recommend:
+            case .recommend(recommendProducts: let recommend):
                 guard let cell = tableview.dequeueReusableCell(withIdentifier: "RecommendCell", for: indexpath) as? RecommendCell else { return UITableViewCell() }
+                cell.viewModel = RecommendCellViewModel(recommends: recommend)
                 return cell
-            case .popular:
+            case .popular(popularProducts: let popular):
                 guard let cell = tableview.dequeueReusableCell(withIdentifier: "PopularCell", for: indexpath) as? PopularCell else { return UITableViewCell() }
+                cell.viewModel = PopularCellViewModel(populars: popular)
                 return cell
             }
         })
@@ -71,14 +74,14 @@ final class HomeViewController: UIViewController {
 extension HomeViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        guard let cellType = HomeSectionModel.Item(rawValue: indexPath.row) else { return 0 }
-        switch cellType {
-        case .slider:
+        switch indexPath.row {
+        case 0:
             return 300
-        case .recommend:
+        case 1:
             return 220
-        case .popular:
+        case 2:
             return 400
+        default: return 0
         }
     }
 }

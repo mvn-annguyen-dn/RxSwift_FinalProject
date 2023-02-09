@@ -11,11 +11,13 @@ import RxCocoa
 
 final class PopularCellViewModel {
     
-    var popularBehaviorRelay: BehaviorRelay<[HomeSectionModel]> = .init(value: [])
-
-    let popularSections: [HomeSectionModel] = [.sectionPopular(items: [.popular]), .sectionPopular(items: [.popular]), .sectionPopular(items: [.popular]), .sectionPopular(items: [.popular])]
+    var populars: BehaviorRelay<[Product]> = .init(value: [])
     
-    func fetchData() {
-        popularBehaviorRelay.accept(popularSections)
+    init(populars: [Product]) {
+        self.populars.accept(populars)
+    }
+    
+    func viewModelForItem(index: Int) -> PopularCollectionViewCellViewModel {
+        return PopularCollectionViewCellViewModel(popular: populars.value[index])
     }
 }
