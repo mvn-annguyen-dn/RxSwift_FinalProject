@@ -12,17 +12,24 @@ import RxCocoa
 final class LoginViewModel {
     
     private var bag: DisposeBag = DisposeBag()
-    private(set) var userName: BehaviorRelay<String> = .init(value: "")
-    private(set) var passWord: BehaviorSubject<String> = .init(value: "")
-    private(set) var isValidate: Driver<Bool> = .just(false)
+    private(set) var userName: PublishSubject<String> = .init()
+    private(set) var passWord: PublishSubject<String> = .init()
+    
+    var isValidate: Driver<Bool> {
+        return Observable.combineLatest(isValidUsername.asObservable(), isValidPassword.asObservable(), isEmpty)
+            .map { $0 == nil && $1 == nil && $2 == false }
+            .distinctUntilChanged()
+            .debug()
+            .asDriver(onErrorJustReturn: false)
+    }
     
     var isValidUsername: Driver<String?> {
-        return userName.map { !$0.validateUsername() ? Config.isValidUserName : nil }
+        return userName.map { !$0.validateUsername() ? Define.isValidUserName : nil }
             .asDriver(onErrorJustReturn: nil)
     }
     
     var isValidPassword: Driver<String?> {
-        return passWord.map { $0.count < 6 ? Config.isValidPassWord : nil }
+        return passWord.map { $0.count < 6 ? Define.isValidPassWord : nil }
             .asDriver(onErrorJustReturn: nil)
     }
     
@@ -32,20 +39,10 @@ final class LoginViewModel {
                 username.isEmpty || password.isEmpty
             }
     }
-    
-    init() {
-        binding()
-    }
-    
-    func binding() {
-        isValidate = Observable.combineLatest(isValidUsername.asObservable(), isValidPassword.asObservable(), isEmpty)
-            .map { $0 == nil && $1 == nil && $2 == false }
-            .asDriver(onErrorJustReturn: false)
-    }
 }
 
 extension LoginViewModel {
-    struct Config {
+    struct Define {
         static var isValidUserName: String = "Invild username"
         static var isValidPassWord: String = "Invild password"
     }

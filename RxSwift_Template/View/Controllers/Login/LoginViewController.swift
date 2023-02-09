@@ -35,23 +35,12 @@ final class LoginViewController: BaseViewController {
 
     // MARK: - Private func
     private func bindingViewModel() {
-        usernameTextField.rx.text.orEmpty
-            .bind(to: viewModel.userName)
-            .disposed(by: bag)
-
-        passwordTextField.rx.text.orEmpty
-            .bind(to: viewModel.passWord)
-            .disposed(by: bag)
-
-        viewModel.isValidate
-            .drive(loginButton.rx.isEnabled)
-            .disposed(by: bag)
-        
         usernameTextField.rx.controlEvent(.editingDidBegin).subscribe { [weak self] _ in
             guard let this = self else { return }
             this.usernameTextField.becomeFirstResponder()
-            this.viewModel.isValidUsername
-                .drive(this.errorUserNameLabel.rx.text)
+            this.usernameTextField.rx.text.distinctUntilChanged()
+                .map { $0 ?? "" }
+                .bind(to: this.viewModel.userName)
                 .disposed(by: this.bag)
         }
         .disposed(by: bag)
@@ -59,10 +48,24 @@ final class LoginViewController: BaseViewController {
         passwordTextField.rx.controlEvent(.editingDidBegin).subscribe { [weak self] _ in
             guard let this = self else { return }
             this.passwordTextField.becomeFirstResponder()
-            this.viewModel.isValidPassword
-                .drive(this.errorPassWordLabel.rx.text)
+            this.passwordTextField.rx.text.distinctUntilChanged()
+                .map { $0 ?? "" }
+                .bind(to: this.viewModel.passWord)
                 .disposed(by: this.bag)
         }
         .disposed(by: bag)
+        
+        viewModel.isValidUsername
+            .drive(errorUserNameLabel.rx.text)
+            .disposed(by: bag)
+        
+        viewModel.isValidPassword
+            .drive(errorPassWordLabel.rx.text)
+            .disposed(by: bag)
+        
+        viewModel.isValidate
+            .startWith(false)
+            .drive(loginButton.rx.isEnabled)
+            .disposed(by: bag)
     }
 }
