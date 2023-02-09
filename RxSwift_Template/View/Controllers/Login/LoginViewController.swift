@@ -35,26 +35,26 @@ final class LoginViewController: BaseViewController {
 
     // MARK: - Private func
     private func bindingViewModel() {
-        usernameTextField.rx.controlEvent(.editingDidBegin).subscribe { [weak self] _ in
-            guard let this = self else { return }
-            this.usernameTextField.becomeFirstResponder()
-            this.usernameTextField.rx.text.distinctUntilChanged()
-                .map { $0 ?? "" }
-                .bind(to: this.viewModel.userName)
-                .disposed(by: this.bag)
-        }
-        .disposed(by: bag)
-        
-        passwordTextField.rx.controlEvent(.editingDidBegin).subscribe { [weak self] _ in
-            guard let this = self else { return }
-            this.passwordTextField.becomeFirstResponder()
-            this.passwordTextField.rx.text.distinctUntilChanged()
-                .map { $0 ?? "" }
-                .bind(to: this.viewModel.passWord)
-                .disposed(by: this.bag)
-        }
-        .disposed(by: bag)
-        
+        usernameTextField.rx.text.orEmpty
+            .distinctUntilChanged()
+            .do(onNext: { _ in
+                self.usernameTextField.becomeFirstResponder()
+            })
+            .subscribe(onNext: { value in
+                self.viewModel.userName.onNext(value)
+            })
+            .disposed(by: bag)
+                
+        passwordTextField.rx.text.orEmpty
+            .distinctUntilChanged()
+            .do(onNext: { _ in
+                self.passwordTextField.becomeFirstResponder()
+            })
+            .subscribe(onNext: { value in
+                self.viewModel.passWord.onNext(value)
+            })
+            .disposed(by: bag)
+                
         viewModel.isValidUsername
             .drive(errorUserNameLabel.rx.text)
             .disposed(by: bag)
