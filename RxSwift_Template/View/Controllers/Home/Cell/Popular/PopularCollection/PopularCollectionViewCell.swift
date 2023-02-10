@@ -25,6 +25,14 @@ final class PopularCollectionViewCell: UICollectionViewCell {
         }
     }
     
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        contentView.layer.borderWidth = 1
+        contentView.layer.cornerRadius = 20
+        productImageView.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
+        productImageView.layer.cornerRadius = 20
+    }
+    
     private func updateCell() {
         guard let viewModel = viewModel else { return }
         let popular = viewModel.popular.compactMap { $0 }
@@ -40,9 +48,11 @@ final class PopularCollectionViewCell: UICollectionViewCell {
             .bind(to: categotyProductLabel.rx.text)
             .disposed(by: bag)
         
-        
         popular.map(\.imageProduct).subscribe { image in
-            self.productImageView.image = UIImage(named: image ?? "")
+            UIImageView.dowloadImageWithRxSwift(url: image ?? "").subscribe { image in
+                self.productImageView.rx.image.onNext(image)
+            }
+            .disposed(by: self.bag)
         }
         .disposed(by: bag)
     }

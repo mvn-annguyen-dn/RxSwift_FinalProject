@@ -23,6 +23,8 @@ final class SliderCell: UITableViewCell {
         }
     }
     
+    private var timer: Timer?
+    
     // MARK: - Life cycle
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -35,6 +37,7 @@ final class SliderCell: UITableViewCell {
         let cellNib = UINib(nibName: Define.cellName, bundle: Bundle.main)
         collectionView.register(cellNib, forCellWithReuseIdentifier: Define.cellName)
         collectionView.rx.setDelegate(self).disposed(by: bag)
+        startTimer()
     }
     
     private func configDataSource() {
@@ -43,6 +46,27 @@ final class SliderCell: UITableViewCell {
             cell.viewModel = viewModel.viewModelForItem(index: index)
         }
         .disposed(by: bag)
+    }
+    
+    private func configUI() {
+        guard let viewModel = viewModel else { return }
+        pageControl.numberOfPages = viewModel.numberOfPage()
+    }
+    
+    private func startTimer() {
+        timer = Timer.scheduledTimer(timeInterval: Define.timerIntervar, target: self, selector: #selector(moveToNextIndex), userInfo: nil, repeats: true)
+    }
+    
+    // MARK: - Objc methods
+    @objc private func moveToNextIndex() {
+        guard let viewModel = viewModel else { return }
+        if viewModel.currentIndex < (viewModel.numberOfPage() - 1) {
+            viewModel.currentIndex += 1
+        } else {
+            viewModel.currentIndex = 0
+        }
+        collectionView.scrollToItem(at: IndexPath(row: viewModel.currentIndex, section: 0), at: .centeredHorizontally, animated: true)
+        pageControl.currentPage = viewModel.currentIndex
     }
 }
 
@@ -66,5 +90,6 @@ extension SliderCell: UICollectionViewDelegateFlowLayout {
 extension SliderCell {
     private struct Define {
         static var cellName: String = String(describing: SlideCollectionViewCell.self)
+        static var timerIntervar: Double = 2.5
     }
 }

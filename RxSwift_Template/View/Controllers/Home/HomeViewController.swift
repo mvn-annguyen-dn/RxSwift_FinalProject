@@ -10,7 +10,7 @@ import RxSwift
 import RxCocoa
 import RxDataSources
 
-final class HomeViewController: UIViewController {
+final class HomeViewController: BaseViewController {
     
     // MARK: - IBOutlets
     @IBOutlet private weak var tableView: UITableView!
@@ -25,7 +25,7 @@ final class HomeViewController: UIViewController {
         
         configTableView()
         configDataSource()
-        fetchData()
+        getData()
     }
     
     // MARK: - Private func
@@ -45,17 +45,20 @@ final class HomeViewController: UIViewController {
     private func configDataSource() {
         let datasource = RxTableViewSectionedReloadDataSource<HomeSectionModel>(configureCell: { datasource, tableview, indexpath, item in
             switch datasource[indexpath] {
-            case .slider(shop: let shop):
+            case .slider:
                 guard let cell = tableview.dequeueReusableCell(withIdentifier: "SliderCell", for: indexpath) as? SliderCell else { return UITableViewCell() }
-                cell.viewModel = SliderCellViewModel(shops: shop)
+                cell.viewModel = self.viewModel.viewModelForSlider(indexPath: indexpath)
+                cell.selectionStyle = .none
                 return cell
-            case .recommend(recommendProducts: let recommend):
+            case .recommend:
                 guard let cell = tableview.dequeueReusableCell(withIdentifier: "RecommendCell", for: indexpath) as? RecommendCell else { return UITableViewCell() }
-                cell.viewModel = RecommendCellViewModel(recommends: recommend)
+                cell.viewModel = self.viewModel.viewModelForRecommend(indexPath: indexpath)
+                cell.selectionStyle = .none
                 return cell
-            case .popular(popularProducts: let popular):
+            case .popular:
                 guard let cell = tableview.dequeueReusableCell(withIdentifier: "PopularCell", for: indexpath) as? PopularCell else { return UITableViewCell() }
-                cell.viewModel = PopularCellViewModel(populars: popular)
+                cell.viewModel = self.viewModel.viewModelForPopular(indexPath: indexpath)
+                cell.selectionStyle = .none
                 return cell
             }
         })
@@ -65,8 +68,12 @@ final class HomeViewController: UIViewController {
             .disposed(by: bag)
     }
     
-    private func fetchData() {
-        viewModel.fetchData()
+    private func getData() {
+        viewModel.getApiMultiTarget()
+        viewModel.errorBehaviorRelay.subscribe(onNext: { error in
+            self.normalAlert(message: error.localizedDescription)
+        })
+        .disposed(by: bag)
     }
 }
 

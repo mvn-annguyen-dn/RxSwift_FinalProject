@@ -26,6 +26,24 @@ final class RecommendCollectionViewCell: UICollectionViewCell {
         }
     }
     
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        customViewShadow()
+        productImageView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMinXMinYCorner]
+        productImageView.layer.cornerRadius = 20
+    }
+    
+    private func customViewShadow() {
+        cellView.clipsToBounds = true
+        cellView.layer.cornerRadius = 20
+        
+        cellView.layer.masksToBounds = false
+        cellView.layer.shadowOffset = CGSize(width: 0, height: 3)
+        cellView.layer.shadowColor = UIColor.lightGray.cgColor
+        cellView.layer.shadowOpacity = 0.3
+        cellView.layer.shadowRadius = 5
+    }
+    
     private func updateCell() {
         guard let viewModel = viewModel else { return }
         let recommemd = viewModel.recommend.compactMap { $0 }
@@ -41,9 +59,11 @@ final class RecommendCollectionViewCell: UICollectionViewCell {
             .bind(to: priceProductLabel.rx.text)
             .disposed(by: bag)
         
-        
         recommemd.map(\.imageProduct).subscribe { image in
-            self.productImageView.image = UIImage(named: image ?? "")
+            UIImageView.dowloadImageWithRxSwift(url: image ?? "").subscribe { image in
+                self.productImageView.rx.image.onNext(image)
+            }
+            .disposed(by: self.bag)
         }
         .disposed(by: bag)
     }

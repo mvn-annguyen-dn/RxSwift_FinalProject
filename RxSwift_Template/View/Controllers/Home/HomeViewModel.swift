@@ -12,32 +12,59 @@ import RxDataSources
 
 final class HomeViewModel {
     
-    // multiple sections
+    private var bag: DisposeBag = DisposeBag()
+    /// multiple sections
     var sectionModels: BehaviorRelay<[HomeSectionModel]> = .init(value: [])
+
+    var shops: BehaviorRelay<[Shop]> = .init(value: [])
+    var recommends: BehaviorRelay<[Product]> = .init(value: [])
+    var populars: BehaviorRelay<[Product]> = .init(value: [])
+    var errorBehaviorRelay: PublishRelay<Error> = .init()
         
     func fetchData() {
         let sections: [HomeSectionModel] = [
             
             .sectionSlider(items: [
-                .slider(shop: [
-                    Shop(nameShop: "Phong shop 1", imageShop: "logo"),
-                    Shop(nameShop: "Phong shop 2", imageShop: "logo"),
-                    Shop(nameShop: "Phong shop 3", imageShop: "logo")])]),
+                .slider(shop: shops.value)]),
             
-                .sectionRecommend(items: [
-                    .recommend(recommendProducts: [
-                        Product(name: "recommend 1", imageProduct: "logo", content: "content 1", category: Category(nameCategory: "Test string 1")),
-                        Product(name: "recommend 2", imageProduct: "logo", content: "content 2", category: Category(nameCategory: "Test string 2")),
-                        Product(name: "recommend 3", imageProduct: "logo", content: "content 3", category: Category(nameCategory: "Test string 3"))])]),
+            .sectionRecommend(items: [
+                .recommend(recommendProducts: recommends.value)]),
             
-                .sectionPopular(items: [
-                    .popular(popularProducts: [
-                        Product(name: "populor 1", imageProduct: "logo", content: "type 1", category: Category(nameCategory: "demo 1")),
-                        Product(name: "populor 2", imageProduct: "logo", content: "type 2", category: Category(nameCategory: "demo 2")),
-                        Product(name: "populor 3", imageProduct: "logo", content: "type 3", category: Category(nameCategory: "demo 3"))]),
-                ])
+            .sectionPopular(items: [
+                .popular(popularProducts: populars.value)])
         ]
         
         sectionModels.accept(sections)
     }
+    
+    func getApiMultiTarget() {
+        let shopObservable = ApiNetWorkManager.shared.request(ShopResponse.self, .target(MainTarget.shop)).asObservable()
+        let recommnedObservable = ApiNetWorkManager.shared.request(ProductResponse.self, .target(MainTarget.recommend)).asObservable()
+        let popularObservable = ApiNetWorkManager.shared.request(ProductResponse.self, .target(MainTarget.popular)).asObservable()
+        
+        let observable = Observable.zip(shopObservable, recommnedObservable, popularObservable)
+        
+        observable.subscribe(onNext: { shop, recommend, popular in
+            self.shops.accept(shop.data ?? [])
+            self.recommends.accept(recommend.data ?? [])
+            self.populars.accept(popular.data ?? [])
+            self.fetchData()
+        }, onError: { error in
+            self.errorBehaviorRelay.accept(error)
+        })
+        .disposed(by: bag)
+    }
+    
+    func viewModelForSlider(indexPath: IndexPath) -> SliderCellViewModel {
+        return SliderCellViewModel(shops: shops.value)
+    }
+    
+    func viewModelForRecommend(indexPath: IndexPath) -> RecommendCellViewModel {
+        return RecommendCellViewModel(recommends: recommends.value)
+    }
+    
+    func viewModelForPopular(indexPath: IndexPath) -> PopularCellViewModel {
+        return PopularCellViewModel(populars: populars.value)
+    }
+
 }

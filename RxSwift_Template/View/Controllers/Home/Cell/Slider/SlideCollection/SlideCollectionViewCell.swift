@@ -30,8 +30,11 @@ final class SlideCollectionViewCell: UICollectionViewCell {
             .bind(to: nameShopLabel.rx.text)
             .disposed(by: bag)
         
-        shop.map(\.imageShop).subscribe { image in
-            self.shopImageView.image = UIImage(named: image ?? "")
+        shop.map(\.imageShop).subscribe { element in
+            UIImageView.dowloadImageWithRxSwift(url: element ?? "").subscribe { image in
+                self.shopImageView.rx.image.onNext(image)
+            }
+            .disposed(by: self.bag)
         }
         .disposed(by: bag)
     }
