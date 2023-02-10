@@ -49,17 +49,6 @@ final class Product: Decodable {
     var images: [ImageProduct]?
     var isFavorite: Bool = false
     
-//    init(id: Int? = nil, name: String? = nil, imageProduct: String? = nil, discount: Int? = nil, content: String? = nil, price: Int? = nil, category: Category? = nil, images: [ImageProduct]? = nil) {
-//        self.id = id
-//        self.name = name
-//        self.imageProduct = imageProduct
-//        self.discount = discount
-//        self.content = content
-//        self.price = price
-//        self.category = category
-//        self.images = images
-//    }
-    
     enum CodingKeys: String, CodingKey {
         case id, name, discount, content, price, category
         case imageProduct = "image_product"
@@ -86,12 +75,6 @@ final class Category: Decodable {
     var nameCategory: String?
     var shop: Shop?
     
-//    init(id: Int? = nil, nameCategory: String? = nil, shop: Shop? = nil) {
-//        self.id = id
-//        self.nameCategory = nameCategory
-//        self.shop = shop
-//    }
-    
     enum CodingKeys: String, CodingKey {
         case id, shop
         case nameCategory = "name_category"
@@ -115,16 +98,6 @@ final class Shop: Decodable {
     var emailShop: String?
     var imageShop: String?
     var shopDescription: String?
-    
-//    init(id: Int? = nil, nameShop: String? = nil, address: String? = nil, phoneNumber: String? = nil, emailShop: String? = nil, imageShop: String? = nil, shopDescription: String? = nil) {
-//        self.id = id
-//        self.nameShop = nameShop
-//        self.address = address
-//        self.phoneNumber = phoneNumber
-//        self.emailShop = emailShop
-//        self.imageShop = imageShop
-//        self.shopDescription = shopDescription
-//    }
     
     enum CodingKeys: String, CodingKey {
         case id, address
@@ -151,10 +124,6 @@ final class Shop: Decodable {
 final class ImageProduct: Decodable {
     
     var image: String?
-    
-//    init(image: String? = nil) {
-//        self.image = image
-//    }
     
     enum CodingKeys: String, CodingKey {
         case image
