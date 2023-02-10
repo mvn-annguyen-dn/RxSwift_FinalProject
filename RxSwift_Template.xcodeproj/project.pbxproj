@@ -24,6 +24,9 @@
 		84D6DAE3298B7C42002A0626 /* ExampleViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84D6DAE1298B7C42002A0626 /* ExampleViewController.xib */; };
 		84D6DAE5298B92E0002A0626 /* Example.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D6DAE4298B92E0002A0626 /* Example.swift */; };
 		8F76F4D8D159F1B42DDBE003 /* Pods_RxSwift_Template.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 09A0FA7C1B0CD47302D9A8D9 /* Pods_RxSwift_Template.framework */; };
+		CB7B54BA298CB02D005AAD9A /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB7B54B8298CB02D005AAD9A /* LoginViewController.swift */; };
+		CB7B54BB298CB02D005AAD9A /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB7B54B9298CB02D005AAD9A /* LoginViewController.xib */; };
+		CB7B54BD298CB285005AAD9A /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB7B54BC298CB285005AAD9A /* LoginViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,6 +65,9 @@
 		84D6DAE1298B7C42002A0626 /* ExampleViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ExampleViewController.xib; sourceTree = "<group>"; };
 		84D6DAE4298B92E0002A0626 /* Example.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Example.swift; sourceTree = "<group>"; };
 		A9997A620243BFD969FC6200 /* Pods_RxSwift_Template_RxSwift_TemplateUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RxSwift_Template_RxSwift_TemplateUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CB7B54B8298CB02D005AAD9A /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		CB7B54B9298CB02D005AAD9A /* LoginViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
+		CB7B54BC298CB285005AAD9A /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		F5B2704B7B47B3CE3ACA6821 /* Pods-RxSwift_Template-RxSwift_TemplateUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RxSwift_Template-RxSwift_TemplateUITests.debug.xcconfig"; path = "Target Support Files/Pods-RxSwift_Template-RxSwift_TemplateUITests/Pods-RxSwift_Template-RxSwift_TemplateUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		F86B02262B20149B2FE76F51 /* Pods-RxSwift_TemplateTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RxSwift_TemplateTests.release.xcconfig"; path = "Target Support Files/Pods-RxSwift_TemplateTests/Pods-RxSwift_TemplateTests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -130,6 +136,7 @@
 		3833F1A02935A8FE008A20E8 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				CB7B54B6298CAFEB005AAD9A /* Controllers */,
 				841EA822298CF4CD00334780 /* Base */,
 				84D6DADF298B7C2A002A0626 /* Example */,
 			);
@@ -239,6 +246,24 @@
 			path = Example;
 			sourceTree = "<group>";
 		};
+		CB7B54B6298CAFEB005AAD9A /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				CB7B54B7298CAFF5005AAD9A /* Login */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		CB7B54B7298CAFF5005AAD9A /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				CB7B54B8298CB02D005AAD9A /* LoginViewController.swift */,
+				CB7B54B9298CB02D005AAD9A /* LoginViewController.xib */,
+				CB7B54BC298CB285005AAD9A /* LoginViewModel.swift */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -324,6 +349,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CB7B54BB298CB02D005AAD9A /* LoginViewController.xib in Resources */,
 				3833F17D29359922008A20E8 /* LaunchScreen.storyboard in Resources */,
 				84D6DAE3298B7C42002A0626 /* ExampleViewController.xib in Resources */,
 				3833F17A29359922008A20E8 /* Assets.xcassets in Resources */,
@@ -425,6 +451,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CB7B54BA298CB02D005AAD9A /* LoginViewController.swift in Sources */,
 				841EA826298CF83600334780 /* String+Ext.swift in Sources */,
 				841EA81E298CE4C300334780 /* MainTarget.swift in Sources */,
 				841EA82A298CF89D00334780 /* ImageView+Ext.swift in Sources */,
@@ -436,6 +463,7 @@
 				841EA824298CF4DE00334780 /* BaseViewController.swift in Sources */,
 				3833F1AD2935AD39008A20E8 /* ApiNetWorkManager.swift in Sources */,
 				84D6DAE5298B92E0002A0626 /* Example.swift in Sources */,
+				CB7B54BD298CB285005AAD9A /* LoginViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
