@@ -7,19 +7,13 @@
 
 import Foundation
 
-struct TokenRespone: Codable {
+struct LoginRespone: Codable {
     var success: Bool
     var data: Token?
     var message: String
 
     enum CodingKeys: String, CodingKey {
         case success, data, message
-    }
-
-    init(success: Bool, data: Token?, message: String) {
-        self.success = success
-        self.data = data
-        self.message = message
     }
 
     init(from decoder: Decoder) throws {
@@ -37,11 +31,6 @@ struct Token: Codable {
     enum CodingKeys: String, CodingKey {
         case accessToken = "access_token"
         case tokenType = "token_type"
-    }
-
-    init(accessToken: String, tokenType: String) {
-        self.accessToken = accessToken
-        self.tokenType = tokenType
     }
 
     init(from decoder: Decoder) throws {
