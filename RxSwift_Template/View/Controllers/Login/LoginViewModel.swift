@@ -45,14 +45,9 @@ final class LoginViewModel {
 
 // MARK: Handle and Call APi
 extension LoginViewModel {
-    // Send Request
-    func requestLoginAPI() -> Single<TokenRespone> {
-        return ApiNetWorkManager.shared.request(TokenRespone.self, .target(LoginTarget.login(userName: "", passWord: "")))
-    }
-
-    // Handle Response
-    func handleLoginResponse() {
-        requestLoginAPI()
+    // Request
+    func requestLogin(username: String, pw: String) {
+        ApiNetWorkManager.shared.request(TokenRespone.self, .target(LoginTarget.login(userName: username, passWord: pw)))
             .subscribe(onSuccess: { respose in
                 Session.shared.token = respose.data?.accessToken ?? ""
                 AppDelegate.shared.setRoot(rootType: .home)

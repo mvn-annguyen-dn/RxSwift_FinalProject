@@ -56,6 +56,12 @@ final class LoginViewController: BaseViewController {
                 self.viewModel?.passWord.onNext(value)
             })
             .disposed(by: bag)
+
+        loginButton.rx.tap
+            .subscribe(onNext: { [weak self] _ in
+                guard let this = self else { return }
+                this.viewModel?.requestLogin(username: this.usernameTextField.text ?? "", pw: this.passwordTextField.text ?? "")
+            }).disposed(by: bag)
                 
         viewModel.isValidUsername
             .drive(errorUserNameLabel.rx.text)
@@ -69,18 +75,10 @@ final class LoginViewController: BaseViewController {
             .startWith(false)
             .drive(loginButton.rx.isEnabled)
             .disposed(by: bag)
-
-        loginButton.rx.tap
-            .subscribe(onNext: { _ in
-                guard let viewModel = self.viewModel else { return }
-                viewModel.handleLoginResponse()
-            })
-            .disposed(by: bag)
-
+                
         viewModel.errorStatus
             .subscribe(onNext: { error in
                 self.normalAlert(message: error.localizedDescription)
-            })
-            .disposed(by: bag)
+            }).disposed(by: bag)
     }
 }
