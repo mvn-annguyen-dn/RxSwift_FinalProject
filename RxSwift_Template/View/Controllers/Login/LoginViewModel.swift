@@ -10,27 +10,29 @@ import RxSwift
 import RxCocoa
 
 final class LoginViewModel {
+
+    private var bag: DisposeBag = DisposeBag()
+    private(set) var userName: PublishSubject<String> = .init()
+    private(set) var passWord: PublishSubject<String> = .init()
     
-    var bag: DisposeBag = DisposeBag()
-    private(set) var userName: BehaviorRelay<String> = .init(value: "")
-    private(set) var passWord: BehaviorRelay<String> = .init(value: "")
-    private(set) var isValidate: Driver<Bool> = .just(false)
-
     let errorStatus: PublishSubject<ApiError> = .init()
-
+        
+    var isValidate: Driver<Bool> {
+        return Observable.combineLatest(isValidUsername.asObservable(), isValidPassword.asObservable(), isEmpty)
+            .map { $0 == nil && $1 == nil && $2 == false }
+            .distinctUntilChanged()
+            .debug()
+            .asDriver(onErrorJustReturn: false)
+    }
+    
     var isValidUsername: Driver<String?> {
-        return userName.map { username in
-            username.count < 6 && username.count > 0 ? Define.isValidUserName : nil
-        }
-        .asDriver(onErrorJustReturn: nil)
+        return userName.map { !$0.validateUsername() ? Define.isValidUserName : nil }
+            .asDriver(onErrorJustReturn: nil)
     }
     
     var isValidPassword: Driver<String?> {
-        return passWord.map {
-            password in
-            password.count < 6 && password.count > 0 ? Define.isValidPassWord : nil
-        }
-        .asDriver(onErrorJustReturn: nil)
+        return passWord.map { $0.count < 6 ? Define.isValidPassWord : nil }
+            .asDriver(onErrorJustReturn: nil)
     }
     
     var isEmpty: Observable<Bool> {
@@ -39,23 +41,13 @@ final class LoginViewModel {
                 username.isEmpty || password.isEmpty
             }
     }
-    
-    init() {
-        binding()
-    }
-    
-    func binding() {
-        isValidate = Observable.combineLatest(isValidUsername.asObservable(), isValidPassword.asObservable(), isEmpty)
-            .map { $0 == nil && $1 == nil && $2 == false }
-            .asDriver(onErrorJustReturn: false)
-    }
 }
 
 // MARK: Handle and Call APi
 extension LoginViewModel {
     // Send Request
     func requestLoginAPI() -> Single<TokenRespone> {
-        return ApiNetWorkManager.shared.request(TokenRespone.self, .target(LoginTarget.login(userName: userName.value, passWord: passWord.value)))
+        return ApiNetWorkManager.shared.request(TokenRespone.self, .target(LoginTarget.login(userName: "", passWord: "")))
     }
 
     // Handle Response
