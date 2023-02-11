@@ -10,7 +10,15 @@ import RxSwift
 import RxCocoa
 import RxDataSources
 
+protocol RecommendCellDelegate: AnyObject {
+    func cell(cell: RecommendCell, needPerform action: RecommendCell.Action)
+}
+
 final class RecommendCell: UITableViewCell {
+
+    enum Action {
+        case didTap(product: Product)
+    }
     
     // MARK: - IBOutlets
     @IBOutlet private weak var collectionView: UICollectionView!
@@ -18,6 +26,7 @@ final class RecommendCell: UITableViewCell {
     
     // MARK: - Properties
     private var bag: DisposeBag = DisposeBag()
+    weak var delegate: RecommendCellDelegate?
     var viewModel: RecommendCellViewModel? {
         didSet {
             configDataSource()
@@ -60,6 +69,11 @@ extension RecommendCell:  UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 0
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let viewModel = viewModel else { return }
+        delegate?.cell(cell: self, needPerform: .didTap(product: viewModel.recommends.value[indexPath.row]))
     }
 }
 
