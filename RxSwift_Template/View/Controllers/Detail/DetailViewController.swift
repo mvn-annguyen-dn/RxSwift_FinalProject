@@ -55,6 +55,12 @@ final class DetailViewController: BaseViewController {
         leftBarButton.rx
             .tintColor
             .onNext(.black)
+
+        checkIsExist()
+            .bind { value in
+                self.updateColorFavorite(isFavorite: value)
+            }
+            .disposed(by: disposeBag)
         
         //Add Button
         navigationItem.rx
@@ -104,8 +110,12 @@ final class DetailViewController: BaseViewController {
     }
     
     private func updateColorFavorite(isFavorite: Bool) {
-        #warning("Handle Later")
         favoriteButton?.tintColor = isFavorite ? .red : .black
+    }
+    
+    private func checkIsExist() -> Observable<Bool> {
+        guard let viewModel = viewModel else { return .just(false) }
+        return viewModel.isFavorite(product: viewModel.productSubject.value ?? Product())
     }
     
     private func configCollectionView() {
@@ -199,8 +209,19 @@ final class DetailViewController: BaseViewController {
     
     // MARK: - Objc methods
     @objc private func favoriteButtonTouchUpInside() {
-        #warning("Handle later")
-        updateColorFavorite(isFavorite: !false)
+        guard let viewModel = viewModel else { return }
+        let isFavorite = viewModel.isFavorite(product: viewModel.productSubject.value ?? Product())
+        isFavorite
+            .subscribe(onNext: { [weak self] isExist in
+                guard let this = self else { return }
+                if !isExist {
+                    viewModel.addProductInRealm()
+                } else {
+                    viewModel.deleteProductInRealm()
+                }
+                this.updateColorFavorite(isFavorite: !isExist)
+            })
+            .disposed(by: disposeBag)
     }
     
     @objc private func backButtonTouchUpInside() {

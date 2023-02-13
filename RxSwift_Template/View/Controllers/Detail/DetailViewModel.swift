@@ -30,3 +30,41 @@ final class DetailViewModel {
     }
 }
 
+//MARK: Handle RxRealm
+extension DetailViewModel {
+    func getProductInRealm() {
+        let realm = try! Realm()
+        let products = realm.objects(Product.self)
+        Observable.array(from: products)
+            .subscribe(onNext: { [weak self] products  in
+                guard let this = self else { return }
+                this.favoriteProducts.accept(products)
+            })
+            .disposed(by: bagModel)
+    }
+    
+    func addProductInRealm() {
+        let realm = try! Realm()
+        let product = Product(value: self.productSubject.value ?? Product())
+        Observable.from(object: product)
+            .subscribe(realm.rx.add())
+            .disposed(by: bagModel)
+    }
+    
+    func deleteProductInRealm() {
+        let realm = try! Realm()
+        try! realm.write {
+            let object = realm.objects(Product.self).filter("id = %@", self.productSubject.value?.id as Any)
+            realm.delete(object)
+        }
+    }
+    
+    func isFavorite(product: Product) -> Observable<Bool> {
+        getProductInRealm()
+        guard let fvP = favoriteProducts.value else { return .just(false) }
+        for favoriteProduct in fvP where favoriteProduct.id == product.id {
+            return .just(true)
+        }
+        return .just(false)
+    }
+}
