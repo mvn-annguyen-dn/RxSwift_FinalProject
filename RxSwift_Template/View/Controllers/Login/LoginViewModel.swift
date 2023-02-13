@@ -10,11 +10,13 @@ import RxSwift
 import RxCocoa
 
 final class LoginViewModel {
-    
+
     private var bag: DisposeBag = DisposeBag()
     private(set) var userName: PublishSubject<String> = .init()
     private(set) var passWord: PublishSubject<String> = .init()
     
+    let errorStatus: PublishSubject<ApiError> = .init()
+        
     var isValidate: Driver<Bool> {
         return Observable.combineLatest(isValidUsername.asObservable(), isValidPassword.asObservable(), isEmpty)
             .map { $0 == nil && $1 == nil && $2 == false }
@@ -38,6 +40,21 @@ final class LoginViewModel {
             .map { username, password in
                 username.isEmpty || password.isEmpty
             }
+    }
+}
+
+// MARK: Handle and Call APi
+extension LoginViewModel {
+    // Request
+    func requestLogin(username: String, pw: String) {
+        ApiNetWorkManager.shared.request(LoginRespone.self, .target(LoginTarget.login(userName: username, passWord: pw)))
+            .subscribe(onSuccess: { respose in
+                Session.shared.token = respose.data?.accessToken ?? ""
+                AppDelegate.shared.setRoot(rootType: .home)
+            }, onFailure: { error in
+                self.errorStatus.onNext(error as? ApiError ?? .unknown)
+            })
+            .disposed(by: bag)
     }
 }
 

@@ -17,6 +17,9 @@ class ExampleViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setTitleNavigation(type: .example)
+        setRightBarButton(imageString: "house.fill", tintColor: .black, action: nil)
+        setLeftBarButton(imageString: "icon-back", tintColor: .black, action: nil)
     }
 
     func getApiExam() -> Single<FeedResults> {

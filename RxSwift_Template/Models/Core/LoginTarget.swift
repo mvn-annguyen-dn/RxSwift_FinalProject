@@ -9,6 +9,7 @@ import Moya
 
 enum LoginTarget {
     case example
+    case login(userName: String, passWord: String)
 }
 
 extension LoginTarget: TargetType {
@@ -21,6 +22,8 @@ extension LoginTarget: TargetType {
         switch self {
         case .example:
             return "most-played/10/albums.json/"
+        case .login:
+            return "login"
         }
     }
     
@@ -28,6 +31,8 @@ extension LoginTarget: TargetType {
         switch self {
         case .example:
             return .get
+        case .login:
+            return .post
         }
     }
     
@@ -35,6 +40,8 @@ extension LoginTarget: TargetType {
         switch self {
         case .example:
             return .requestPlain
+        case .login(let userName, let passWord):
+            return .requestParameters(parameters: ["email": userName, "password": passWord], encoding: JSONEncoding.default)
         }
     }
     
