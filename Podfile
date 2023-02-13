@@ -12,6 +12,7 @@ target 'RxSwift_Template' do
     pod 'SwiftLint'
     pod 'Moya/RxSwift'
     pod 'SwifterSwift'
+    pod 'RxRealm'
 
   # Pods for RxSwift_Template
 
