@@ -49,8 +49,8 @@ final class HomeViewModel {
             self.recommends.accept(recommend.data ?? [])
             self.populars.accept(popular.data ?? [])
             self.fetchData()
-        }, onError: { error in
-            self.errorBehaviorRelay.accept(error)
+        }, onError: { _ in
+            self.errorBehaviorRelay.accept(ApiError.invalidResponse)
         })
         .disposed(by: bag)
     }
