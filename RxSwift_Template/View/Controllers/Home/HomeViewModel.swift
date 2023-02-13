@@ -45,9 +45,9 @@ final class HomeViewModel {
         let observable = Observable.zip(shopObservable, recommnedObservable, popularObservable)
         
         observable.subscribe(onNext: { shop, recommend, popular in
-            self.shops.accept(shop.data ?? [])
-            self.recommends.accept(recommend.data ?? [])
-            self.populars.accept(popular.data ?? [])
+            self.shops.accept(shop.data.toArray())
+            self.recommends.accept(recommend.data.toArray())
+            self.populars.accept(popular.data.toArray())
             self.fetchData()
         }, onError: { error in
             self.errorBehaviorRelay.accept(error)

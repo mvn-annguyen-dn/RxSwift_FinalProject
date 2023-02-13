@@ -44,6 +44,8 @@ final class DetailViewController: BaseViewController {
     
     //MARK: Private Methods
     private func configNavigation() {
+        setTitleNavigation(type: .detail)
+
         let leftBarButton = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(backButtonTouchUpInside))
         favoriteButton = UIBarButtonItem(image: UIImage(systemName: "heart.fill"), style: .plain, target: self, action: #selector(favoriteButtonTouchUpInside))
         
