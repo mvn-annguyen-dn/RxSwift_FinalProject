@@ -25,7 +25,7 @@ final class DetailViewController: BaseViewController {
     
     // MARK: - Properties
     var viewModel: DetailViewModel?
-    var disposeBag = DisposeBag()
+    private let disposeBag = DisposeBag()
     private var timer: Timer?
     private var favoriteButton: UIBarButtonItem?
     private var quantity: Int = 1 {
@@ -66,7 +66,6 @@ final class DetailViewController: BaseViewController {
     private func configUI() {
         configSubView()
         updateUI()
-        //        configGesture()
     }
     
     private func updateUI() {
@@ -102,6 +101,7 @@ final class DetailViewController: BaseViewController {
     }
     
     private func updateColorFavorite(isFavorite: Bool) {
+        #warning("Handle Later")
         favoriteButton?.tintColor = isFavorite ? .red : .black
     }
     
@@ -181,12 +181,13 @@ final class DetailViewController: BaseViewController {
     }
     
     @IBAction private func addCartButtonTouchUpInside(_ sender: Any) {
-//        addProductToCart()
+        #warning("Handle later")
     }
     
     // MARK: - Objc methods
     @objc private func favoriteButtonTouchUpInside() {
         #warning("Handle later")
+        updateColorFavorite(isFavorite: !false)
     }
     
     @objc private func backButtonTouchUpInside() {
