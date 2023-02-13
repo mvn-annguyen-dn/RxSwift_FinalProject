@@ -20,7 +20,7 @@ final class LoginViewController: BaseViewController {
 
     // MARK: - Properties
     private var bag: DisposeBag = DisposeBag()
-    var viewModel: LoginViewModel = LoginViewModel()
+    var viewModel: LoginViewModel?
 
     // MARK: - Life cycle
     override func viewDidLoad() {
@@ -35,13 +35,15 @@ final class LoginViewController: BaseViewController {
 
     // MARK: - Private func
     private func bindingViewModel() {
+        guard let viewModel = viewModel else { return }
+
         usernameTextField.rx.text.orEmpty
             .distinctUntilChanged()
             .do(onNext: { _ in
                 self.usernameTextField.becomeFirstResponder()
             })
             .subscribe(onNext: { value in
-                self.viewModel.userName.onNext(value)
+                self.viewModel?.userName.onNext(value)
             })
             .disposed(by: bag)
                 
@@ -51,9 +53,15 @@ final class LoginViewController: BaseViewController {
                 self.passwordTextField.becomeFirstResponder()
             })
             .subscribe(onNext: { value in
-                self.viewModel.passWord.onNext(value)
+                self.viewModel?.passWord.onNext(value)
             })
             .disposed(by: bag)
+
+        loginButton.rx.tap
+            .subscribe(onNext: { [weak self] _ in
+                guard let this = self else { return }
+                this.viewModel?.requestLogin(username: this.usernameTextField.text ?? "", pw: this.passwordTextField.text ?? "")
+            }).disposed(by: bag)
                 
         viewModel.isValidUsername
             .drive(errorUserNameLabel.rx.text)
@@ -67,5 +75,10 @@ final class LoginViewController: BaseViewController {
             .startWith(false)
             .drive(loginButton.rx.isEnabled)
             .disposed(by: bag)
+                
+        viewModel.errorStatus
+            .subscribe(onNext: { error in
+                self.normalAlert(message: error.localizedDescription)
+            }).disposed(by: bag)
     }
 }
