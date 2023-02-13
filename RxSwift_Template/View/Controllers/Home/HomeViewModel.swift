@@ -19,7 +19,7 @@ final class HomeViewModel {
     var shops: BehaviorRelay<[Shop]> = .init(value: [])
     var recommends: BehaviorRelay<[Product]> = .init(value: [])
     var populars: BehaviorRelay<[Product]> = .init(value: [])
-    var errorBehaviorRelay: PublishRelay<Error> = .init()
+    var errorBehaviorRelay: PublishRelay<ApiError> = .init()
         
     func fetchData() {
         let sections: [HomeSectionModel] = [
@@ -49,8 +49,8 @@ final class HomeViewModel {
             self.recommends.accept(recommend.data ?? [])
             self.populars.accept(popular.data ?? [])
             self.fetchData()
-        }, onError: { _ in
-            self.errorBehaviorRelay.accept(ApiError.invalidResponse)
+        }, onError: { error in
+            self.errorBehaviorRelay.accept(error as? ApiError ?? .invalidResponse )
         })
         .disposed(by: bag)
     }
