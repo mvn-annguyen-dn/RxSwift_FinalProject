@@ -16,27 +16,16 @@ extension UIImageView {
                 observer.onError(ApiError.noData)
                 return Disposables.create()
             }
-            let config = URLSessionConfiguration.default
-            config.waitsForConnectivity = true
-            let session = URLSession(configuration: config)
-            let task = session.dataTask(with: url) { data, _, error in
-                if let _ = error {
-                    observer.onError(ApiError.parseError)
-                } else {
-                    if let data = data {
-                        let image = UIImage(data: data)
-                        observer.onNext(image)
-                        observer.onCompleted()
-                    } else {
-                        observer.onError(ApiError.noData)
-                    }
-                }
-            }
-            task.resume()
-            
-            return Disposables.create() {
-                task.cancel()
-            }
+            let urlRequest = URLRequest(url: url)
+            return URLSession.shared.rx.response(request: urlRequest).debug()
+                .subscribe(onNext: { data in
+                    let image = UIImage(data: data.data)
+                    observer.onNext(image)
+                }, onError: { _ in
+                    observer.onError(ApiError.noData)
+                }, onCompleted: {
+                    observer.onCompleted()
+                })
         }
         .observe(on: MainScheduler.instance)
     }
