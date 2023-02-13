@@ -22,6 +22,8 @@ final class DetailViewController: BaseViewController {
     @IBOutlet private weak var addToCartButton: UIButton!
     @IBOutlet private weak var quantityLabel: UILabel!
     @IBOutlet private weak var totalProductLabel: UILabel!
+    @IBOutlet private weak var minusButton: UIButton!
+    @IBOutlet private weak var plusButton: UIButton!
     
     // MARK: - Properties
     var viewModel: DetailViewModel?
@@ -66,6 +68,7 @@ final class DetailViewController: BaseViewController {
     private func configUI() {
         configSubView()
         updateUI()
+        addGeture()
     }
     
     private func updateUI() {
@@ -172,16 +175,26 @@ final class DetailViewController: BaseViewController {
     }
 
     // MARK: - Action methods
-    @IBAction private func decreaseButtonTouchUpInside(_ sender: Any) {
-        quantity = quantity == 1 ? 1 : quantity - 1
-    }
-    
-    @IBAction private func increaseButtonTouchUpInside(_ sender: Any) {
-        quantity += 1
-    }
-    
-    @IBAction private func addCartButtonTouchUpInside(_ sender: Any) {
-        #warning("Handle later")
+    private func addGeture() {
+        addToCartButton.rx.tap
+            .subscribe(onNext: { _ in
+                #warning("Handle later")
+            })
+            .disposed(by: disposeBag)
+        
+        minusButton.rx.tap
+            .subscribe(onNext: { [weak self] _ in
+                guard let this = self else { return }
+                this.quantity = this.quantity == 1 ? 1 : this.quantity - 1
+            })
+            .disposed(by: disposeBag)
+
+        plusButton.rx.tap
+            .subscribe(onNext: { [weak self] _ in
+                guard let this = self else { return }
+                this.quantity += 1
+            })
+            .disposed(by: disposeBag)
     }
     
     // MARK: - Objc methods
