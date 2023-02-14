@@ -16,6 +16,11 @@ final class BaseTabbarController: UITabBarController {
         examVC.tabBarItem = UITabBarItem(title: "Example", image: UIImage(systemName: "house.fill"), tag: 0)
         let homeNavigationController = UINavigationController(rootViewController: examVC)
 
+        let profileVC = ProfileViewController()
+        profileVC.tabBarItem = UITabBarItem(title: "Profile", image: UIImage(systemName: "person.fill"), tag: 3)
+        profileVC.viewModel = ProfileViewModel()
+        let profileNavigationController = UINavigationController(rootViewController: profileVC)
+
         // Custom Style For Tabbar
         tabBar.layer.rx
             .borderWidth
@@ -29,7 +34,7 @@ final class BaseTabbarController: UITabBarController {
         
         self.rx
             .viewControllers
-            .onNext([homeNavigationController])
+            .onNext([homeNavigationController, profileNavigationController])
     }
 }
 
