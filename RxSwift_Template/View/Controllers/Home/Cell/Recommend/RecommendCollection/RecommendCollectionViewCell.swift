@@ -41,10 +41,15 @@ final class RecommendCollectionViewCell: UICollectionViewCell {
             .bind(to: priceProductLabel.rx.text)
             .disposed(by: bag)
         
-        
         recommemd.map(\.imageProduct).subscribe { image in
-            self.productImageView.image = UIImage(named: image ?? "")
+            UIImageView.dowloadImageWithRxSwift(url: image ?? "").subscribe { image in
+                self.productImageView.rx.image.onNext(image)
+            }
+            .disposed(by: self.bag)
         }
         .disposed(by: bag)
+
+        
+        
     }
 }

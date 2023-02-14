@@ -31,7 +31,10 @@ final class SlideCollectionViewCell: UICollectionViewCell {
             .disposed(by: bag)
         
         shop.map(\.imageShop).subscribe { image in
-            self.shopImageView.image = UIImage(named: image ?? "")
+            UIImageView.dowloadImageWithRxSwift(url: image ?? "").subscribe { image in
+                self.shopImageView.rx.image.onNext(image)
+            }
+            .disposed(by: self.bag)
         }
         .disposed(by: bag)
     }
