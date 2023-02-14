@@ -15,6 +15,8 @@ final class DetailViewModel {
     private(set) var productSubject: BehaviorRelay<Product?> = .init(value: Product())
     private(set) var listImage: BehaviorRelay<[ImageProduct]> = .init(value: [])
     private(set) var favoriteProducts: BehaviorRelay<[Product]?> = .init(value: [])
+    private(set) var statusResponse: PublishRelay<String?> = .init()
+    private(set) var errorResponse: PublishRelay<ApiError?> = .init()
     
     var currentIndex: Int = 0
     
@@ -23,6 +25,18 @@ final class DetailViewModel {
     init(product: Product) {
         self.productSubject.accept(product)
         self.listImage.accept(Array(product.images))
+    }
+    
+    func requestAddToCart(quantity: Int) {
+        ApiNetWorkManager.shared
+            .request(MessageResponse.self, .target(MainTarget.addCart(id: self.productSubject.value?.id ?? 0, quantity: quantity)))
+            .subscribe(onSuccess: { [weak self] response in
+                guard let this = self else { return }
+                this.statusResponse.accept(response.data)
+            }, onFailure: { error in
+                self.errorResponse.accept(error as? ApiError ?? .unknown)
+            })
+            .disposed(by: bagModel)
     }
     
     func viewModelForItem(at indexPath: IndexPath) -> CarouselCellViewModel {

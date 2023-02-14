@@ -15,4 +15,11 @@ class BaseViewController: UIViewController {
         alertVC.addAction(okButton)
         present(alertVC, animated: false)
     }
+
+    func successAlert(message: String) {
+        let alertVC = UIAlertController(title: "SUCCESS", message: message, preferredStyle: .alert)
+        let okButton = UIAlertAction(title: "OK", style: .default)
+        alertVC.addAction(okButton)
+        present(alertVC, animated: false)
+    }
 }

@@ -75,6 +75,7 @@ final class DetailViewController: BaseViewController {
         configSubView()
         updateUI()
         addGeture()
+        stateStatus()
     }
     
     private func updateUI() {
@@ -188,7 +189,7 @@ final class DetailViewController: BaseViewController {
     private func addGeture() {
         addToCartButton.rx.tap
             .subscribe(onNext: { _ in
-                #warning("Handle later")
+                self.viewModel?.requestAddToCart(quantity: self.quantity)
             })
             .disposed(by: disposeBag)
         
@@ -203,6 +204,20 @@ final class DetailViewController: BaseViewController {
             .subscribe(onNext: { [weak self] _ in
                 guard let this = self else { return }
                 this.quantity += 1
+            })
+            .disposed(by: disposeBag)
+    }
+
+    private func stateStatus() {
+        viewModel?.statusResponse
+            .subscribe(onNext: { value in
+                self.successAlert(message: value ?? "")
+            })
+            .disposed(by: disposeBag)
+        
+        viewModel?.errorResponse
+            .subscribe(onNext: { error in
+                self.normalAlert(message: error?.localizedDescription ?? "")
             })
             .disposed(by: disposeBag)
     }
