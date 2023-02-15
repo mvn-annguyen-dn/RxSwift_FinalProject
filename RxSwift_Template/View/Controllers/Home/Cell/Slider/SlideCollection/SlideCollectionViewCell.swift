@@ -23,6 +23,7 @@ final class SlideCollectionViewCell: UICollectionViewCell {
         }
     }
     
+    // MARK: - Private func
     private func updateCell() {
         guard let viewModel = viewModel else { return }
         let shop = viewModel.shop.compactMap { $0 }
@@ -38,5 +39,4 @@ final class SlideCollectionViewCell: UICollectionViewCell {
         }
         .disposed(by: bag)
     }
-    
 }

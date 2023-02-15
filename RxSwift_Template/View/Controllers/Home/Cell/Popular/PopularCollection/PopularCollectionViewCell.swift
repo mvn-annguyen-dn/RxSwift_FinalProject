@@ -40,7 +40,6 @@ final class PopularCollectionViewCell: UICollectionViewCell {
             .bind(to: categotyProductLabel.rx.text)
             .disposed(by: bag)
         
-        
         popular.map(\.imageProduct).subscribe { image in
             UIImageView.dowloadImageWithRxSwift(url: image ?? "").subscribe { image in
                 self.productImageView.rx.image.onNext(image)

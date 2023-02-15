@@ -48,8 +48,5 @@ final class RecommendCollectionViewCell: UICollectionViewCell {
             .disposed(by: self.bag)
         }
         .disposed(by: bag)
-
-        
-        
     }
 }
