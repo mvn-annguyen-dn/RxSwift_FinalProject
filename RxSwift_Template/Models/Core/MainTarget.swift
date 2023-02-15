@@ -9,6 +9,7 @@ import Moya
 
 enum MainTarget {
     #warning("Handle Later")
+    case user
 }
 
 extension MainTarget: TargetType {
@@ -20,18 +21,24 @@ extension MainTarget: TargetType {
     var path: String {
         switch self {
             #warning("Handle Later")
+        case .user:
+            return "infoUser"
         }
     }
     
     var method: Moya.Method {
         switch self {
             #warning("Handle Later")
+        case .user:
+            return .get
         }
     }
     
     var task: Moya.Task {
         switch self {
             #warning("Handle Later")
+        case .user:
+            return .requestPlain
         }
     }
     

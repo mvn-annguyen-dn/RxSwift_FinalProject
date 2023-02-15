@@ -30,6 +30,8 @@ final class ProfileViewController: BaseViewController {
         configNavigation()
         configUI()
         configGesture()
+        updateUI()
+        alerStatus()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -49,15 +51,37 @@ final class ProfileViewController: BaseViewController {
 
     private func configGesture() {
         logOutButton.rx.tap
-            .subscribe(onNext: { _ in
-                #warning("Handle Later")
+            .subscribe(onNext: { [weak self] _ in
+                guard let this = self,
+                      let viewModel = this.viewModel else { return }
+                viewModel.logOutUser()
             })
             .disposed(by: disposeBag)
     }
-}
 
-// MARK: getApis
-extension ProfileViewController {
-    
+    private func updateUI() {
+        guard let viewModel = viewModel else { return }
+        viewModel.getApiUser()
+        let user = viewModel.userInfo.compactMap { $0 }
+        user.map(\.userName)
+            .map { $0?.uppercased().first?.description }
+            .bind(to: firstCharaterLabel.rx.text)
+            .disposed(by: disposeBag)
+        user.map(\.userName)
+            .bind(to: usernameLabel.rx.text)
+            .disposed(by: disposeBag)
+        user.map(\.email)
+            .bind(to: emailLabel.rx.text)
+            .disposed(by: disposeBag)
+    }
 
+    private func alerStatus() {
+        guard let viewModel = viewModel else { return }
+        viewModel.errorState
+            .subscribe(onNext: { [weak self] error in
+                guard let this = self,
+                      let error = error else { return }
+                this.normalAlert(message: error.localizedDescription)
+            }).disposed(by: disposeBag)
+    }
 }

@@ -24,6 +24,7 @@
 		845958722992014E00645984 /* BaseNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845958712992014E00645984 /* BaseNavigationController.swift */; };
 		8470C60B2990915B0019F3B2 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8470C60A2990915B0019F3B2 /* Session.swift */; };
 		8470C60D2990A6790019F3B2 /* BaseTabbarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8470C60C2990A6790019F3B2 /* BaseTabbarController.swift */; };
+		84A6F73E299C73A8000824D9 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A6F73D299C73A8000824D9 /* User.swift */; };
 		84D6DAE2298B7C42002A0626 /* ExampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D6DAE0298B7C42002A0626 /* ExampleViewController.swift */; };
 		84D6DAE3298B7C42002A0626 /* ExampleViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84D6DAE1298B7C42002A0626 /* ExampleViewController.xib */; };
 		84D6DAE5298B92E0002A0626 /* Example.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D6DAE4298B92E0002A0626 /* Example.swift */; };
@@ -72,6 +73,7 @@
 		845958712992014E00645984 /* BaseNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseNavigationController.swift; sourceTree = "<group>"; };
 		8470C60A2990915B0019F3B2 /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
 		8470C60C2990A6790019F3B2 /* BaseTabbarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTabbarController.swift; sourceTree = "<group>"; };
+		84A6F73D299C73A8000824D9 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		84D6DAE0298B7C42002A0626 /* ExampleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleViewController.swift; sourceTree = "<group>"; };
 		84D6DAE1298B7C42002A0626 /* ExampleViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ExampleViewController.xib; sourceTree = "<group>"; };
 		84D6DAE4298B92E0002A0626 /* Example.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Example.swift; sourceTree = "<group>"; };
@@ -190,6 +192,7 @@
 			children = (
 				84D6DAE4298B92E0002A0626 /* Example.swift */,
 				841EA82B298D18B900334780 /* Token.swift */,
+				84A6F73D299C73A8000824D9 /* User.swift */,
 			);
 			path = Scheme;
 			sourceTree = "<group>";
@@ -497,6 +500,7 @@
 				841EA81E298CE4C300334780 /* MainTarget.swift in Sources */,
 				841EA82A298CF89D00334780 /* ImageView+Ext.swift in Sources */,
 				84E18E6C299B693A00D9E8D1 /* ProfileViewController.swift in Sources */,
+				84A6F73E299C73A8000824D9 /* User.swift in Sources */,
 				8470C60B2990915B0019F3B2 /* Session.swift in Sources */,
 				841EA81A298CC32400334780 /* Traits+Ext.swift in Sources */,
 				3833F17129359920008A20E8 /* AppDelegate.swift in Sources */,
