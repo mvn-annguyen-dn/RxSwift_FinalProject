@@ -14,7 +14,7 @@ final class HomeViewModel {
     
     private var bag: DisposeBag = DisposeBag()
     /// multiple sections
-    var sectionModels: BehaviorRelay<[HomeSectionModel]> = .init(value: [])
+    var sectionModels: BehaviorRelay<[HomeSectionModelType]> = .init(value: [])
 
     var shops: BehaviorRelay<[Shop]> = .init(value: [])
     var recommends: BehaviorRelay<[Product]> = .init(value: [])
@@ -22,18 +22,13 @@ final class HomeViewModel {
     var errorBehaviorRelay: PublishRelay<ApiError> = .init()
         
     func fetchData() {
-        let sections: [HomeSectionModel] = [
-            
-            .sectionSlider(items: [
-                .slider(shop: shops.value)]),
-            
-            .sectionRecommend(items: [
-                .recommend(recommendProducts: recommends.value)]),
-            
-            .sectionPopular(items: [
-                .popular(popularProducts: populars.value)])
+        let sections: [HomeSectionModelType] = [
+            .init(items: [
+                .slider(shop: shops.value),
+                .recommend(recommendProducts: recommends.value),
+                .popular(popularProducts: populars.value)
+            ])
         ]
-        
         sectionModels.accept(sections)
     }
     
