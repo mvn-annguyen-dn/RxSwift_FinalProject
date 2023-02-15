@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class ProductResponse: Decodable {
+final class ProductResponse: Codable {
     
     var data: [Product]?
     
@@ -22,7 +22,7 @@ final class ProductResponse: Decodable {
     }
 }
 
-final class ShopResponse: Decodable {
+final class ShopResponse: Codable {
     
     var data: [Shop]?
     
@@ -37,7 +37,7 @@ final class ShopResponse: Decodable {
     }
 }
 
-final class Product: Decodable {
+final class Product: Codable {
     
     var id: Int?
     var name: String?
@@ -48,6 +48,12 @@ final class Product: Decodable {
     var category: Category?
     var images: [ImageProduct]?
     var isFavorite: Bool = false
+    
+    init(name: String? = nil, imageProduct: String? = nil, category: Category? = nil) {
+        self.name = name
+        self.imageProduct = imageProduct
+        self.category = category
+    }
     
     enum CodingKeys: String, CodingKey {
         case id, name, discount, content, price, category
@@ -69,11 +75,15 @@ final class Product: Decodable {
     }
 }
 
-final class Category: Decodable {
+final class Category: Codable {
     
     var id: Int?
     var nameCategory: String?
     var shop: Shop?
+    
+    init(shop: Shop? = nil) {
+        self.shop = shop
+    }
     
     enum CodingKeys: String, CodingKey {
         case id, shop
@@ -89,7 +99,7 @@ final class Category: Decodable {
     }
 }
 
-final class Shop: Decodable {
+final class Shop: Codable {
     
     var id: Int?
     var nameShop: String?
@@ -108,6 +118,10 @@ final class Shop: Decodable {
         case shopDescription = "description"
     }
     
+    init(nameShop: String? = nil) {
+        self.nameShop = nameShop
+    }
+    
     required convenience init(from decoder: Decoder) throws {
         self.init()
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -121,7 +135,7 @@ final class Shop: Decodable {
     }
 }
 
-final class ImageProduct: Decodable {
+final class ImageProduct: Codable {
     
     var image: String?
     
