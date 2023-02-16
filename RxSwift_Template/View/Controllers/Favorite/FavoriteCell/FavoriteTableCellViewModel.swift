@@ -10,7 +10,7 @@ import RxSwift
 import RxCocoa
 
 final class FavoriteTableCellViewModel {
-
+    
     var favoriteProduct: BehaviorRelay<Product?> = .init(value: nil)
     
     init(favoriteProduct: Product?) {

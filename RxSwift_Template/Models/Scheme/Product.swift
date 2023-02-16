@@ -5,12 +5,13 @@
 //  Created by Phong Huynh N. VN.Danang on 08/02/2023.
 //
 
-import Foundation
+import RxSwift
+import RealmSwift
 
-final class ProductResponse: Codable {
-    
-    var data: [Product]?
-    
+final class ProductResponse: Object, Codable {
+
+    var data = List<Product>()
+
     enum CodingKeys: String, CodingKey {
         case data
     }
@@ -18,14 +19,14 @@ final class ProductResponse: Codable {
     convenience init(from decoder: Decoder) throws {
         self.init()
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.data = try container.decode([Product].self, forKey: .data)
+        self.data = try container.decode(List<Product>.self, forKey: .data)
     }
 }
 
-final class ShopResponse: Codable {
-    
-    var data: [Shop]?
-    
+final class ShopResponse: Object, Codable {
+
+    var data = List<Shop>()
+
     enum CodingKeys: String, CodingKey {
         case data
     }
@@ -33,27 +34,20 @@ final class ShopResponse: Codable {
     convenience init(from decoder: Decoder) throws {
         self.init()
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.data = try container.decode([Shop].self, forKey: .data)
+        self.data = try container.decode(List<Shop>.self, forKey: .data)
     }
 }
 
-final class Product: Codable {
-    
-    var id: Int?
-    var name: String?
-    var imageProduct: String?
-    var discount: Int?
-    var content: String?
-    var price: Int?
-    var category: Category?
-    var images: [ImageProduct]?
-    var isFavorite: Bool = false
-    
-    init(name: String? = nil, imageProduct: String? = nil, category: Category? = nil) {
-        self.name = name
-        self.imageProduct = imageProduct
-        self.category = category
-    }
+final class Product: Object, Codable {
+
+    @objc dynamic var id: Int = 0
+    @objc dynamic var name: String = ""
+    @objc dynamic var imageProduct: String = ""
+    @objc dynamic var discount: Int = 0
+    @objc dynamic var content: String = ""
+    @objc dynamic var price: Int = 0
+    @objc dynamic var category: Category?
+    var images = List<ImageProduct>()
     
     enum CodingKeys: String, CodingKey {
         case id, name, discount, content, price, category
@@ -70,21 +64,17 @@ final class Product: Codable {
         self.content = try container.decode(String.self, forKey: .content)
         self.price = try container.decode(Int.self, forKey: .price)
         self.category = try container.decode(Category.self, forKey: .category)
-        self.images = try container.decode([ImageProduct].self, forKey: .images)
+        self.images = try container.decode(List<ImageProduct>.self, forKey: .images)
         self.imageProduct = try container.decode(String.self, forKey: .imageProduct)
     }
 }
 
-final class Category: Codable {
-    
-    var id: Int?
-    var nameCategory: String?
-    var shop: Shop?
-    
-    init(shop: Shop? = nil) {
-        self.shop = shop
-    }
-    
+final class Category: Object, Codable {
+
+    @objc dynamic var id: Int = 0
+    @objc dynamic var nameCategory: String = ""
+    @objc dynamic var shop: Shop?
+
     enum CodingKeys: String, CodingKey {
         case id, shop
         case nameCategory = "name_category"
@@ -99,15 +89,15 @@ final class Category: Codable {
     }
 }
 
-final class Shop: Codable {
-    
-    var id: Int?
-    var nameShop: String?
-    var address: String?
-    var phoneNumber: String?
-    var emailShop: String?
-    var imageShop: String?
-    var shopDescription: String?
+final class Shop: Object, Codable {
+
+    @objc dynamic var id: Int = 0
+    @objc dynamic var nameShop: String = ""
+    @objc dynamic var address: String = ""
+    @objc dynamic var phoneNumber: String = ""
+    @objc dynamic var emailShop: String = ""
+    @objc dynamic var imageShop: String = ""
+    @objc dynamic var shopDescription: String = ""
     
     enum CodingKeys: String, CodingKey {
         case id, address
@@ -116,10 +106,6 @@ final class Shop: Codable {
         case emailShop = "email_shop"
         case imageShop = "image_shop"
         case shopDescription = "description"
-    }
-    
-    init(nameShop: String? = nil) {
-        self.nameShop = nameShop
     }
     
     required convenience init(from decoder: Decoder) throws {
@@ -135,9 +121,9 @@ final class Shop: Codable {
     }
 }
 
-final class ImageProduct: Codable {
-    
-    var image: String?
+final class ImageProduct: Object, Codable {
+
+    @objc dynamic var image: String = ""
     
     enum CodingKeys: String, CodingKey {
         case image
