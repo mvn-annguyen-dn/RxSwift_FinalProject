@@ -30,14 +30,14 @@ final class FavoriteTableViewCell: UITableViewCell {
     
     // MARK: - Private method
     private func configUI() {
-        itemImageView.layer.rx.borderWidth.onNext(Define.borderWidth)
-        itemImageView.layer.rx.cornerRadius.onNext(Define.cornerRadius)
-        itemImageView.layer.rx.borderColor.onNext(Define.borderColor)
+        itemImageView.layer.borderWidth = Define.borderWidth
+        itemImageView.layer.cornerRadius = Define.cornerRadius
+        itemImageView.layer.borderColor = Define.borderColor
     }
     
     private func updateCell() {
         guard let viewModel = viewModel else { return }
-        let product = viewModel.favoriteProduct.compactMap { $0 }
+        let product = viewModel.product.compactMap { $0 }
 
         product.map(\.name)
             .bind(to: itemNameLabel.rx.text)

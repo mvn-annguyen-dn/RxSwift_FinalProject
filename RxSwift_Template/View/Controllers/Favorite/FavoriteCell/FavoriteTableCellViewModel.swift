@@ -11,9 +11,9 @@ import RxCocoa
 
 final class FavoriteTableCellViewModel {
 
-    var favoriteProduct: BehaviorRelay<Product?> = .init(value: nil)
+    var product: BehaviorRelay<Product?> = .init(value: nil)
     
-    init(favoriteProduct: Product?) {
-        self.favoriteProduct.accept(favoriteProduct)
+    init(product: Product?) {
+        self.product.accept(product)
     }
 }

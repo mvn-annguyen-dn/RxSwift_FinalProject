@@ -36,7 +36,7 @@ final class FavoriteViewController: BaseViewController {
     }
     
     private func configDatasourcce() {
-        viewModel.favoriteProducts.bind(to: tableView.rx.items(cellIdentifier: Define.cellName, cellType: FavoriteTableViewCell.self)) { index, element, cell in
+        viewModel.favorites.bind(to: tableView.rx.items(cellIdentifier: Define.cellName, cellType: FavoriteTableViewCell.self)) { index, element, cell in
             cell.viewModel = self.viewModel.viewModelForItem(index: index)
         }
         .disposed(by: bag)
