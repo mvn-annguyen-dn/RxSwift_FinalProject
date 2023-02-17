@@ -40,8 +40,8 @@ final class RecommendCell: UITableViewCell {
     
     private func configDataSource() {
         guard let viewModel = viewModel else { return }
-        viewModel.recommends.bind(to: collectionView.rx.items(cellIdentifier: Define.cellName, cellType: RecommendCollectionViewCell.self)) { index, recommend, cell in
-            cell.viewModel = viewModel.viewModelForItem(index: index)
+        viewModel.recommends.bind(to: collectionView.rx.items(cellIdentifier: Define.cellName, cellType: RecommendCollectionViewCell.self)) { index, element, cell in
+            cell.viewModel = viewModel.viewModelForItem(recommendProduct: element)
         }
         .disposed(by: bag)
     }
@@ -51,15 +51,15 @@ final class RecommendCell: UITableViewCell {
 extension RecommendCell:  UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: UIScreen.main.bounds.width, height: 180)
+        return CGSize(width: Define.width, height: Define.height)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        return UIEdgeInsets(top: Define.sizeLayout, left: Define.sizeLayout, bottom: Define.sizeLayout, right: Define.sizeLayout)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 0
+        return Define.sizeLayout
     }
 }
 
@@ -67,5 +67,8 @@ extension RecommendCell:  UICollectionViewDelegateFlowLayout {
 extension RecommendCell {
     private struct Define {
         static var cellName: String = String(describing: RecommendCollectionViewCell.self)
+        static var width: CGFloat = UIScreen.main.bounds.width
+        static var height: CGFloat = 180
+        static var sizeLayout: CGFloat = 0
     }
 }

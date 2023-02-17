@@ -83,12 +83,12 @@ extension HomeViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         switch indexPath.row {
         case 0:
-            return 300
+            return Define.heightSlideCell
         case 1:
-            return 220
+            return Define.heightRecommendCell
         case 2:
-            return 400
-        default: return 0
+            return Define.heightPopularCell
+        default: return Define.heightDefaultCell
         }
     }
 }
@@ -99,5 +99,9 @@ extension HomeViewController {
         static var slideCell: String = String(describing: SliderCell.self)
         static var recommendCell: String = String(describing: RecommendCell.self)
         static var popularCell: String = String(describing: PopularCell.self)
+        static var heightSlideCell: CGFloat = 300
+        static var heightRecommendCell: CGFloat = 220
+        static var heightPopularCell: CGFloat = 220
+        static var heightDefaultCell: CGFloat = 0
     }
 }
