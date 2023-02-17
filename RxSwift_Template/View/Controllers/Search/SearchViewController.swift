@@ -26,6 +26,7 @@ final class SearchViewController: BaseViewController {
         configNavigation()
         configCollectionView()
         configSearchController()
+        viewModel?.requestSearchApi()
         configDataSource()
     }
     
@@ -130,26 +131,26 @@ extension SearchViewController: UISearchResultsUpdating, UISearchBarDelegate, UI
               let searchText = searchController.searchBar.text else { return }
         let scopeButton = searchController.searchBar.scopeButtonTitles?[searchController.searchBar.selectedScopeButtonIndex]
         if !searchText.isEmpty {
-            viewModel.searching = true
+            viewModel.searching.accept(true)
             viewModel.searchProducts.accept([])
             if scopeButton == "Product" {
-                let products = viewModel.products.value.filter { $0.name?.lowercased().contains(searchText.lowercased()) ?? false }
+                let products = viewModel.products.value.filter { $0.name.lowercased().contains(searchText.lowercased()) }
                 viewModel.searchProducts
                     .accept(products)
             } else {
-                let products = viewModel.products.value.filter { $0.content?.lowercased().contains(searchText.lowercased()) ?? false }
+                let products = viewModel.products.value.filter { ($0.category?.shop?.nameShop ?? "").lowercased().contains(searchText.lowercased()) }
                 viewModel.searchProducts
                     .accept(products)
             }
         } else {
-            if viewModel.scopeButtonPress {
+            if viewModel.scopeButtonPress.value {
                 let scopeButton = searchController.searchBar.scopeButtonTitles?[searchController.searchBar.selectedScopeButtonIndex]
                 if !(scopeButton?.isEmpty ?? false) {
                     viewModel.searchProducts.accept([])
                 }
-                viewModel.searching = false
+                viewModel.searching.accept(false)
             } else {
-                viewModel.searching = false
+                viewModel.searching.accept(false)
                 viewModel.searchProducts.accept([])
             }
         }
@@ -157,13 +158,13 @@ extension SearchViewController: UISearchResultsUpdating, UISearchBarDelegate, UI
 
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         guard let viewModel = viewModel else { return }
-        viewModel.searching = false
+        viewModel.searching.accept(false)
         viewModel.searchProducts.accept([])
     }
     
     func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
         guard let viewModel = viewModel else { return }
-        viewModel.scopeButtonPress = true
+        viewModel.scopeButtonPress.accept(true)
         let scopeButton = searchController.searchBar.scopeButtonTitles?[searchController.searchBar.selectedScopeButtonIndex]
         if !(scopeButton?.isEmpty ?? false) {
             viewModel.searchProducts.accept(viewModel.products.value)

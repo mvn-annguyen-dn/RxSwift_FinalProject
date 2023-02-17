@@ -52,7 +52,7 @@ final class SearchCollectionViewCell: UICollectionViewCell {
         product
             .map(\.imageProduct)
             .subscribe(onNext: { string in
-                self.productImageview.dowloadImageWithRxSwift(url: string ?? "")
+                self.productImageview.dowloadImageWithRxSwift(url: string)
                     .bind(to: self.productImageview.rx.image)
                     .disposed(by: self.cellBag)
             })

@@ -9,6 +9,7 @@ import Moya
 
 enum MainTarget {
     #warning("Handle Later")
+    case search
 }
 
 extension MainTarget: TargetType {
@@ -20,18 +21,24 @@ extension MainTarget: TargetType {
     var path: String {
         switch self {
             #warning("Handle Later")
+        case .search:
+            return "product"
         }
     }
     
     var method: Moya.Method {
         switch self {
             #warning("Handle Later")
+        case .search:
+            return .get
         }
     }
     
     var task: Moya.Task {
         switch self {
             #warning("Handle Later")
+        case .search:
+            return .requestPlain
         }
     }
     
