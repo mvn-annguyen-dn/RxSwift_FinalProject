@@ -40,7 +40,7 @@ final class SliderCell: UITableViewCell {
     
     private func configDataSource() {
         guard let viewModel = viewModel else { return }
-        viewModel.shops.bind(to: collectionView.rx.items(cellIdentifier: Define.cellName, cellType: SlideCollectionViewCell.self)) { index, element, cell in
+        viewModel.shops.asDriver(onErrorJustReturn: []).drive(collectionView.rx.items(cellIdentifier: Define.cellName, cellType: SlideCollectionViewCell.self)) { index, element, cell in
             cell.viewModel = viewModel.viewModelForItem(sliderShop: element)
         }
         .disposed(by: bag)

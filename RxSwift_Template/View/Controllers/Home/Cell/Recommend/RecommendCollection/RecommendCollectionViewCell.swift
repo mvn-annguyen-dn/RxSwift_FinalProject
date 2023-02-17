@@ -29,8 +29,8 @@ final class RecommendCollectionViewCell: UICollectionViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         customViewShadow()
-        productImageView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMinXMinYCorner]
-        productImageView.layer.cornerRadius = Define.cornerRadius
+        productImageView.layer.rx.maskedCorners.onNext([.layerMinXMaxYCorner, .layerMinXMinYCorner])
+        productImageView.layer.rx.cornerRadius.onNext(Define.cornerRadius)
     }
     
     override func prepareForReuse() {
@@ -39,13 +39,13 @@ final class RecommendCollectionViewCell: UICollectionViewCell {
     }
     
     private func customViewShadow() {
-        cellView.clipsToBounds = true
-        cellView.layer.masksToBounds = false
-        cellView.layer.cornerRadius = Define.cornerRadius
-        cellView.layer.shadowOffset = CGSize(width: Define.widthShadowOffset, height: Define.heightShadowOffset)
-        cellView.layer.shadowColor = Define.shadowColor
-        cellView.layer.shadowOpacity = Define.shadowOpacity
-        cellView.layer.shadowRadius = Define.shadowRadius
+        cellView.rx.clipsToBounds.onNext(true)
+        cellView.layer.rx.masksToBounds.onNext(false)
+        cellView.layer.rx.cornerRadius.onNext(Define.cornerRadius)
+        cellView.layer.rx.shadowOffset.onNext(CGSize(width: Define.widthShadowOffset, height: Define.heightShadowOffset))
+        cellView.layer.rx.shadowColor.onNext(Define.shadowColor)
+        cellView.layer.rx.shadowOpacity.onNext(Define.shadowOpacity)
+        cellView.layer.rx.shadowRadius.onNext(Define.shadowRadius)
     }
     
     private func updateCell() {

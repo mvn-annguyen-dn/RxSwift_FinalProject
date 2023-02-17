@@ -39,7 +39,7 @@ final class PopularCell: UITableViewCell {
     
     private func configDataSource() {
         guard let viewModel = viewModel else { return }
-        viewModel.populars.bind(to: collectionView.rx.items(cellIdentifier: Define.cellName, cellType: PopularCollectionViewCell.self)) { index, element, cell in
+        viewModel.populars.asDriver(onErrorJustReturn: []).drive(collectionView.rx.items(cellIdentifier: Define.cellName, cellType: PopularCollectionViewCell.self)) { index, element, cell in
             cell.viewModel = viewModel.viewModelForItem(popularProduct: element)
         }
         .disposed(by: bag)

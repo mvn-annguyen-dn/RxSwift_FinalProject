@@ -27,10 +27,10 @@ final class PopularCollectionViewCell: UICollectionViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        contentView.layer.borderWidth = Define.borderWidth
-        contentView.layer.cornerRadius = Define.cornerRadius
-        productImageView.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
-        productImageView.layer.cornerRadius = Define.cornerRadius
+        contentView.layer.rx.borderWidth.onNext(Define.borderWidth)
+        contentView.layer.rx.cornerRadius.onNext(Define.cornerRadius)
+        productImageView.layer.rx.maskedCorners.onNext([.layerMaxXMinYCorner, .layerMinXMinYCorner])
+        productImageView.layer.rx.cornerRadius.onNext(Define.cornerRadius)
     }
     
     override func prepareForReuse() {
