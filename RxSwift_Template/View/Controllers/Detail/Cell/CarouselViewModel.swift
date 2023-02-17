@@ -11,7 +11,7 @@ final class CarouselCellViewModel {
 
     private(set) var imageSubject: BehaviorSubject<String?> = .init(value: "")
     
-    init(data: String?) {
-        self.imageSubject.onNext(data)
+    init(imageString: String?) {
+        self.imageSubject.onNext(imageString)
     }
 }
