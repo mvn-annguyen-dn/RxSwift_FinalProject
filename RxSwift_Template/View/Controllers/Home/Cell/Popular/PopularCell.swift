@@ -34,7 +34,6 @@ final class PopularCell: UITableViewCell {
     private func configCollectionView() {
         let cellNib = UINib(nibName: Define.cellName, bundle: Bundle.main)
         collectionView.register(cellNib, forCellWithReuseIdentifier: Define.cellName)
-        
         collectionView.rx.setDelegate(self).disposed(by: bag)
     }
     

@@ -30,18 +30,17 @@ final class RecommendCollectionViewCell: UICollectionViewCell {
         super.awakeFromNib()
         customViewShadow()
         productImageView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMinXMinYCorner]
-        productImageView.layer.cornerRadius = 20
+        productImageView.layer.cornerRadius = Define.cornerRadius
     }
     
     private func customViewShadow() {
         cellView.clipsToBounds = true
-        cellView.layer.cornerRadius = 20
-        
         cellView.layer.masksToBounds = false
-        cellView.layer.shadowOffset = CGSize(width: 0, height: 3)
-        cellView.layer.shadowColor = UIColor.lightGray.cgColor
-        cellView.layer.shadowOpacity = 0.3
-        cellView.layer.shadowRadius = 5
+        cellView.layer.cornerRadius = Define.cornerRadius
+        cellView.layer.shadowOffset = CGSize(width: Define.widthShadowOffset, height: Define.heightShadowOffset)
+        cellView.layer.shadowColor = Define.shadowColor
+        cellView.layer.shadowOpacity = Define.shadowOpacity
+        cellView.layer.shadowRadius = Define.shadowRadius
     }
     
     private func updateCell() {
@@ -66,5 +65,17 @@ final class RecommendCollectionViewCell: UICollectionViewCell {
             .disposed(by: self.bag)
         }
         .disposed(by: bag)
+    }
+}
+
+// MARK: - Define
+extension RecommendCollectionViewCell {
+    private struct Define {
+        static var cornerRadius: CGFloat = 20
+        static var widthShadowOffset: Double = 0
+        static var heightShadowOffset: Double = 3
+        static var shadowColor = UIColor.lightGray.cgColor
+        static var shadowOpacity: Float = 0.3
+        static var shadowRadius: CGFloat = 5
     }
 }
