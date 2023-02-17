@@ -23,6 +23,7 @@ final class SlideCollectionViewCell: UICollectionViewCell {
         }
     }
     
+    // MARK: - Private func
     private func updateCell() {
         guard let viewModel = viewModel else { return }
         let shop = viewModel.shop.compactMap { $0 }
@@ -30,13 +31,12 @@ final class SlideCollectionViewCell: UICollectionViewCell {
             .bind(to: nameShopLabel.rx.text)
             .disposed(by: bag)
         
-        shop.map(\.imageShop).subscribe { element in
-            UIImageView.dowloadImageWithRxSwift(url: element ?? "").subscribe { image in
+        shop.map(\.imageShop).subscribe { image in
+            UIImage.dowloadImageWithRxSwift(url: image ?? "").subscribe { image in
                 self.shopImageView.rx.image.onNext(image)
             }
             .disposed(by: self.bag)
         }
         .disposed(by: bag)
     }
-    
 }

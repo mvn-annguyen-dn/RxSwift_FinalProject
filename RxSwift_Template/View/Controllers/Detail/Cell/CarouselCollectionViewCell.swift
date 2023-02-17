@@ -33,7 +33,7 @@ final class CarouselCollectionViewCell: UICollectionViewCell {
             .compactMap { $0 }
             .subscribe { [weak self] image in
                 guard let this = self else { return }
-                UIImageView.dowloadImageWithRxSwift(url: image).subscribe { image in
+                UIImage.dowloadImageWithRxSwift(url: image).subscribe { image in
                     this.productImageView.rx.image.onNext(image)
                 }
                 .disposed(by: this.cellBag)

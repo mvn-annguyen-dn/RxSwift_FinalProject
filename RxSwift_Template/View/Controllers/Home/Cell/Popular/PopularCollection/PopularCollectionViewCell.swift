@@ -27,10 +27,10 @@ final class PopularCollectionViewCell: UICollectionViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        contentView.layer.borderWidth = 1
-        contentView.layer.cornerRadius = 20
+        contentView.layer.borderWidth = Define.borderWidth
+        contentView.layer.cornerRadius = Define.cornerRadius
         productImageView.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
-        productImageView.layer.cornerRadius = 20
+        productImageView.layer.cornerRadius = Define.cornerRadius
     }
     
     private func updateCell() {
@@ -49,7 +49,7 @@ final class PopularCollectionViewCell: UICollectionViewCell {
             .disposed(by: bag)
         
         popular.map(\.imageProduct).subscribe { image in
-            UIImageView.dowloadImageWithRxSwift(url: image ?? "").subscribe { image in
+            UIImage.dowloadImageWithRxSwift(url: image ?? "").subscribe { image in
                 self.productImageView.rx.image.onNext(image)
             }
             .disposed(by: self.bag)
@@ -57,3 +57,12 @@ final class PopularCollectionViewCell: UICollectionViewCell {
         .disposed(by: bag)
     }
 }
+
+// MARK: - Define
+extension PopularCollectionViewCell {
+    private struct Define {
+        static var cornerRadius: CGFloat = 20
+        static var borderWidth: CGFloat = 1
+    }
+}
+

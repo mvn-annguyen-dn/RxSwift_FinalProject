@@ -18,7 +18,7 @@ final class DetailViewModel {
     private(set) var statusResponse: PublishRelay<String?> = .init()
     private(set) var errorResponse: PublishRelay<ApiError?> = .init()
     
-    var currentIndex: Int = 0
+    var currentIndex: BehaviorRelay<Int> = .init(value: 0)
     
     private let bagModel: DisposeBag = DisposeBag()
     

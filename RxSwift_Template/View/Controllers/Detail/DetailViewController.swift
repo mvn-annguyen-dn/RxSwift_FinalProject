@@ -245,9 +245,10 @@ final class DetailViewController: BaseViewController {
     
     @objc private func moveToNextIndex() {
         guard let viewModel = viewModel else { return }
-        let isCheck = viewModel.currentIndex < (viewModel.listImage.value.count - 1)
-        viewModel.currentIndex = isCheck ? viewModel.currentIndex + 1 : 0
-        collectionView.scrollToItem(at: IndexPath(row: viewModel.currentIndex, section: 0), at: .centeredHorizontally, animated: true)
+        let isCheck = viewModel.currentIndex.value < (viewModel.listImage.value.count - 1)
+        let current = viewModel.currentIndex.value
+        viewModel.currentIndex.accept(isCheck ? current + 1 : 0)
+        collectionView.scrollToItem(at: IndexPath(row: viewModel.currentIndex.value, section: 0), at: .centeredHorizontally, animated: true)
     }
 }
 
