@@ -17,7 +17,7 @@ final class RecommendCellViewModel {
         self.recommends.accept(recommends)
     }
     
-    func viewModelForItem(index: Int) -> RecommendCollectionViewCellViewModel {
-        return RecommendCollectionViewCellViewModel(recommend: recommends.value[index])
+    func viewModelForItem(recommendProduct: Product) -> RecommendCollectionViewCellViewModel {
+        return RecommendCollectionViewCellViewModel(recommend: recommendProduct)
     }
 }

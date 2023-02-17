@@ -34,14 +34,13 @@ final class PopularCell: UITableViewCell {
     private func configCollectionView() {
         let cellNib = UINib(nibName: Define.cellName, bundle: Bundle.main)
         collectionView.register(cellNib, forCellWithReuseIdentifier: Define.cellName)
-        
         collectionView.rx.setDelegate(self).disposed(by: bag)
     }
     
     private func configDataSource() {
         guard let viewModel = viewModel else { return }
         viewModel.populars.bind(to: collectionView.rx.items(cellIdentifier: Define.cellName, cellType: PopularCollectionViewCell.self)) { index, element, cell in
-            cell.viewModel = viewModel.viewModelForItem(index: index)
+            cell.viewModel = viewModel.viewModelForItem(popularProduct: element)
         }
         .disposed(by: bag)
     }
@@ -51,15 +50,15 @@ final class PopularCell: UITableViewCell {
 extension PopularCell: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: UIScreen.main.bounds.width / 2 - 15, height: 330)
+        return CGSize(width: Define.width, height: Define.height)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        return UIEdgeInsets(top: Define.sizeLayout, left: Define.sizeLayout, bottom: Define.sizeLayout, right: Define.sizeLayout)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 10
+        return Define.sizeLayout
     }
 }
 
@@ -67,5 +66,8 @@ extension PopularCell: UICollectionViewDelegateFlowLayout {
 extension PopularCell {
     private struct Define {
         static var cellName: String = String(describing: PopularCollectionViewCell.self)
+        static var width: CGFloat = UIScreen.main.bounds.width / 2 - 15
+        static var height: CGFloat = 330
+        static var sizeLayout: CGFloat = 10
     }
 }
