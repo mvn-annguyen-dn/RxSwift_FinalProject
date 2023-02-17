@@ -16,7 +16,7 @@ final class DetailViewModel {
     private(set) var listImage: BehaviorRelay<[ImageProduct]> = .init(value: [])
     private(set) var favoriteProducts: BehaviorRelay<[Product]?> = .init(value: [])
     
-    var currentIndex: Int = 0
+    var currentIndex: BehaviorRelay<Int> = .init(value: 0)
     
     private let bagModel: DisposeBag = DisposeBag()
     

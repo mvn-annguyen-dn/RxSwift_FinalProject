@@ -53,6 +53,7 @@ final class HomeViewController: BaseViewController {
             case .recommend:
                 guard let cell = tableview.dequeueReusableCell(withIdentifier: "RecommendCell", for: indexpath) as? RecommendCell else { return UITableViewCell() }
                 cell.viewModel = self.viewModel.viewModelForRecommend(indexPath: indexpath)
+                cell.delegate = self
                 cell.selectionStyle = .none
                 return cell
             case .popular:
@@ -103,5 +104,16 @@ extension HomeViewController {
         static var heightRecommendCell: CGFloat = 220
         static var heightPopularCell: CGFloat = 220
         static var heightDefaultCell: CGFloat = 0
+    }
+}
+
+extension HomeViewController: RecommendCellDelegate {
+    func cell(cell: RecommendCell, needPerform action: RecommendCell.Action) {
+        switch action {
+        case .didTap(let product):
+            let vc = DetailViewController()
+            vc.viewModel = DetailViewModel(product: product)
+            navigationController?.pushViewController(vc, animated: true)
+        }
     }
 }
