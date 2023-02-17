@@ -17,7 +17,7 @@ final class SliderCellViewModel {
         self.shops.accept(shops)
     }
     
-    func viewModelForItem(index: Int) -> SlideCollectionViewCellViewModel {
-        return SlideCollectionViewCellViewModel(shop: shops.value[index])
+    func viewModelForItem(sliderShop: Shop) -> SlideCollectionViewCellViewModel {
+        return SlideCollectionViewCellViewModel(shop: sliderShop)
     }
 }

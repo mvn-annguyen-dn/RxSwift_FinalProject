@@ -40,7 +40,7 @@ final class SliderCell: UITableViewCell {
     private func configDataSource() {
         guard let viewModel = viewModel else { return }
         viewModel.shops.bind(to: collectionView.rx.items(cellIdentifier: Define.cellName, cellType: SlideCollectionViewCell.self)) { index, element, cell in
-            cell.viewModel = viewModel.viewModelForItem(index: index)
+            cell.viewModel = viewModel.viewModelForItem(sliderShop: element)
         }
         .disposed(by: bag)
     }
@@ -54,11 +54,11 @@ extension SliderCell: UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        return UIEdgeInsets(top: Define.sizeLayout, left: Define.sizeLayout, bottom: Define.sizeLayout, right: Define.sizeLayout)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 0
+        return Define.sizeLayout
     }
 }
 
@@ -66,5 +66,6 @@ extension SliderCell: UICollectionViewDelegateFlowLayout {
 extension SliderCell {
     private struct Define {
         static var cellName: String = String(describing: SlideCollectionViewCell.self)
+        static var sizeLayout: CGFloat = 0
     }
 }

@@ -42,7 +42,7 @@ final class RecommendCollectionViewCell: UICollectionViewCell {
             .disposed(by: bag)
         
         recommemd.map(\.imageProduct).subscribe { image in
-            UIImageView.dowloadImageWithRxSwift(url: image ?? "").subscribe { image in
+            UIImage.dowloadImageWithRxSwift(url: image ?? "").subscribe { image in
                 self.productImageView.rx.image.onNext(image)
             }
             .disposed(by: self.bag)
