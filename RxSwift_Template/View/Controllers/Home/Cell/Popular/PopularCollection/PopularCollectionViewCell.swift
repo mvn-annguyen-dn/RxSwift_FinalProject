@@ -49,7 +49,7 @@ final class PopularCollectionViewCell: UICollectionViewCell {
             .disposed(by: bag)
         
         popular.map(\.imageProduct).subscribe { image in
-            UIImageView.dowloadImageWithRxSwift(url: image ?? "").subscribe { image in
+            UIImage.dowloadImageWithRxSwift(url: image ?? "").subscribe { image in
                 self.productImageView.rx.image.onNext(image)
             }
             .disposed(by: self.bag)

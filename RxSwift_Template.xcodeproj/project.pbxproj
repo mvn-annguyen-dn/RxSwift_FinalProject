@@ -19,7 +19,7 @@
 		841EA824298CF4DE00334780 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841EA823298CF4DE00334780 /* BaseViewController.swift */; };
 		841EA826298CF83600334780 /* String+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841EA825298CF83600334780 /* String+Ext.swift */; };
 		841EA828298CF86D00334780 /* Collection+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841EA827298CF86D00334780 /* Collection+Ext.swift */; };
-		841EA82A298CF89D00334780 /* ImageView+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841EA829298CF89D00334780 /* ImageView+Ext.swift */; };
+		841EA82A298CF89D00334780 /* UIImage+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841EA829298CF89D00334780 /* UIImage+Ext.swift */; };
 		841EA82C298D18B900334780 /* Token.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841EA82B298D18B900334780 /* Token.swift */; };
 		8425D78029890E5000CA9728 /* LoginTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8425D77F29890E5000CA9728 /* LoginTarget.swift */; };
 		8453F5C529963D9A002AE73A /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8453F5C329963D9A002AE73A /* DetailViewController.swift */; };
@@ -93,7 +93,7 @@
 		841EA823298CF4DE00334780 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		841EA825298CF83600334780 /* String+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Ext.swift"; sourceTree = "<group>"; };
 		841EA827298CF86D00334780 /* Collection+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collection+Ext.swift"; sourceTree = "<group>"; };
-		841EA829298CF89D00334780 /* ImageView+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ImageView+Ext.swift"; sourceTree = "<group>"; };
+		841EA829298CF89D00334780 /* UIImage+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Ext.swift"; sourceTree = "<group>"; };
 		841EA82B298D18B900334780 /* Token.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Token.swift; sourceTree = "<group>"; };
 		8425D77F29890E5000CA9728 /* LoginTarget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginTarget.swift; sourceTree = "<group>"; };
 		8453F5C329963D9A002AE73A /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
@@ -295,7 +295,7 @@
 				841EA819298CC32400334780 /* Traits+Ext.swift */,
 				841EA825298CF83600334780 /* String+Ext.swift */,
 				841EA827298CF86D00334780 /* Collection+Ext.swift */,
-				841EA829298CF89D00334780 /* ImageView+Ext.swift */,
+				841EA829298CF89D00334780 /* UIImage+Ext.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -656,7 +656,7 @@
 				841EA82C298D18B900334780 /* Token.swift in Sources */,
 				841EA826298CF83600334780 /* String+Ext.swift in Sources */,
 				841EA81E298CE4C300334780 /* MainTarget.swift in Sources */,
-				841EA82A298CF89D00334780 /* ImageView+Ext.swift in Sources */,
+				841EA82A298CF89D00334780 /* UIImage+Ext.swift in Sources */,
 				CB5BF78929937F0700F5EFE5 /* PopularCellViewModel.swift in Sources */,
 				8470C60B2990915B0019F3B2 /* Session.swift in Sources */,
 				841EA81A298CC32400334780 /* Traits+Ext.swift in Sources */,
