@@ -1,5 +1,5 @@
 //
-//  UIImage+Ext.swift
+//  UIImageView+Ext.swift
 //  RxSwift_Template
 //
 //  Created by Luong Tran M. VN.Danang on 03/02/2023.
@@ -8,7 +8,7 @@
 import UIKit
 import RxSwift
 
-extension UIImage {
+extension UIImageView {
     public static func dowloadImageWithRxSwift(url: String) -> Observable<UIImage?> {
         return Observable.create { observer in
             guard let url = URL(string: url) else {

@@ -40,12 +40,20 @@ final class PopularCollectionViewCell: UICollectionViewCell {
             .bind(to: categotyProductLabel.rx.text)
             .disposed(by: bag)
         
-        popular.map(\.imageProduct).subscribe { image in
-            UIImage.dowloadImageWithRxSwift(url: image ?? "").subscribe { image in
-                self.productImageView.rx.image.onNext(image)
-            }
-            .disposed(by: self.bag)
+        popular.map(\.imageProduct)
+            .bind(to: productImageView.rx.imageCustomBinder)
+            .disposed(by: bag)
+    }
+}
+
+extension Reactive where Base: UIImageView {
+
+    var imageCustomBinder: Binder<String?> {
+        return Binder(self.base) { imageView, stringImage in
+            UIImageView.dowloadImageWithRxSwift(url: stringImage ?? "")
+                .subscribe { image in
+                    imageView.rx.image.onNext(image)
+                }
         }
-        .disposed(by: bag)
     }
 }

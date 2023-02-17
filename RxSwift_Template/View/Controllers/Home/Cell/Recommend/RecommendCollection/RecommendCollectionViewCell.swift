@@ -41,12 +41,8 @@ final class RecommendCollectionViewCell: UICollectionViewCell {
             .bind(to: priceProductLabel.rx.text)
             .disposed(by: bag)
         
-        recommemd.map(\.imageProduct).subscribe { image in
-            UIImage.dowloadImageWithRxSwift(url: image ?? "").subscribe { image in
-                self.productImageView.rx.image.onNext(image)
-            }
-            .disposed(by: self.bag)
-        }
-        .disposed(by: bag)
+        recommemd.map(\.imageProduct)
+            .bind(to: productImageView.rx.imageCustomBinder)
+            .disposed(by: bag)
     }
 }
