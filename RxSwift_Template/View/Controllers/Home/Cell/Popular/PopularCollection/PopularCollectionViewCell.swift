@@ -18,7 +18,7 @@ final class PopularCollectionViewCell: UICollectionViewCell {
     @IBOutlet private weak var priceProductLabel: UILabel!
     
     // MARK: - Properties
-    private var bag: DisposeBag = DisposeBag()
+    var bag: DisposeBag = DisposeBag()
     var viewModel: PopularCollectionViewCellViewModel? {
         didSet {
             updateCell()
@@ -31,6 +31,11 @@ final class PopularCollectionViewCell: UICollectionViewCell {
         contentView.layer.cornerRadius = Define.cornerRadius
         productImageView.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
         productImageView.layer.cornerRadius = Define.cornerRadius
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        bag = DisposeBag()
     }
     
     private func updateCell() {
@@ -48,13 +53,9 @@ final class PopularCollectionViewCell: UICollectionViewCell {
             .bind(to: categotyProductLabel.rx.text)
             .disposed(by: bag)
         
-        popular.map(\.imageProduct).subscribe { image in
-            UIImage.dowloadImageWithRxSwift(url: image ?? "").subscribe { image in
-                self.productImageView.rx.image.onNext(image)
-            }
-            .disposed(by: self.bag)
-        }
-        .disposed(by: bag)
+        popular.map(\.imageProduct)
+            .bind(to: productImageView.rx.imageCustomBinder)
+            .disposed(by: bag)
     }
 }
 
@@ -63,6 +64,18 @@ extension PopularCollectionViewCell {
     private struct Define {
         static var cornerRadius: CGFloat = 20
         static var borderWidth: CGFloat = 1
+    }
+}
+
+extension Reactive where Base: UIImageView {
+
+    var imageCustomBinder: Binder<String?> {
+        return Binder(self.base) { imageView, stringImage in
+            UIImageView.dowloadImageWithRxSwift(url: stringImage ?? "")
+                .subscribe { image in
+                    imageView.rx.image.onNext(image)
+                }
+        }
     }
 }
 

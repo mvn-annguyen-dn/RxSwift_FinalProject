@@ -19,7 +19,7 @@ final class RecommendCollectionViewCell: UICollectionViewCell {
     @IBOutlet private weak var shopLabel: UILabel!
     
     // MARK: - Properties
-    private var bag: DisposeBag = DisposeBag()
+    var bag: DisposeBag = DisposeBag()
     var viewModel: RecommendCollectionViewCellViewModel? {
         didSet {
             updateCell()
@@ -31,6 +31,11 @@ final class RecommendCollectionViewCell: UICollectionViewCell {
         customViewShadow()
         productImageView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMinXMinYCorner]
         productImageView.layer.cornerRadius = Define.cornerRadius
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        bag = DisposeBag()
     }
     
     private func customViewShadow() {
@@ -58,13 +63,9 @@ final class RecommendCollectionViewCell: UICollectionViewCell {
             .bind(to: priceProductLabel.rx.text)
             .disposed(by: bag)
         
-        recommemd.map(\.imageProduct).subscribe { image in
-            UIImage.dowloadImageWithRxSwift(url: image ?? "").subscribe { image in
-                self.productImageView.rx.image.onNext(image)
-            }
-            .disposed(by: self.bag)
-        }
-        .disposed(by: bag)
+        recommemd.map(\.imageProduct)
+            .bind(to: productImageView.rx.imageCustomBinder)
+            .disposed(by: bag)
     }
 }
 

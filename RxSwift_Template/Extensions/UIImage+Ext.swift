@@ -8,7 +8,7 @@
 import UIKit
 import RxSwift
 
-extension UIImage {
+extension UIImageView {
     public static func dowloadImageWithRxSwift(url: String) -> Observable<UIImage?> {
         return Observable.create { observer in
             guard let url = URL(string: url) else {

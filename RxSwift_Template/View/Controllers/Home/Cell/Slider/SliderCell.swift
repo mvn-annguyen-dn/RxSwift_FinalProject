@@ -23,8 +23,6 @@ final class SliderCell: UITableViewCell {
         }
     }
     
-    private var timer: Timer?
-    
     // MARK: - Life cycle
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -54,7 +52,11 @@ final class SliderCell: UITableViewCell {
     }
     
     private func startTimer() {
-        timer = Timer.scheduledTimer(timeInterval: Define.timerIntervar, target: self, selector: #selector(moveToNextIndex), userInfo: nil, repeats: true)
+        Observable<Int>.interval(.seconds(Define.timerIntervar), scheduler: MainScheduler.instance)
+            .subscribe(onNext: { _ in
+                self.moveToNextIndex()
+            })
+            .disposed(by: bag)
     }
     
     // MARK: - Objc methods
@@ -90,7 +92,7 @@ extension SliderCell: UICollectionViewDelegateFlowLayout {
 extension SliderCell {
     private struct Define {
         static var cellName: String = String(describing: SlideCollectionViewCell.self)
-        static var timerIntervar: Double = 2.5
+        static var timerIntervar: Int = 3
         static var sizeLayout: CGFloat = 0
     }
 }

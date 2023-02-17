@@ -26,6 +26,7 @@ final class HomeViewController: BaseViewController {
         configTableView()
         configDataSource()
         getData()
+        checkShowErrorCallApi()
     }
     
     // MARK: - Private func
@@ -45,19 +46,19 @@ final class HomeViewController: BaseViewController {
     private func configDataSource() {
         let datasource = RxTableViewSectionedReloadDataSource<HomeSectionModelType>(configureCell: { datasource, tableview, indexpath, item in
             switch datasource[indexpath] {
-            case .slider:
+            case .slider(shop: let sliderShop):
                 guard let cell = tableview.dequeueReusableCell(withIdentifier: "SliderCell", for: indexpath) as? SliderCell else { return UITableViewCell() }
-                cell.viewModel = self.viewModel.viewModelForSlider(indexPath: indexpath)
+                cell.viewModel = self.viewModel.viewModelForSlider(sliderShop: sliderShop)
                 cell.selectionStyle = .none
                 return cell
-            case .recommend:
+            case .recommend(recommendProducts: let recommendProduct):
                 guard let cell = tableview.dequeueReusableCell(withIdentifier: "RecommendCell", for: indexpath) as? RecommendCell else { return UITableViewCell() }
-                cell.viewModel = self.viewModel.viewModelForRecommend(indexPath: indexpath)
+                cell.viewModel = self.viewModel.viewModelForRecommend(recommendProduct: recommendProduct)
                 cell.selectionStyle = .none
                 return cell
-            case .popular:
+            case .popular(popularProducts: let popularProduct):
                 guard let cell = tableview.dequeueReusableCell(withIdentifier: "PopularCell", for: indexpath) as? PopularCell else { return UITableViewCell() }
-                cell.viewModel = self.viewModel.viewModelForPopular(indexPath: indexpath)
+                cell.viewModel = self.viewModel.viewModelForPopular(popularProduct: popularProduct)
                 cell.selectionStyle = .none
                 return cell
             }
@@ -70,6 +71,9 @@ final class HomeViewController: BaseViewController {
     
     private func getData() {
         viewModel.getApiMultiTarget()
+    }
+    
+    private func checkShowErrorCallApi() {
         viewModel.errorBehaviorRelay.subscribe(onNext: { error in
             self.normalAlert(message: error.localizedDescription)
         })
