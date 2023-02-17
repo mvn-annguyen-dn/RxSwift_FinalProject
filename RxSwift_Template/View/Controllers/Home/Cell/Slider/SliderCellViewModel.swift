@@ -12,7 +12,7 @@ import RxCocoa
 final class SliderCellViewModel {
 
     var shops: BehaviorRelay<[Shop]> = .init(value: [])
-    var currentIndex: Int = 0
+    var currentIndex: BehaviorRelay<Int> = .init(value: 0)
     
     init(shops: [Shop]) {
         self.shops.accept(shops)

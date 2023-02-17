@@ -62,13 +62,13 @@ final class SliderCell: UITableViewCell {
     // MARK: - Objc methods
     @objc private func moveToNextIndex() {
         guard let viewModel = viewModel else { return }
-        if viewModel.currentIndex < (viewModel.numberOfPage() - 1) {
-            viewModel.currentIndex += 1
+        if viewModel.currentIndex.value < (viewModel.numberOfPage() - 1) {
+            viewModel.currentIndex.accept(viewModel.currentIndex.value + 1)
         } else {
-            viewModel.currentIndex = 0
+            viewModel.currentIndex.accept(0)
         }
-        collectionView.scrollToItem(at: IndexPath(row: viewModel.currentIndex, section: 0), at: .centeredHorizontally, animated: true)
-        pageControl.currentPage = viewModel.currentIndex
+        collectionView.scrollToItem(at: IndexPath(row: viewModel.currentIndex.value, section: 0), at: .centeredHorizontally, animated: true)
+        pageControl.rx.currentPage.onNext(viewModel.currentIndex.value)
     }
 }
 

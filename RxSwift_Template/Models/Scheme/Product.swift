@@ -15,8 +15,7 @@ final class ProductResponse: Decodable {
         case data
     }
     
-    convenience init(from decoder: Decoder) throws {
-        self.init()
+    init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.data = try container.decode([Product].self, forKey: .data)
     }
@@ -30,8 +29,7 @@ final class ShopResponse: Decodable {
         case data
     }
     
-    convenience init(from decoder: Decoder) throws {
-        self.init()
+    init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.data = try container.decode([Shop].self, forKey: .data)
     }
@@ -55,8 +53,7 @@ final class Product: Decodable {
         case images = "image_p_r"
     }
     
-    required convenience init(from decoder: Decoder) throws {
-        self.init()
+    init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.id = try container.decode(Int.self, forKey: .id)
         self.name = try container.decode(String.self, forKey: .name)
@@ -80,8 +77,7 @@ final class Category: Decodable {
         case nameCategory = "name_category"
     }
     
-    required convenience init(from decoder: Decoder) throws {
-        self.init()
+    init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.id = try container.decode(Int.self, forKey: .id)
         self.shop = try container.decode(Shop.self, forKey: .shop)
@@ -108,8 +104,7 @@ final class Shop: Decodable {
         case shopDescription = "description"
     }
     
-    required convenience init(from decoder: Decoder) throws {
-        self.init()
+    init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.id = try container.decode(Int.self, forKey: .id)
         self.address = try container.decode(String.self, forKey: .address)
@@ -129,8 +124,7 @@ final class ImageProduct: Decodable {
         case image
     }
     
-    required convenience init(from decoder: Decoder) throws {
-        self.init()
+    init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         image = try values.decode(String.self, forKey: .image)
     }
