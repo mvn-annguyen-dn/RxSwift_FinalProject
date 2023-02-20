@@ -19,13 +19,6 @@ final class SearchViewModel {
     private let bagModel: DisposeBag = DisposeBag()
 
     // MARK: Function
-    func numberOfItems(in section: Int) -> Int {
-        if searching.value || scopeButtonPress.value {
-            return searchProducts.value.count
-        } else {
-            return 0
-        }
-    }
 
     func viewModelForItem(at indexPath: IndexPath) -> SearchCellViewModel {
         if searching.value || scopeButtonPress.value {
