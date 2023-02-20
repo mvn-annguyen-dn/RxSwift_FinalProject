@@ -28,6 +28,11 @@ final class HomeViewController: BaseViewController {
         getData()
         checkShowErrorCallApi()
     }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        showTabbar()
+    }
     
     // MARK: - Private func
     private func configTableView() {
