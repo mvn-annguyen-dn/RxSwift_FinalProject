@@ -37,7 +37,7 @@ final class SlideCollectionViewCell: UICollectionViewCell {
             .disposed(by: bag)
         
         shop.map(\.imageShop)
-            .bind(to: shopImageView.rx.imageCustomBinder)
+            .bind(to: shopImageView.rx.downloadImage)
             .disposed(by: bag)
     }
 }
