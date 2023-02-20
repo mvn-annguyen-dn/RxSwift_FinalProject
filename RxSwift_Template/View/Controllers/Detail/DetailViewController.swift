@@ -40,6 +40,11 @@ final class DetailViewController: BaseViewController {
         configCollectionView()
         updateQuantity()
     }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        hideTabbar()
+    }
     
     //MARK: Private Methods
     private func configNavigation() {

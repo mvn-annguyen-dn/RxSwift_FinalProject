@@ -33,7 +33,7 @@ final class BaseTabbarController: UITabBarController {
         self.rx
             .viewControllers
             .onNext([homeNavigationController])
-    }   
+    }
 }
 
 extension BaseTabbarController {
