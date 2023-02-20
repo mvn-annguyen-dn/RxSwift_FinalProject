@@ -42,7 +42,7 @@ final class RecommendCollectionViewCell: UICollectionViewCell {
             .disposed(by: bag)
         
         recommemd.map(\.imageProduct)
-            .bind(to: productImageView.rx.imageCustomBinder)
+            .bind(to: productImageView.rx.downloadImage)
             .disposed(by: bag)
     }
 }
