@@ -1,15 +1,18 @@
 //
-//  UIImage+Ext.swift
+//  DownloadImage.swift
 //  RxSwift_Template
 //
-//  Created by Luong Tran M. VN.Danang on 03/02/2023.
+//  Created by Phong Huynh N. VN.Danang on 20/02/2023.
 //
 
 import UIKit
 import RxSwift
 
-extension UIImage {
-    public static func dowloadImageWithRxSwift(url: String) -> Observable<UIImage?> {
+final class DownloadImage {
+    
+    static let shared: DownloadImage = DownloadImage()
+    
+    func dowloadImageWithRxSwift(url: String) -> Observable<UIImage?> {
         return Observable.create { observer in
             guard let url = URL(string: url) else {
                 observer.onError(ApiError.noData)

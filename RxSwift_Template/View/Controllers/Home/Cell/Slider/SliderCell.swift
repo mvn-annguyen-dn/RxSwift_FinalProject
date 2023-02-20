@@ -23,8 +23,6 @@ final class SliderCell: UITableViewCell {
         }
     }
     
-    private var timer: Timer?
-    
     // MARK: - Life cycle
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -42,7 +40,7 @@ final class SliderCell: UITableViewCell {
     
     private func configDataSource() {
         guard let viewModel = viewModel else { return }
-        viewModel.shops.bind(to: collectionView.rx.items(cellIdentifier: Define.cellName, cellType: SlideCollectionViewCell.self)) { index, element, cell in
+        viewModel.shops.asDriver(onErrorJustReturn: []).drive(collectionView.rx.items(cellIdentifier: Define.cellName, cellType: SlideCollectionViewCell.self)) { index, element, cell in
             cell.viewModel = viewModel.viewModelForItem(sliderShop: element)
         }
         .disposed(by: bag)
@@ -54,19 +52,23 @@ final class SliderCell: UITableViewCell {
     }
     
     private func startTimer() {
-        timer = Timer.scheduledTimer(timeInterval: Define.timerIntervar, target: self, selector: #selector(moveToNextIndex), userInfo: nil, repeats: true)
+        Observable<Int>.interval(.seconds(Define.timerIntervar), scheduler: MainScheduler.instance)
+            .subscribe(onNext: { _ in
+                self.moveToNextIndex()
+            })
+            .disposed(by: bag)
     }
     
     // MARK: - Objc methods
     @objc private func moveToNextIndex() {
         guard let viewModel = viewModel else { return }
-        if viewModel.currentIndex < (viewModel.numberOfPage() - 1) {
-            viewModel.currentIndex += 1
+        if viewModel.currentIndex.value < (viewModel.numberOfPage() - 1) {
+            viewModel.currentIndex.accept(viewModel.currentIndex.value + 1)
         } else {
-            viewModel.currentIndex = 0
+            viewModel.currentIndex.accept(0)
         }
-        collectionView.scrollToItem(at: IndexPath(row: viewModel.currentIndex, section: 0), at: .centeredHorizontally, animated: true)
-        pageControl.currentPage = viewModel.currentIndex
+        collectionView.scrollToItem(at: IndexPath(row: viewModel.currentIndex.value, section: 0), at: .centeredHorizontally, animated: true)
+        pageControl.rx.currentPage.onNext(viewModel.currentIndex.value)
     }
 }
 
@@ -90,7 +92,7 @@ extension SliderCell: UICollectionViewDelegateFlowLayout {
 extension SliderCell {
     private struct Define {
         static var cellName: String = String(describing: SlideCollectionViewCell.self)
-        static var timerIntervar: Double = 2.5
+        static var timerIntervar: Int = 3
         static var sizeLayout: CGFloat = 0
     }
 }

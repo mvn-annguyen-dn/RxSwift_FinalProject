@@ -17,7 +17,6 @@ final class BaseTabbarController: UITabBarController {
         
         let homeVC = HomeViewController()
         homeVC.tabBarItem = UITabBarItem(title: "Home", image: UIImage(systemName: "house.fill"), tag: 0)
-        homeVC.viewModel = HomeViewModel()
         let homeNavigationController = UINavigationController(rootViewController: homeVC)
 
         // Custom Style For Tabbar
