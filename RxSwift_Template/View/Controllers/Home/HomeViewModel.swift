@@ -15,22 +15,7 @@ final class HomeViewModel {
     private var bag: DisposeBag = DisposeBag()
     /// multiple sections
     var sectionModels: BehaviorRelay<[HomeSectionModelType]> = .init(value: [])
-
-    var shops: BehaviorRelay<[Shop]> = .init(value: [])
-    var recommends: BehaviorRelay<[Product]> = .init(value: [])
-    var populars: BehaviorRelay<[Product]> = .init(value: [])
     var errorBehaviorRelay: PublishRelay<ApiError> = .init()
-        
-    func fetchData() {
-        let sections: [HomeSectionModelType] = [
-            .init(items: [
-                .slider(shop: shops.value),
-                .recommend(recommendProducts: recommends.value),
-                .popular(popularProducts: populars.value)
-            ])
-        ]
-        sectionModels.accept(sections)
-    }
     
     func getApiMultiTarget() {
         let shopObservable = ApiNetWorkManager.shared.request(ShopResponse.self, .target(MainTarget.shop)).asObservable()
@@ -40,26 +25,26 @@ final class HomeViewModel {
         let observable = Observable.zip(shopObservable, recommnedObservable, popularObservable)
         
         observable.subscribe(onNext: { shop, recommend, popular in
-            self.shops.accept(shop.data.toArray())
-            self.recommends.accept(recommend.data.toArray())
-            self.populars.accept(popular.data.toArray())
-            self.fetchData()
+            self.sectionModels.accept([.init(items: [
+                .slider(shop: shop.data.toArray()),
+                .recommend(recommendProducts: recommend.data.toArray()),
+                .popular(popularProducts: popular.data.toArray())])])
         }, onError: { error in
             self.errorBehaviorRelay.accept(error as? ApiError ?? .invalidResponse )
         })
         .disposed(by: bag)
     }
     
-    func viewModelForSlider(indexPath: IndexPath) -> SliderCellViewModel {
-        return SliderCellViewModel(shops: shops.value)
+    func viewModelForSlider(sliderShop: [Shop]) -> SliderCellViewModel {
+        return SliderCellViewModel(shops: sliderShop)
     }
     
-    func viewModelForRecommend(indexPath: IndexPath) -> RecommendCellViewModel {
-        return RecommendCellViewModel(recommends: recommends.value)
+    func viewModelForRecommend(recommendProduct: [Product]) -> RecommendCellViewModel {
+        return RecommendCellViewModel(recommends: recommendProduct)
     }
     
-    func viewModelForPopular(indexPath: IndexPath) -> PopularCellViewModel {
-        return PopularCellViewModel(populars: populars.value)
+    func viewModelForPopular(popularProduct: [Product]) -> PopularCellViewModel {
+        return PopularCellViewModel(populars: popularProduct)
     }
 
 }

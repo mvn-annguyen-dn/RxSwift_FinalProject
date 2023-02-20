@@ -7,6 +7,7 @@
 
 import UIKit
 import RxSwift
+import RxCocoa
 
 final class DetailViewController: BaseViewController {
     
@@ -30,11 +31,7 @@ final class DetailViewController: BaseViewController {
     private let disposeBag = DisposeBag()
     private var timer: Timer?
     private var favoriteButton: UIBarButtonItem?
-    private var quantity: Int = 1 {
-        didSet {
-            updateQuantity()
-        }
-    }
+    private var quantity: BehaviorRelay<Int> = .init(value: 1)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -179,9 +176,14 @@ final class DetailViewController: BaseViewController {
 
     private func updateQuantity() {
         guard let viewModel = viewModel else { return }
-        let total = quantity * (viewModel.productSubject.value?.price ?? 0)
-        quantityLabel.text = "\(quantity)"
-        totalProductLabel.text = "Total: $\(total)"
+        
+        quantity.subscribe(onNext: { [weak self] value in
+            guard let this = self else { return }
+            let total = value * (viewModel.productSubject.value?.price ?? 0)
+            this.quantityLabel.text = "\(this.quantity.value)"
+            this.totalProductLabel.text = "Total: $\(total)"
+        })
+        .disposed(by: disposeBag)
     }
 
     // MARK: - Action methods
@@ -195,14 +197,14 @@ final class DetailViewController: BaseViewController {
         minusButton.rx.tap
             .subscribe(onNext: { [weak self] _ in
                 guard let this = self else { return }
-                this.quantity = this.quantity == 1 ? 1 : this.quantity - 1
+                this.quantity.accept(this.quantity.value == 1 ? 1 : this.quantity.value - 1)
             })
             .disposed(by: disposeBag)
 
         plusButton.rx.tap
             .subscribe(onNext: { [weak self] _ in
                 guard let this = self else { return }
-                this.quantity += 1
+                this.quantity.accept(this.quantity.value + 1)
             })
             .disposed(by: disposeBag)
     }

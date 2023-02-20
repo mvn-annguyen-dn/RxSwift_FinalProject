@@ -49,7 +49,7 @@ final class RecommendCell: UITableViewCell {
     
     private func configDataSource() {
         guard let viewModel = viewModel else { return }
-        viewModel.recommends.bind(to: collectionView.rx.items(cellIdentifier: Define.cellName, cellType: RecommendCollectionViewCell.self)) { index, element, cell in
+        viewModel.recommends.asDriver(onErrorJustReturn: []).drive(collectionView.rx.items(cellIdentifier: Define.cellName, cellType: RecommendCollectionViewCell.self)) { index, element, cell in
             cell.viewModel = viewModel.viewModelForItem(recommendProduct: element)
         }
         .disposed(by: bag)
