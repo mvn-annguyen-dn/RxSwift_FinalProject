@@ -63,7 +63,8 @@ final class CartTableViewCell: UITableViewCell {
             .disposed(by: bag)
         
         cart.map(\.productImage)
-            .bind(to: productImageView.rx.imageCustomBinder)
+            .flatMap({DownloadImage.shared.dowloadImageWithRxSwift(url: $0 ?? "")})
+            .bind(to: productImageView.rx.image)
             .disposed(by: bag)
     }
 }
