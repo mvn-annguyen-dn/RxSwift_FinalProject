@@ -62,9 +62,10 @@ final class RecommendCollectionViewCell: UICollectionViewCell {
         recommemd.map(\.category?.nameCategory)
             .bind(to: priceProductLabel.rx.text)
             .disposed(by: bag)
-        
+
         recommemd.map(\.imageProduct)
-            .bind(to: productImageView.rx.downloadImage)
+            .flatMap { DownloadImage.shared.dowloadImageWithRxSwift(url: $0 ?? "") }
+            .bind(to: productImageView.rx.image)
             .disposed(by: bag)
     }
 }

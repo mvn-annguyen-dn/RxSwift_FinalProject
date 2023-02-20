@@ -37,7 +37,8 @@ final class SlideCollectionViewCell: UICollectionViewCell {
             .disposed(by: bag)
         
         shop.map(\.imageShop)
-            .bind(to: shopImageView.rx.downloadImage)
+            .flatMap { DownloadImage.shared.dowloadImageWithRxSwift(url: $0 ?? "") }
+            .bind(to: shopImageView.rx.image)
             .disposed(by: bag)
     }
 }

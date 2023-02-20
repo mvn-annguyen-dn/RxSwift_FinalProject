@@ -54,6 +54,7 @@
 		CB7B54E5298CFA44005AAD9A /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB7B54E4298CFA44005AAD9A /* HomeViewModel.swift */; };
 		CB7B54E8298D1217005AAD9A /* HomeSectionModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB7B54E7298D1217005AAD9A /* HomeSectionModelType.swift */; };
 		CB7B54EA299092B9005AAD9A /* SliderCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB7B54E9299092B9005AAD9A /* SliderCellViewModel.swift */; };
+		CBE8202A29A34D9E00DDD2EA /* DownloadImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE8202929A34D9E00DDD2EA /* DownloadImage.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -122,6 +123,7 @@
 		CB7B54E4298CFA44005AAD9A /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		CB7B54E7298D1217005AAD9A /* HomeSectionModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSectionModelType.swift; sourceTree = "<group>"; };
 		CB7B54E9299092B9005AAD9A /* SliderCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SliderCellViewModel.swift; sourceTree = "<group>"; };
+		CBE8202929A34D9E00DDD2EA /* DownloadImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadImage.swift; sourceTree = "<group>"; };
 		F5B2704B7B47B3CE3ACA6821 /* Pods-RxSwift_Template-RxSwift_TemplateUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RxSwift_Template-RxSwift_TemplateUITests.debug.xcconfig"; path = "Target Support Files/Pods-RxSwift_Template-RxSwift_TemplateUITests/Pods-RxSwift_Template-RxSwift_TemplateUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		F86B02262B20149B2FE76F51 /* Pods-RxSwift_TemplateTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RxSwift_TemplateTests.release.xcconfig"; path = "Target Support Files/Pods-RxSwift_TemplateTests/Pods-RxSwift_TemplateTests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -301,6 +303,7 @@
 			isa = PBXGroup;
 			children = (
 				8470C60A2990915B0019F3B2 /* Session.swift */,
+				CBE8202929A34D9E00DDD2EA /* DownloadImage.swift */,
 			);
 			path = Library;
 			sourceTree = "<group>";
@@ -634,6 +637,7 @@
 				CB7B54E2298CF62C005AAD9A /* PopularCollectionViewCell.swift in Sources */,
 				8425D78029890E5000CA9728 /* LoginTarget.swift in Sources */,
 				CB7B54CE298CED3E005AAD9A /* SlideCollectionViewCell.swift in Sources */,
+				CBE8202A29A34D9E00DDD2EA /* DownloadImage.swift in Sources */,
 				3833F1AD2935AD39008A20E8 /* ApiNetWorkManager.swift in Sources */,
 				CB7B54E8298D1217005AAD9A /* HomeSectionModelType.swift in Sources */,
 				CB6CF70B2994D46A0053C9A8 /* PopularCollectionViewCellViewModel.swift in Sources */,

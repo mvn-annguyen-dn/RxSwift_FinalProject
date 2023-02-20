@@ -54,7 +54,8 @@ final class PopularCollectionViewCell: UICollectionViewCell {
             .disposed(by: bag)
         
         popular.map(\.imageProduct)
-            .bind(to: productImageView.rx.downloadImage)
+            .flatMap { DownloadImage.shared.dowloadImageWithRxSwift(url: $0 ?? "") }
+            .bind(to: productImageView.rx.image)
             .disposed(by: bag)
     }
 }
@@ -66,16 +67,3 @@ extension PopularCollectionViewCell {
         static var borderWidth: CGFloat = 1
     }
 }
-
-extension Reactive where Base: UIImageView {
-
-    var downloadImage: Binder<String?> {
-        return Binder(self.base) { imageView, stringImage in
-            UIImageView.dowloadImageWithRxSwift(url: stringImage ?? "")
-                .subscribe { image in
-                    imageView.rx.image.onNext(image)
-                }
-        }
-    }
-}
-
