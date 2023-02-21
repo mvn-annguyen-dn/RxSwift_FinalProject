@@ -49,19 +49,10 @@ final class DetailViewController: BaseViewController {
     //MARK: Private Methods
     private func configNavigation() {
         setTitleNavigation(type: .detail)
-
-        let leftBarButton = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(backButtonTouchUpInside))
-        favoriteButton = UIBarButtonItem(image: UIImage(systemName: "heart.fill"), style: .plain, target: self, action: #selector(favoriteButtonTouchUpInside))
-        
-        //Custom Color
-        leftBarButton.rx
-            .tintColor
-            .onNext(.black)
         
         //Add Button
-        navigationItem.rx
-            .leftBarButtonItem
-            .onNext(leftBarButton)
+        setLeftBarButton(imageString:  "icon-back", tintColor: .black, action: #selector(backButtonTouchUpInside))
+        favoriteButton = UIBarButtonItem(image: UIImage(systemName: "heart.fill"), style: .plain, target: self, action: #selector(favoriteButtonTouchUpInside))
         navigationItem.rx
             .rightBarButtonItem
             .onNext(favoriteButton)
@@ -107,7 +98,7 @@ final class DetailViewController: BaseViewController {
     
     private func updateColorFavorite(isFavorite: Bool) {
         #warning("Handle Later")
-        favoriteButton?.tintColor = isFavorite ? .red : .black
+        favoriteButton?.rx.tintColor.onNext(isFavorite ? .red : .black)
     }
     
     private func configCollectionView() {

@@ -26,7 +26,7 @@ final class DetailViewModel {
     }
     
     func viewModelForItem(at indexPath: IndexPath) -> CarouselCellViewModel {
-        return CarouselCellViewModel(imageString: listImage.value[indexPath.row].image)
+        return CarouselCellViewModel(imageString: listImage.value[safe: indexPath.row]?.image)
     }
 }
 
