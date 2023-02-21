@@ -60,14 +60,27 @@ final class HomeViewController: BaseViewController {
                 return cell
             case .recommend(recommendProducts: let recommendProduct):
                 guard let cell = tableview.dequeueReusableCell(withIdentifier: "RecommendCell", for: indexpath) as? RecommendCell else { return UITableViewCell() }
-                cell.delegate = self
                 cell.viewModel = self.viewModel.viewModelForRecommend(recommendProduct: recommendProduct)
                 cell.selectionStyle = .none
+                // Transform Navigation
+                cell.rx.didTap.subscribe(onNext: { product in
+                    let vc = DetailViewController()
+                    vc.viewModel = DetailViewModel(product: product)
+                    self.navigationController?.pushViewController(vc, animated: true)
+                })
+                .disposed(by: cell.bag)
                 return cell
             case .popular(popularProducts: let popularProduct):
                 guard let cell = tableview.dequeueReusableCell(withIdentifier: "PopularCell", for: indexpath) as? PopularCell else { return UITableViewCell() }
                 cell.viewModel = self.viewModel.viewModelForPopular(popularProduct: popularProduct)
                 cell.selectionStyle = .none
+                // Transform Navigation
+                cell.rx.didTap.subscribe(onNext: { product in
+                    let vc = DetailViewController()
+                    vc.viewModel = DetailViewModel(product: product)
+                    self.navigationController?.pushViewController(vc, animated: true)
+                })
+                .disposed(by: cell.bag)
                 return cell
             }
         })
@@ -118,16 +131,42 @@ extension HomeViewController {
     }
 }
 
-extension HomeViewController: RecommendCellDelegate {
-    func cell(cell: RecommendCell, needPerform action: RecommendCell.Action) {
-        switch action {
-        case .didTap(let product):
-            let vc = DetailViewController()
-            vc.viewModel = DetailViewModel(product: product)
-            navigationController?.pushViewController(vc, animated: true)
-        }
-    }
-}
+//extension HomeViewController: RecommendCellDelegate {
+//    func cell(cell: RecommendCell, needPerform action: RecommendCell.Action) {
+//        switch action {
+//        case .didTap(let product):
+//            let vc = DetailViewController()
+//            vc.viewModel = DetailViewModel(product: product)
+//            navigationController?.pushViewController(vc, animated: true)
+//        }
+//    }
+//}
+
+extension Reactive where Base: RecommendCell {
+     var delegate : DelegateProxy<RecommendCell, RecommendCellDelegate> {
+         return RecommendCellDelegateProxy.proxy(for: base)
+     }
+
+     var didTap: Observable<Product> {
+         return delegate.methodInvoked(#selector(RecommendCellDelegate.cell(_:product:)))
+             .map { parameters in
+                 return parameters[1] as? Product ?? Product()
+             }
+     }
+ }
+
+extension Reactive where Base: PopularCell {
+     var delegate : DelegateProxy<PopularCell, PopularCellDelegate> {
+         return PopularCellDelegateProxy.proxy(for: base)
+     }
+
+     var didTap: Observable<Product> {
+         return delegate.methodInvoked(#selector(PopularCellDelegate.cell(_:product:)))
+             .map { parameters in
+                 return parameters[1] as? Product ?? Product()
+             }
+     }
+ }
 
 extension Reactive where Base: BaseViewController {
     var errorMessage: Binder<ApiError> {

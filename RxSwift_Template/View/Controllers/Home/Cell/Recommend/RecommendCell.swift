@@ -10,22 +10,41 @@ import RxSwift
 import RxCocoa
 import RxDataSources
 
-protocol RecommendCellDelegate: AnyObject {
-    func cell(cell: RecommendCell, needPerform action: RecommendCell.Action)
+// MARK: Delegate Proxy Cell
+@objc
+protocol RecommendCellDelegate {
+    @objc optional func cell(_ cell: RecommendCell, product: Product)
 }
 
-final class RecommendCell: UITableViewCell {
+final class RecommendCellDelegateProxy:
+     DelegateProxy<RecommendCell, RecommendCellDelegate>,
+     DelegateProxyType,
+     RecommendCellDelegate {
 
-    enum Action {
-        case didTap(product: Product)
-    }
+     static func registerKnownImplementations() {
+         self.register { parent in
+             RecommendCellDelegateProxy(parentObject: parent, delegateProxy: self)
+         }
+     }
+
+     static func currentDelegate(for object: RecommendCell) -> RecommendCellDelegate? {
+         return object.delegate
+     }
+
+     static func setCurrentDelegate(_ delegate: RecommendCellDelegate?, to object: RecommendCell) {
+         object.delegate = delegate
+     }
+ }
+
+// MARK: Cell View
+final class RecommendCell: UITableViewCell {
     
     // MARK: - IBOutlets
     @IBOutlet private weak var collectionView: UICollectionView!
     @IBOutlet private weak var viewAllLabel: UILabel!
     
     // MARK: - Properties
-    private var bag: DisposeBag = DisposeBag()
+    var bag: DisposeBag = DisposeBag()
     weak var delegate: RecommendCellDelegate?
     var viewModel: RecommendCellViewModel? {
         didSet {
@@ -77,7 +96,7 @@ extension RecommendCell:  UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let viewModel = viewModel else { return }
-        delegate?.cell(cell: self, needPerform: .didTap(product: viewModel.recommends.value[indexPath.row]))
+        delegate?.cell?(self, product: viewModel.recommends.value[safe: indexPath.row] ?? Product())
     }
 }
 

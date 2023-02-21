@@ -10,13 +10,41 @@ import RxSwift
 import RxCocoa
 import RxDataSources
 
+// MARK: Delegate Proxy Cell
+@objc
+protocol PopularCellDelegate {
+    @objc optional func cell(_ cell: PopularCell, product: Product)
+}
+
+final class PopularCellDelegateProxy:
+     DelegateProxy<PopularCell, PopularCellDelegate>,
+     DelegateProxyType,
+     PopularCellDelegate {
+
+     static func registerKnownImplementations() {
+         self.register { parent in
+             PopularCellDelegateProxy(parentObject: parent, delegateProxy: self)
+         }
+     }
+
+     static func currentDelegate(for object: PopularCell) -> PopularCellDelegate? {
+         return object.delegate
+     }
+
+     static func setCurrentDelegate(_ delegate: PopularCellDelegate?, to object: PopularCell) {
+         object.delegate = delegate
+     }
+ }
+
+// MARK: Cell View
 final class PopularCell: UITableViewCell {
     
     // MARK: - IBOutlets
     @IBOutlet private weak var collectionView: UICollectionView!
     
     // MARK: - Properties
-    private var bag: DisposeBag = DisposeBag()
+    var bag: DisposeBag = DisposeBag()
+    weak var delegate: PopularCellDelegate?
     var viewModel: PopularCellViewModel? {
         didSet {
             configDataSource()
@@ -63,6 +91,11 @@ extension PopularCell: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return Define.sizeLayout
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let viewModel = viewModel else { return }
+        delegate?.cell?(self, product: viewModel.populars.value[safe: indexPath.row] ?? Product())
     }
 }
 
