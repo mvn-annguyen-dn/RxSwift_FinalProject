@@ -76,6 +76,13 @@ final class RecommendCell: UITableViewCell {
                 cell.viewModel = viewModel.viewModelForItem(index: index)
             }
             .disposed(by: bag)
+        
+        collectionView.rx.modelSelected(Product.self)
+            .subscribe(onNext: { [weak self] event in
+                guard let this = self else { return }
+                this.delegate?.cell?(this, product: event)
+            })
+            .disposed(by: bag)
     }
 }
 
@@ -92,11 +99,6 @@ extension RecommendCell:  UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return Define.sizeLayout
-    }
-
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let viewModel = viewModel else { return }
-        delegate?.cell?(self, product: viewModel.recommends.value[safe: indexPath.row] ?? Product())
     }
 }
 

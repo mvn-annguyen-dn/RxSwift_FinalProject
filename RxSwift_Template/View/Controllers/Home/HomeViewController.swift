@@ -126,7 +126,7 @@ extension HomeViewController {
         static var popularCell: String = String(describing: PopularCell.self)
         static var heightSlideCell: CGFloat = 300
         static var heightRecommendCell: CGFloat = 220
-        static var heightPopularCell: CGFloat = 220
+        static var heightPopularCell: CGFloat = 400
         static var heightDefaultCell: CGFloat = 0
     }
 }
