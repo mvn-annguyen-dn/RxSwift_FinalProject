@@ -35,15 +35,19 @@ final class RecommendCell: UITableViewCell {
     private func configCollectionView() {
         let cellNib = UINib(nibName: Define.cellName, bundle: Bundle.main)
         collectionView.register(cellNib, forCellWithReuseIdentifier: Define.cellName)
-        collectionView.rx.setDelegate(self).disposed(by: bag)
+        collectionView.rx
+            .setDelegate(self)
+            .disposed(by: bag)
     }
     
     private func configDataSource() {
         guard let viewModel = viewModel else { return }
-        viewModel.recommends.asDriver(onErrorJustReturn: []).drive(collectionView.rx.items(cellIdentifier: Define.cellName, cellType: RecommendCollectionViewCell.self)) { index, element, cell in
-            cell.viewModel = viewModel.viewModelForItem(recommendProduct: element)
-        }
-        .disposed(by: bag)
+        viewModel.recommends
+            .asDriver(onErrorJustReturn: [])
+            .drive(collectionView.rx.items(cellIdentifier: Define.cellName, cellType: RecommendCollectionViewCell.self)) { index, element, cell in
+                cell.viewModel = viewModel.viewModelForItem(index: index)
+            }
+            .disposed(by: bag)
     }
 }
 
