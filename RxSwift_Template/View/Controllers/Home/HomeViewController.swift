@@ -45,7 +45,9 @@ final class HomeViewController: BaseViewController {
         let popularCell = UINib(nibName: Define.popularCell, bundle: Bundle.main)
         tableView.register(popularCell, forCellReuseIdentifier: Define.popularCell)
         
-        tableView.rx.setDelegate(self).disposed(by: bag)
+        tableView.rx
+            .setDelegate(self)
+            .disposed(by: bag)
     }
     
     private func configDataSource() {
@@ -53,7 +55,7 @@ final class HomeViewController: BaseViewController {
             switch datasource[indexpath] {
             case .slider(shop: let sliderShop):
                 guard let cell = tableview.dequeueReusableCell(withIdentifier: "SliderCell", for: indexpath) as? SliderCell else { return UITableViewCell() }
-                cell.viewModel = self.viewModel.viewModelForSlider(sliderShop: sliderShop)
+                cell.viewModel = self.viewModel.viewModelForSlider(shop: sliderShop)
                 cell.selectionStyle = .none
                 return cell
             case .recommend(recommendProducts: let recommendProduct):
@@ -70,7 +72,8 @@ final class HomeViewController: BaseViewController {
             }
         })
         
-        viewModel.sectionModels.asDriver()
+        viewModel.sectionModels
+            .asDriver()
             .drive(tableView.rx.items(dataSource: datasource))
             .disposed(by: bag)
     }
@@ -80,16 +83,15 @@ final class HomeViewController: BaseViewController {
     }
     
     private func checkShowErrorCallApi() {
-        viewModel.errorBehaviorRelay.subscribe(onNext: { error in
-            self.normalAlert(message: error.localizedDescription)
-        })
-        .disposed(by: bag)
+        viewModel.apiErrorMessage
+            .bind(to: self.rx.errorMessage)
+            .disposed(by: bag)
     }
 }
 
 // MARK: - UITableViewDelegate
 extension HomeViewController: UITableViewDelegate {
-
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         switch indexPath.row {
         case 0:
@@ -123,6 +125,14 @@ extension HomeViewController: RecommendCellDelegate {
             let vc = DetailViewController()
             vc.viewModel = DetailViewModel(product: product)
             navigationController?.pushViewController(vc, animated: true)
+        }
+    }
+}
+
+extension Reactive where Base: BaseViewController {
+    var errorMessage: Binder<ApiError> {
+        return Binder(self.base) { base, value in
+            base.normalAlert(message: value.localizedDescription)
         }
     }
 }
