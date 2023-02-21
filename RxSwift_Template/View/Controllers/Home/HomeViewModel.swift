@@ -12,28 +12,42 @@ import RxDataSources
 
 final class HomeViewModel {
     
-    // multiple sections
+    private var bag: DisposeBag = DisposeBag()
+    /// multiple sections
     var sectionModels: BehaviorRelay<[HomeSectionModelType]> = .init(value: [])
-
-    func fetchData() {
-        let sections: [HomeSectionModelType] = [
-            .init(items: [
-                .slider(shop: [
-                    Shop(nameShop: "Phong shop 1", imageShop: "https://cdn.tgdd.vn/Files/2019/07/25/1181734/do-sau-truong-anh-la-gi-cach-thiet-lap-de-chup-anh-dep-nhat--1.jpg"),
-                    Shop(nameShop: "Phong shop 2", imageShop: "https://cdn.tgdd.vn/Files/2019/07/25/1181734/do-sau-truong-anh-la-gi-cach-thiet-lap-de-chup-anh-dep-nhat--1.jpg"),
-                    Shop(nameShop: "Phong shop 3", imageShop: "https://cdn.tgdd.vn/Files/2019/07/25/1181734/do-sau-truong-anh-la-gi-cach-thiet-lap-de-chup-anh-dep-nhat--1.jpg")]),
-                .recommend(recommendProducts: [
-                    Product(name: "recommend 1", imageProduct: "https://cdn.tgdd.vn/Files/2019/07/25/1181734/do-sau-truong-anh-la-gi-cach-thiet-lap-de-chup-anh-dep-nhat--1.jpg", content: "content 1", category: Category(nameCategory: "Test string 1")),
-                    Product(name: "recommend 2", imageProduct: "https://cdn.tgdd.vn/Files/2019/07/25/1181734/do-sau-truong-anh-la-gi-cach-thiet-lap-de-chup-anh-dep-nhat--1.jpg", content: "content 2", category: Category(nameCategory: "Test string 2")),
-                    Product(name: "recommend 3", imageProduct: "https://cdn.tgdd.vn/Files/2019/07/25/1181734/do-sau-truong-anh-la-gi-cach-thiet-lap-de-chup-anh-dep-nhat--1.jpg", content: "content 3", category: Category(nameCategory: "Test string 3"))]
-                          ),
-                .popular(popularProducts: [
-                    Product(name: "recommend 1", imageProduct: "https://cdn.tgdd.vn/Files/2019/07/25/1181734/do-sau-truong-anh-la-gi-cach-thiet-lap-de-chup-anh-dep-nhat--1.jpg", content: "content 1", category: Category(nameCategory: "Test string 1")),
-                    Product(name: "recommend 2", imageProduct: "https://cdn.tgdd.vn/Files/2019/07/25/1181734/do-sau-truong-anh-la-gi-cach-thiet-lap-de-chup-anh-dep-nhat--1.jpg", content: "content 2", category: Category(nameCategory: "Test string 2")),
-                    Product(name: "recommend 3", imageProduct: "https://cdn.tgdd.vn/Files/2019/07/25/1181734/do-sau-truong-anh-la-gi-cach-thiet-lap-de-chup-anh-dep-nhat--1.jpg", content: "content 3", category: Category(nameCategory: "Test string 3"))
-                ])
-            ])
-        ]
-        sectionModels.accept(sections)
+    var apiErrorMessage: PublishSubject<ApiError> = .init()
+    
+    func getApiMultiTarget() {
+        let shopObservable = ApiNetWorkManager.shared
+            .request(ShopResponse.self, .target(MainTarget.shop))
+            .asObservable()
+        let recommnedObservable = ApiNetWorkManager.shared
+            .request(ProductResponse.self, .target(MainTarget.recommend))
+            .asObservable()
+        let popularObservable = ApiNetWorkManager.shared
+            .request(ProductResponse.self, .target(MainTarget.popular))
+            .asObservable()
+        
+        let observable = Observable.zip(shopObservable, recommnedObservable, popularObservable)
+        
+        observable.subscribe(onNext: { shop, recommend, popular in
+            self.sectionModels.accept([.init(items: [.slider(shop: shop.data ?? []), .recommend(recommendProducts: recommend.data ?? []), .popular(popularProducts: popular.data ?? [])])])
+        }, onError: { error in
+            self.apiErrorMessage.onNext(error as? ApiError ?? .invalidResponse )
+        })
+        .disposed(by: bag)
     }
+    
+    func viewModelForSlider(shop: [Shop]) -> SliderCellViewModel {
+        return SliderCellViewModel(shops: shop)
+    }
+    
+    func viewModelForRecommend(recommendProduct: [Product]) -> RecommendCellViewModel {
+        return RecommendCellViewModel(recommends: recommendProduct)
+    }
+    
+    func viewModelForPopular(popularProduct: [Product]) -> PopularCellViewModel {
+        return PopularCellViewModel(populars: popularProduct)
+    }
+
 }

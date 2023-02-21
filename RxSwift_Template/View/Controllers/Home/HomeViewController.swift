@@ -10,7 +10,7 @@ import RxSwift
 import RxCocoa
 import RxDataSources
 
-final class HomeViewController: UIViewController {
+final class HomeViewController: BaseViewController {
     
     // MARK: - IBOutlets
     @IBOutlet private weak var tableView: UITableView!
@@ -25,7 +25,8 @@ final class HomeViewController: UIViewController {
         
         configTableView()
         configDataSource()
-        fetchData()
+        getData()
+        checkShowErrorCallApi()
     }
     
     // MARK: - Private func
@@ -39,40 +40,52 @@ final class HomeViewController: UIViewController {
         let popularCell = UINib(nibName: Define.popularCell, bundle: Bundle.main)
         tableView.register(popularCell, forCellReuseIdentifier: Define.popularCell)
         
-        tableView.rx.setDelegate(self).disposed(by: bag)
+        tableView.rx
+            .setDelegate(self)
+            .disposed(by: bag)
     }
     
     private func configDataSource() {
         let datasource = RxTableViewSectionedReloadDataSource<HomeSectionModelType>(configureCell: { datasource, tableview, indexpath, item in
             switch datasource[indexpath] {
-            case .slider(shop: let shop):
+            case .slider(shop: let sliderShop):
                 guard let cell = tableview.dequeueReusableCell(withIdentifier: "SliderCell", for: indexpath) as? SliderCell else { return UITableViewCell() }
-                cell.viewModel = SliderCellViewModel(shops: shop)
+                cell.viewModel = self.viewModel.viewModelForSlider(shop: sliderShop)
+                cell.selectionStyle = .none
                 return cell
-            case .recommend(recommendProducts: let recommend):
+            case .recommend(recommendProducts: let recommendProduct):
                 guard let cell = tableview.dequeueReusableCell(withIdentifier: "RecommendCell", for: indexpath) as? RecommendCell else { return UITableViewCell() }
-                cell.viewModel = RecommendCellViewModel(recommends: recommend)
+                cell.viewModel = self.viewModel.viewModelForRecommend(recommendProduct: recommendProduct)
+                cell.selectionStyle = .none
                 return cell
-            case .popular(popularProducts: let popular):
+            case .popular(popularProducts: let popularProduct):
                 guard let cell = tableview.dequeueReusableCell(withIdentifier: "PopularCell", for: indexpath) as? PopularCell else { return UITableViewCell() }
-                cell.viewModel = PopularCellViewModel(populars: popular)
+                cell.viewModel = self.viewModel.viewModelForPopular(popularProduct: popularProduct)
+                cell.selectionStyle = .none
                 return cell
             }
         })
         
-        viewModel.sectionModels.asDriver()
+        viewModel.sectionModels
+            .asDriver()
             .drive(tableView.rx.items(dataSource: datasource))
             .disposed(by: bag)
     }
     
-    private func fetchData() {
-        viewModel.fetchData()
+    private func getData() {
+        viewModel.getApiMultiTarget()
+    }
+    
+    private func checkShowErrorCallApi() {
+        viewModel.apiErrorMessage
+            .bind(to: self.rx.errorMessage)
+            .disposed(by: bag)
     }
 }
 
 // MARK: - UITableViewDelegate
 extension HomeViewController: UITableViewDelegate {
-
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         switch indexPath.row {
         case 0:
@@ -96,5 +109,13 @@ extension HomeViewController {
         static var heightRecommendCell: CGFloat = 220
         static var heightPopularCell: CGFloat = 220
         static var heightDefaultCell: CGFloat = 0
+    }
+}
+
+extension Reactive where Base: BaseViewController {
+    var errorMessage: Binder<ApiError> {
+        return Binder(self.base) { base, value in
+            base.normalAlert(message: value.localizedDescription)
+        }
     }
 }

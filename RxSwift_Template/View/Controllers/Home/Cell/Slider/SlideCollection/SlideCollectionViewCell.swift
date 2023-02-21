@@ -16,17 +16,23 @@ final class SlideCollectionViewCell: UICollectionViewCell {
     @IBOutlet private weak var nameShopLabel: UILabel!
     
     // MARK: - Properties
-    private var bag: DisposeBag = DisposeBag()
+    var bag: DisposeBag = DisposeBag()
     var viewModel: SlideCollectionViewCellViewModel? {
         didSet {
             updateCell()
         }
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        bag = DisposeBag()
+    }
+    
     // MARK: - Private func
     private func updateCell() {
         guard let viewModel = viewModel else { return }
-        let shop = viewModel.shop.compactMap { $0 }
+        let shop = viewModel.shop
+            .compactMap { $0 }
         shop.map(\.nameShop)
             .bind(to: nameShopLabel.rx.text)
             .disposed(by: bag)

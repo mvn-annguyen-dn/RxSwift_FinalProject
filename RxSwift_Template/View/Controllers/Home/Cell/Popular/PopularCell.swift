@@ -34,15 +34,19 @@ final class PopularCell: UITableViewCell {
     private func configCollectionView() {
         let cellNib = UINib(nibName: Define.cellName, bundle: Bundle.main)
         collectionView.register(cellNib, forCellWithReuseIdentifier: Define.cellName)
-        collectionView.rx.setDelegate(self).disposed(by: bag)
+        collectionView.rx
+            .setDelegate(self)
+            .disposed(by: bag)
     }
     
     private func configDataSource() {
         guard let viewModel = viewModel else { return }
-        viewModel.populars.bind(to: collectionView.rx.items(cellIdentifier: Define.cellName, cellType: PopularCollectionViewCell.self)) { index, element, cell in
-            cell.viewModel = viewModel.viewModelForItem(popularProduct: element)
-        }
-        .disposed(by: bag)
+        viewModel.populars
+            .asDriver(onErrorJustReturn: [])
+            .drive(collectionView.rx.items(cellIdentifier: Define.cellName, cellType: PopularCollectionViewCell.self)) { index, element, cell in
+                cell.viewModel = viewModel.viewModelForItem(index: index)
+            }
+            .disposed(by: bag)
     }
 }
 
