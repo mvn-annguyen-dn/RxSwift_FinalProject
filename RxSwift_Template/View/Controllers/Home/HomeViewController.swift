@@ -131,17 +131,6 @@ extension HomeViewController {
     }
 }
 
-//extension HomeViewController: RecommendCellDelegate {
-//    func cell(cell: RecommendCell, needPerform action: RecommendCell.Action) {
-//        switch action {
-//        case .didTap(let product):
-//            let vc = DetailViewController()
-//            vc.viewModel = DetailViewModel(product: product)
-//            navigationController?.pushViewController(vc, animated: true)
-//        }
-//    }
-//}
-
 extension Reactive where Base: RecommendCell {
      var delegate : DelegateProxy<RecommendCell, RecommendCellDelegate> {
          return RecommendCellDelegateProxy.proxy(for: base)

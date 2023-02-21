@@ -17,6 +17,7 @@ final class DetailViewModel {
     private(set) var favoriteProducts: BehaviorRelay<[Product]?> = .init(value: [])
     
     var currentIndex: BehaviorRelay<Int> = .init(value: 0)
+    var isCheck: Driver<Bool> = .just(false)
     
     private let bagModel: DisposeBag = DisposeBag()
     
