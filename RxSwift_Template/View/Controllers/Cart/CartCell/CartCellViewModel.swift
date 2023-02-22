@@ -13,7 +13,7 @@ final class CartCellViewModel {
     
     var cart: BehaviorRelay<Cart?> = .init(value: nil)
     
-    init(cart: Cart) {
+    init(cart: Cart?) {
         self.cart.accept(cart)
     }
 }

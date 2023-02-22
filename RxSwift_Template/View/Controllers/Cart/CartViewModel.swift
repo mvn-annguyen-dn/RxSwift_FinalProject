@@ -12,10 +12,35 @@ import RxCocoa
 final class CartViewModel {
     
     private var bag: DisposeBag = DisposeBag()
-    var carts: BehaviorRelay<[Cart]> = .init(value: [Cart(productName: "product name", quantity: 2, price: 3, productImage: "https://cdn.tgdd.vn/Files/2019/07/25/1181734/do-sau-truong-anh-la-gi-cach-thiet-lap-de-chup-anh-dep-nhat--1.jpg"), Cart(productName: "product name", quantity: 4, price: 5, productImage: "https://cdn.tgdd.vn/Files/2019/07/25/1181734/do-sau-truong-anh-la-gi-cach-thiet-lap-de-chup-anh-dep-nhat--1.jpg")])
+    var carts: BehaviorRelay<[Cart]> = .init(value: [])
+    var errorBehaviorRelay: PublishRelay<ApiError> = .init()
+    var checkCart: BehaviorRelay<Bool> = .init(value: false)
+    
+    func getApiCart() {
+        ApiNetWorkManager.shared.request(CartResponse.self, .target(MainTarget.cart))
+            .subscribe { response in
+                switch response {
+                case .success(let carts):
+                    self.carts.accept(carts.data ?? [])
+                    self.checkCart.accept(true)
+                case .failure(let error):
+                    self.errorBehaviorRelay.accept(error as? ApiError ?? .invalidResponse)
+                    self.checkCart.accept(false)
+                }
+            }
+            .disposed(by: bag)
+    }
+    
+    func requestUpdateCart(orderId: Int, quantity: Int) -> Single<MessageResponse> {
+        return ApiNetWorkManager.shared.request(MessageResponse.self, .target(MainTarget.updateCart(id: orderId, quantity: quantity)))
+    }
+    
+    func requestDeleteCart(orderId: Int) -> Single<MessageResponse> {
+       return ApiNetWorkManager.shared.request(MessageResponse.self, .target(MainTarget.deleteCart(id: orderId)))
+    }
     
     func viewModelForItem(index: Int) -> CartCellViewModel {
-        return CartCellViewModel(cart: carts.value[index])
+        return CartCellViewModel(cart: carts.value[safe: index])
     }
     
     func totalPriceCarts() -> BehaviorRelay<Int> {

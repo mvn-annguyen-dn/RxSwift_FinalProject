@@ -7,7 +7,48 @@
 
 import Foundation
 
-struct Cart: Codable {
+class MessageResponse: Codable {
+
+    var success: Bool
+    var data: String?
+    var message: String?
+
+    enum CodingKeys: String, CodingKey {
+        case success, data, message
+    }
+
+    init(success: Bool, data: String? = nil, message: String? = nil) {
+        self.success = success
+        self.data = data
+        self.message = message
+    }
+
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.success = try container.decode(Bool.self, forKey: .success)
+        self.data = try container.decodeIfPresent(String.self, forKey: .data)
+        self.message = try container.decodeIfPresent(String.self, forKey: .message)
+    }
+}
+
+class CartResponse: Codable {
+    var data: [Cart]?
+
+    enum CodingKeys: String, CodingKey {
+        case data
+    }
+
+    init(data: [Cart]? = nil) {
+        self.data = data
+    }
+
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.data = try container.decodeIfPresent([Cart].self, forKey: .data)
+    }
+}
+
+class Cart: Codable {
 
     var id: Int?
     var userId: Int?
@@ -37,7 +78,7 @@ struct Cart: Codable {
         self.productImage = productImage
     }
 
-    init(from decoder: Decoder) throws {
+    required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.id = try container.decode(Int.self, forKey: .id)
         self.quantity = try container.decode(Int.self, forKey: .quantity)

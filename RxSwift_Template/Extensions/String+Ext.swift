@@ -9,6 +9,11 @@ import Foundation
 
 extension String {
     
+    var isNumeric: Bool {
+        let range = self.rangeOfCharacter(from: CharacterSet.decimalDigits.inverted)
+        return (range == nil)
+    }
+    
     func validateUsername() -> Bool {
         let usernameRegex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[com]{3}"
         let predicate = NSPredicate(format:"SELF MATCHES %@", usernameRegex)
