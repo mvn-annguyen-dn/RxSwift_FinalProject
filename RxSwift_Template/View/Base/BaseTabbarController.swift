@@ -14,7 +14,10 @@ final class BaseTabbarController: UITabBarController {
         // Example: ExampleVC, HomeVC, SearchVC, ....
         let examVC = ExampleViewController()
         examVC.tabBarItem = UITabBarItem(title: "Example", image: UIImage(systemName: "house.fill"), tag: 0)
-        let homeNavigationController = UINavigationController(rootViewController: examVC)
+        
+        let homeVC = HomeViewController()
+        homeVC.tabBarItem = UITabBarItem(title: "Home", image: UIImage(systemName: "house.fill"), tag: 0)
+        let homeNavigationController = UINavigationController(rootViewController: homeVC)
 
         let searchVC = SearchViewController()
         searchVC.tabBarItem = UITabBarItem(tabBarSystemItem: .search, tag: 1)
