@@ -18,6 +18,6 @@ final class PopularCellViewModel {
     }
     
     func viewModelForItem(index: Int) -> PopularCollectionViewCellViewModel {
-        return PopularCollectionViewCellViewModel(popular: populars.value[index])
+        return PopularCollectionViewCellViewModel(popular: populars.value[safe: index])
     }
 }

@@ -47,13 +47,10 @@ final class FavoriteTableViewCell: UITableViewCell {
             .bind(to: itemSubLabel.rx.text)
             .disposed(by: bag)
         
-        product.map(\.imageProduct).subscribe { image in
-            UIImageView.dowloadImageWithRxSwift(url: image ?? "").subscribe { image in
-                self.itemImageView.rx.image.onNext(image)
-            }
-            .disposed(by: self.bag)
-        }
-        .disposed(by: bag)
+        product.map(\.imageProduct)
+            .flatMap { DownloadImage.shared.dowloadImageWithRxSwift(url: $0 ) }
+            .bind(to: itemImageView.rx.image)
+            .disposed(by: bag)
     }
     
 }
