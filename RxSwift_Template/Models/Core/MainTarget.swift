@@ -11,6 +11,7 @@ enum MainTarget {
     case shop
     case recommend
     case popular
+    case addCart(id: Int, quantity: Int)
 }
 
 extension MainTarget: TargetType {
@@ -27,6 +28,8 @@ extension MainTarget: TargetType {
             return "product/random"
         case .popular:
             return "product/new"
+        case .addCart(let id, _):
+            return "cart/add/\(id)"
         }
     }
     
@@ -34,6 +37,8 @@ extension MainTarget: TargetType {
         switch self {
         case .shop, .recommend, .popular:
             return .get
+        case .addCart:
+            return .post
         }
     }
     
@@ -41,6 +46,8 @@ extension MainTarget: TargetType {
         switch self {
         case .shop, .recommend, .popular:
             return .requestPlain
+        case .addCart(id: _, quantity: let quantity):
+            return .requestParameters(parameters: ["quantity": "\(quantity)"], encoding: JSONEncoding.default)
         }
     }
     

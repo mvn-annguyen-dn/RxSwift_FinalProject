@@ -16,6 +16,13 @@ class BaseViewController: UIViewController {
         present(alertVC, animated: false)
     }
 
+    func successAlert(message: String) {
+        let alertVC = UIAlertController(title: "SUCCESS", message: message, preferredStyle: .alert)
+        let okButton = UIAlertAction(title: "OK", style: .default)
+        alertVC.addAction(okButton)
+        present(alertVC, animated: false)
+    }
+
     func showTabbar() {
         tabBarController?.tabBar.rx.isHidden.onNext(false)
     }

@@ -49,10 +49,25 @@ final class DetailViewController: BaseViewController {
     //MARK: Private Methods
     private func configNavigation() {
         setTitleNavigation(type: .detail)
+
+        let leftBarButton = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(backButtonTouchUpInside))
+        favoriteButton = UIBarButtonItem(image: UIImage(systemName: "heart.fill"), style: .plain, target: self, action: #selector(favoriteButtonTouchUpInside))
+        
+        //Custom Color
+        leftBarButton.rx
+            .tintColor
+            .onNext(.black)
+
+        checkIsExist()
+            .bind { value in
+                self.updateColorFavorite(isFavorite: value)
+            }
+            .disposed(by: disposeBag)
         
         //Add Button
         setLeftBarButton(imageString:  "icon-back", tintColor: .black, action: #selector(backButtonTouchUpInside))
         favoriteButton = UIBarButtonItem(image: UIImage(systemName: "heart.fill"), style: .plain, target: self, action: #selector(favoriteButtonTouchUpInside))
+        favoriteButton?.rx.tintColor.onNext(.black)
         navigationItem.rx
             .rightBarButtonItem
             .onNext(favoriteButton)
@@ -62,6 +77,7 @@ final class DetailViewController: BaseViewController {
         configSubView()
         updateUI()
         addGeture()
+        stateStatus()
     }
     
     private func updateUI() {
@@ -99,6 +115,11 @@ final class DetailViewController: BaseViewController {
     private func updateColorFavorite(isFavorite: Bool) {
         #warning("Handle Later")
         favoriteButton?.rx.tintColor.onNext(isFavorite ? .red : .black)
+    }
+    
+    private func checkIsExist() -> Observable<Bool> {
+        guard let viewModel = viewModel else { return .just(false) }
+        return viewModel.isFavorite(product: viewModel.productSubject.value ?? Product())
     }
     
     private func configCollectionView() {
@@ -176,7 +197,7 @@ final class DetailViewController: BaseViewController {
     private func addGeture() {
         addToCartButton.rx.tap
             .subscribe(onNext: { _ in
-                #warning("Handle later")
+                self.viewModel?.requestAddToCart(quantity: self.quantity.value)
             })
             .disposed(by: disposeBag)
         
@@ -194,11 +215,36 @@ final class DetailViewController: BaseViewController {
             })
             .disposed(by: disposeBag)
     }
+
+    private func stateStatus() {
+        viewModel?.statusResponse
+            .subscribe(onNext: { value in
+                self.successAlert(message: value ?? "")
+            })
+            .disposed(by: disposeBag)
+        
+        viewModel?.errorResponse
+            .subscribe(onNext: { error in
+                self.normalAlert(message: error?.localizedDescription ?? "")
+            })
+            .disposed(by: disposeBag)
+    }
     
     // MARK: - Objc methods
     @objc private func favoriteButtonTouchUpInside() {
-        #warning("Handle later")
-        updateColorFavorite(isFavorite: !false)
+        guard let viewModel = viewModel else { return }
+        let isFavorite = viewModel.isFavorite(product: viewModel.productSubject.value ?? Product())
+        isFavorite
+            .subscribe(onNext: { [weak self] isExist in
+                guard let this = self else { return }
+                if !isExist {
+                    viewModel.addProductInRealm()
+                } else {
+                    viewModel.deleteProductInRealm()
+                }
+                this.updateColorFavorite(isFavorite: !isExist)
+            })
+            .disposed(by: disposeBag)
     }
     
     @objc private func backButtonTouchUpInside() {
