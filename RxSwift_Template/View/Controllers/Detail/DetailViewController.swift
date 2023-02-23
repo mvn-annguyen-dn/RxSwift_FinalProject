@@ -65,9 +65,9 @@ final class DetailViewController: BaseViewController {
             .disposed(by: disposeBag)
         
         //Add Button
-        navigationItem.rx
-            .leftBarButtonItem
-            .onNext(leftBarButton)
+        setLeftBarButton(imageString:  "icon-back", tintColor: .black, action: #selector(backButtonTouchUpInside))
+        favoriteButton = UIBarButtonItem(image: UIImage(systemName: "heart.fill"), style: .plain, target: self, action: #selector(favoriteButtonTouchUpInside))
+        favoriteButton?.rx.tintColor.onNext(.black)
         navigationItem.rx
             .rightBarButtonItem
             .onNext(favoriteButton)
@@ -113,7 +113,8 @@ final class DetailViewController: BaseViewController {
     }
     
     private func updateColorFavorite(isFavorite: Bool) {
-        favoriteButton?.tintColor = isFavorite ? .red : .black
+        #warning("Handle Later")
+        favoriteButton?.rx.tintColor.onNext(isFavorite ? .red : .black)
     }
     
     private func checkIsExist() -> Observable<Bool> {
@@ -252,10 +253,13 @@ final class DetailViewController: BaseViewController {
     
     @objc private func moveToNextIndex() {
         guard let viewModel = viewModel else { return }
-        let isCheck = viewModel.currentIndex.value < (viewModel.listImage.value.count - 1)
-        let current = viewModel.currentIndex.value
-        viewModel.currentIndex.accept(isCheck ? current + 1 : 0)
-        collectionView.scrollToItem(at: IndexPath(row: viewModel.currentIndex.value, section: 0), at: .centeredHorizontally, animated: true)
+        viewModel.isCheck
+            .map { _ in viewModel.currentIndex.value < (viewModel.listImage.value.count - 1) }
+            .drive { value in
+                viewModel.currentIndex.accept(value ? viewModel.currentIndex.value + 1 : 0)
+                self.collectionView.rx.scrollToItem.onNext(IndexPath(row: viewModel.currentIndex.value, section: 0))
+            }
+            .disposed(by: disposeBag)
     }
 }
 

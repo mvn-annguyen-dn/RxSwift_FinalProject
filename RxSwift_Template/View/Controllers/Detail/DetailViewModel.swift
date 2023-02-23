@@ -19,6 +19,7 @@ final class DetailViewModel {
     private(set) var errorResponse: PublishRelay<ApiError?> = .init()
     
     var currentIndex: BehaviorRelay<Int> = .init(value: 0)
+    var isCheck: Driver<Bool> = .just(false)
     
     private let bagModel: DisposeBag = DisposeBag()
     
@@ -40,7 +41,7 @@ final class DetailViewModel {
     }
     
     func viewModelForItem(at indexPath: IndexPath) -> CarouselCellViewModel {
-        return CarouselCellViewModel(imageString: listImage.value[indexPath.row].image)
+        return CarouselCellViewModel(imageString: listImage.value[safe: indexPath.row]?.image)
     }
 }
 

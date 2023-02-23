@@ -34,21 +34,27 @@ final class SliderCell: UITableViewCell {
     private func configCollectionView() {
         let cellNib = UINib(nibName: Define.cellName, bundle: Bundle.main)
         collectionView.register(cellNib, forCellWithReuseIdentifier: Define.cellName)
-        collectionView.rx.setDelegate(self).disposed(by: bag)
+        collectionView.rx
+            .setDelegate(self)
+            .disposed(by: bag)
         startTimer()
     }
     
     private func configDataSource() {
         guard let viewModel = viewModel else { return }
-        viewModel.shops.asDriver(onErrorJustReturn: []).drive(collectionView.rx.items(cellIdentifier: Define.cellName, cellType: SlideCollectionViewCell.self)) { index, element, cell in
-            cell.viewModel = viewModel.viewModelForItem(sliderShop: element)
+        viewModel.shops
+            .asDriver(onErrorJustReturn: [])
+            .drive(collectionView.rx.items(cellIdentifier: Define.cellName, cellType: SlideCollectionViewCell.self)) { index, element, cell in
+            cell.viewModel = viewModel.viewModelForItem(index: index)
         }
         .disposed(by: bag)
     }
     
     private func configUI() {
         guard let viewModel = viewModel else { return }
-        pageControl.numberOfPages = viewModel.numberOfPage()
+        pageControl.rx
+            .numberOfPages
+            .onNext(viewModel.numberOfPage())
     }
     
     private func startTimer() {
@@ -68,7 +74,9 @@ final class SliderCell: UITableViewCell {
             viewModel.currentIndex.accept(0)
         }
         collectionView.scrollToItem(at: IndexPath(row: viewModel.currentIndex.value, section: 0), at: .centeredHorizontally, animated: true)
-        pageControl.rx.currentPage.onNext(viewModel.currentIndex.value)
+        pageControl.rx
+            .currentPage
+            .onNext(viewModel.currentIndex.value)
     }
 }
 

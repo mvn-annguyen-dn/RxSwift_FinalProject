@@ -36,7 +36,7 @@ final class ApiNetWorkManager {
     var defaultHTTPHeadersWithToken: [String: String] {
         return [
             "Content-type": "application/json",
-            "Authorization": "Bearer \(Session.shared.token)"]
+            "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL3YxL3VzZXIvbG9naW4iLCJpYXQiOjE2NzY1MTE2NDUsImV4cCI6MTcwODA0NzY0NSwibmJmIjoxNjc2NTExNjQ1LCJqdGkiOiI2RkU0WXNaU3hxdXNwTlVLIiwic3ViIjoiMjYiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.tylKzOYX13S2Z0O3qqfSJlsfhyRyQZ7BWlbaZOYK7jU"]
     }
     
     // Request

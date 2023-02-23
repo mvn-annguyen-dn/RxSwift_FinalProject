@@ -2,7 +2,7 @@
 //  DownloadImage.swift
 //  RxSwift_Template
 //
-//  Created by Phong Huynh N. VN.Danang on 20/02/2023.
+//  Created by Phong Huynh N. VN.Danang on 21/02/2023.
 //
 
 import UIKit

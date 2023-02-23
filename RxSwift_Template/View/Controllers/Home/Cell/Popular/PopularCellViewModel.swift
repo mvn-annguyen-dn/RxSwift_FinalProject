@@ -17,7 +17,7 @@ final class PopularCellViewModel {
         self.populars.accept(populars)
     }
     
-    func viewModelForItem(popularProduct: Product) -> PopularCollectionViewCellViewModel {
-        return PopularCollectionViewCellViewModel(popular: popularProduct)
+    func viewModelForItem(index: Int) -> PopularCollectionViewCellViewModel {
+        return PopularCollectionViewCellViewModel(popular: populars.value[safe: index])
     }
 }

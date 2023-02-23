@@ -15,12 +15,18 @@ final class HomeViewModel {
     private var bag: DisposeBag = DisposeBag()
     /// multiple sections
     var sectionModels: BehaviorRelay<[HomeSectionModelType]> = .init(value: [])
-    var errorBehaviorRelay: PublishRelay<ApiError> = .init()
+    var apiErrorMessage: PublishSubject<ApiError> = .init()
     
     func getApiMultiTarget() {
-        let shopObservable = ApiNetWorkManager.shared.request(ShopResponse.self, .target(MainTarget.shop)).asObservable()
-        let recommnedObservable = ApiNetWorkManager.shared.request(ProductResponse.self, .target(MainTarget.recommend)).asObservable()
-        let popularObservable = ApiNetWorkManager.shared.request(ProductResponse.self, .target(MainTarget.popular)).asObservable()
+        let shopObservable = ApiNetWorkManager.shared
+            .request(ShopResponse.self, .target(MainTarget.shop))
+            .asObservable()
+        let recommnedObservable = ApiNetWorkManager.shared
+            .request(ProductResponse.self, .target(MainTarget.recommend))
+            .asObservable()
+        let popularObservable = ApiNetWorkManager.shared
+            .request(ProductResponse.self, .target(MainTarget.popular))
+            .asObservable()
         
         let observable = Observable.zip(shopObservable, recommnedObservable, popularObservable)
         
@@ -30,13 +36,13 @@ final class HomeViewModel {
                 .recommend(recommendProducts: recommend.data.toArray()),
                 .popular(popularProducts: popular.data.toArray())])])
         }, onError: { error in
-            self.errorBehaviorRelay.accept(error as? ApiError ?? .invalidResponse )
+            self.apiErrorMessage.onNext(error as? ApiError ?? .invalidResponse )
         })
         .disposed(by: bag)
     }
     
-    func viewModelForSlider(sliderShop: [Shop]) -> SliderCellViewModel {
-        return SliderCellViewModel(shops: sliderShop)
+    func viewModelForSlider(shop: [Shop]) -> SliderCellViewModel {
+        return SliderCellViewModel(shops: shop)
     }
     
     func viewModelForRecommend(recommendProduct: [Product]) -> RecommendCellViewModel {
