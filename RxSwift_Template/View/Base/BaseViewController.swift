@@ -15,4 +15,12 @@ class BaseViewController: UIViewController {
         alertVC.addAction(okButton)
         present(alertVC, animated: false)
     }
+
+    func showTabbar() {
+        tabBarController?.tabBar.rx.isHidden.onNext(false)
+    }
+
+    func hideTabbar() {
+        tabBarController?.tabBar.rx.isHidden.onNext(true)
+    }
 }
