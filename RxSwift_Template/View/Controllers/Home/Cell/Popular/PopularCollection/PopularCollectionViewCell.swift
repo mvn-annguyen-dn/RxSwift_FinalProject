@@ -27,10 +27,21 @@ final class PopularCollectionViewCell: UICollectionViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        contentView.layer.rx.borderWidth.onNext(Define.borderWidth)
-        contentView.layer.rx.cornerRadius.onNext(Define.cornerRadius)
-        productImageView.layer.rx.maskedCorners.onNext([.layerMaxXMinYCorner, .layerMinXMinYCorner])
-        productImageView.layer.rx.cornerRadius.onNext(Define.cornerRadius)
+        contentView.layer
+            .rx
+            .borderWidth
+            .onNext(Define.borderWidth)
+        contentView.layer
+            .rx
+            .cornerRadius
+            .onNext(Define.cornerRadius)
+        productImageView.layer
+            .rx
+            .maskedCorners
+            .onNext([.layerMaxXMinYCorner, .layerMinXMinYCorner])
+        productImageView.layer
+            .rx
+            .cornerRadius.onNext(Define.cornerRadius)
     }
     
     override func prepareForReuse() {
@@ -40,7 +51,8 @@ final class PopularCollectionViewCell: UICollectionViewCell {
     
     private func updateCell() {
         guard let viewModel = viewModel else { return }
-        let popular = viewModel.popular.compactMap { $0 }
+        let popular = viewModel.popular
+            .compactMap { $0 }
         popular.map(\.name)
             .bind(to: nameProductLabel.rx.text)
             .disposed(by: bag)
