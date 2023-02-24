@@ -8,6 +8,8 @@
 import Moya
 
 enum MainTarget {
+    #warning("Handle Later")
+    case search
     case shop
     case recommend
     case popular
@@ -21,6 +23,9 @@ extension MainTarget: TargetType {
     
     var path: String {
         switch self {
+            #warning("Handle Later")
+        case .search:
+            return "product"
         case .shop:
             return "shop"
         case .recommend:
@@ -32,14 +37,16 @@ extension MainTarget: TargetType {
     
     var method: Moya.Method {
         switch self {
-        case .shop, .recommend, .popular:
+            #warning("Handle Later")
+        case .shop, .recommend, .popular, .search:
             return .get
         }
     }
     
     var task: Moya.Task {
         switch self {
-        case .shop, .recommend, .popular:
+            #warning("Handle Later")
+        case .shop, .recommend, .popular, .search:
             return .requestPlain
         }
     }
