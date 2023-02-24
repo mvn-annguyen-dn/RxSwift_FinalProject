@@ -9,18 +9,54 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-final class FavoriteTableViewCell: UITableViewCell {
+@objc
+protocol FavoriteTableViewCellDelegate {
+    @objc optional func didTapCell(_ cell: FavoriteTableViewCell)
+}
 
+final class FavoriteTableViewCellDelegateProxy: DelegateProxy<FavoriteTableViewCell, FavoriteTableViewCellDelegate>, DelegateProxyType, FavoriteTableViewCellDelegate {
+    
+    weak public private(set) var favoriteCell: FavoriteTableViewCell?
+    
+    public init(favoriteCell: ParentObject) {
+        self.favoriteCell = favoriteCell
+        super.init(parentObject: favoriteCell, delegateProxy: FavoriteTableViewCellDelegateProxy.self)
+    }
+    
+    static func registerKnownImplementations() {
+        self.register { FavoriteTableViewCellDelegateProxy(favoriteCell: $0) }
+    }
+    
+    static func currentDelegate(for object: FavoriteTableViewCell) -> FavoriteTableViewCellDelegate? {
+        return object.delegate
+    }
+    
+    static func setCurrentDelegate(_ delegate: FavoriteTableViewCellDelegate?, to object: FavoriteTableViewCell) {
+        object.delegate = delegate
+    }
+}
+
+final class FavoriteTableViewCell: UITableViewCell {
+    
+    // MARK: - IBOutlets
     @IBOutlet private weak var itemImageView: UIImageView!
     @IBOutlet private weak var itemNameLabel: UILabel!
     @IBOutlet private weak var itemSubLabel: UILabel!
     @IBOutlet private weak var favoriteButton: UIButton!
     
-    private var bag: DisposeBag = DisposeBag()
+    // MARK: - Properties
+    var cellBag: DisposeBag = DisposeBag()
     var viewModel: FavoriteTableCellViewModel? {
         didSet {
             updateCell()
         }
+    }
+    
+    weak var delegate: FavoriteTableViewCellDelegate?
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        cellBag = DisposeBag()
     }
     
     override func awakeFromNib() {
@@ -38,19 +74,25 @@ final class FavoriteTableViewCell: UITableViewCell {
     private func updateCell() {
         guard let viewModel = viewModel else { return }
         let product = viewModel.favoriteProduct.compactMap { $0 }
-
+        
         product.map(\.name)
             .bind(to: itemNameLabel.rx.text)
-            .disposed(by: bag)
+            .disposed(by: cellBag)
         
         product.map(\.category?.shop?.nameShop)
             .bind(to: itemSubLabel.rx.text)
-            .disposed(by: bag)
+            .disposed(by: cellBag)
         
         product.map(\.imageProduct)
             .flatMap { DownloadImage.shared.dowloadImageWithRxSwift(url: $0 ) }
             .bind(to: itemImageView.rx.image)
-            .disposed(by: bag)
+            .disposed(by: cellBag)
+        
+        favoriteButton.rx.tap.asDriver().drive(onNext: { [weak self] in
+            guard let this = self else { return }
+            this.delegate?.didTapCell?(this)
+        })
+        .disposed(by: cellBag)
     }
     
 }

@@ -21,7 +21,6 @@ final class BaseTabbarController: UITabBarController {
         
         let favoriteVC = FavoriteViewController()
         favoriteVC.tabBarItem = UITabBarItem(title: "Favorites", image: UIImage(systemName: "heart.fill"), tag: 2)
-        favoriteVC.viewModel = FavoriteViewModel()
         let favoriteNavigationController = UINavigationController(rootViewController: favoriteVC)
 
         // Custom Style For Tabbar

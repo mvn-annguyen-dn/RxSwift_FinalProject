@@ -13,7 +13,7 @@ import RealmSwift
 final class ProductResponse: Object, Decodable {
 
     var data = List<Product>()
-    
+
     enum CodingKeys: String, CodingKey {
         case data
     }
@@ -24,7 +24,7 @@ final class ProductResponse: Object, Decodable {
         self.data = try container.decode(List<Product>.self, forKey: .data)
     }
 }
-    
+
 final class ShopResponse: Object, Decodable {
 
     var data = List<Shop>()
@@ -39,7 +39,7 @@ final class ShopResponse: Object, Decodable {
         self.data = try container.decode(List<Shop>.self, forKey: .data)
     }
 }
-    
+
 final class Product: Object, Decodable {
 
     @objc dynamic var id: Int = 0
@@ -50,7 +50,7 @@ final class Product: Object, Decodable {
     @objc dynamic var price: Int = 0
     @objc dynamic var category: Category?
     var images = List<ImageProduct>()
-
+    
     enum CodingKeys: String, CodingKey {
         case id, name, discount, content, price, category
         case imageProduct = "image_product"
