@@ -10,13 +10,41 @@ import RxSwift
 import RxCocoa
 import RxDataSources
 
+// MARK: Delegate Proxy Cell
+@objc
+protocol PopularCellDelegate {
+    @objc optional func cell(_ cell: PopularCell, product: Product)
+}
+
+final class PopularCellDelegateProxy:
+     DelegateProxy<PopularCell, PopularCellDelegate>,
+     DelegateProxyType,
+     PopularCellDelegate {
+
+     static func registerKnownImplementations() {
+         self.register { parent in
+             PopularCellDelegateProxy(parentObject: parent, delegateProxy: self)
+         }
+     }
+
+     static func currentDelegate(for object: PopularCell) -> PopularCellDelegate? {
+         return object.delegate
+     }
+
+     static func setCurrentDelegate(_ delegate: PopularCellDelegate?, to object: PopularCell) {
+         object.delegate = delegate
+     }
+ }
+
+// MARK: Cell View
 final class PopularCell: UITableViewCell {
     
     // MARK: - IBOutlets
     @IBOutlet private weak var collectionView: UICollectionView!
     
     // MARK: - Properties
-    private var bag: DisposeBag = DisposeBag()
+    var bag: DisposeBag = DisposeBag()
+    weak var delegate: PopularCellDelegate?
     var viewModel: PopularCellViewModel? {
         didSet {
             configDataSource()
@@ -46,6 +74,13 @@ final class PopularCell: UITableViewCell {
             .drive(collectionView.rx.items(cellIdentifier: Define.cellName, cellType: PopularCollectionViewCell.self)) { index, element, cell in
                 cell.viewModel = viewModel.viewModelForItem(index: index)
             }
+            .disposed(by: bag)
+        
+        collectionView.rx.modelSelected(Product.self)
+            .subscribe(onNext: { [weak self] event in
+                guard let this = self else { return }
+                this.delegate?.cell?(this, product: event)
+            })
             .disposed(by: bag)
     }
 }

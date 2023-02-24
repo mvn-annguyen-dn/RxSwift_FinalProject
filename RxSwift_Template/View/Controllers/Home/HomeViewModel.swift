@@ -31,7 +31,10 @@ final class HomeViewModel {
         let observable = Observable.zip(shopObservable, recommnedObservable, popularObservable)
         
         observable.subscribe(onNext: { shop, recommend, popular in
-            self.sectionModels.accept([.init(items: [.slider(shop: shop.data ?? []), .recommend(recommendProducts: recommend.data ?? []), .popular(popularProducts: popular.data ?? [])])])
+            self.sectionModels.accept([.init(items: [
+                .slider(shop: shop.data.toArray()),
+                .recommend(recommendProducts: recommend.data.toArray()),
+                .popular(popularProducts: popular.data.toArray())])])
         }, onError: { error in
             self.apiErrorMessage.onNext(error as? ApiError ?? .invalidResponse )
         })
