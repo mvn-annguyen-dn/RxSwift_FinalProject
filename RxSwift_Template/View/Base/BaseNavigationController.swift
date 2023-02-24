@@ -9,12 +9,15 @@ import RxSwift
 
 enum NavigationType {
     case example
+    case favorite
     case detail
 
     var title: String {
         switch self {
         case .example:
             return "Example"
+        case .favorite:
+            return "Favorite"
         case .detail:
             return "Detail"
         }
