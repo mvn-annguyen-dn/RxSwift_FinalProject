@@ -19,6 +19,11 @@ final class BaseTabbarController: UITabBarController {
         homeVC.tabBarItem = UITabBarItem(title: "Home", image: UIImage(systemName: "house.fill"), tag: 0)
         let homeNavigationController = UINavigationController(rootViewController: homeVC)
 
+        let searchVC = SearchViewController()
+        searchVC.tabBarItem = UITabBarItem(tabBarSystemItem: .search, tag: 1)
+        searchVC.viewModel = SearchViewModel()
+        let searchNavigationController = UINavigationController(rootViewController: searchVC)
+
         // Custom Style For Tabbar
         tabBar.layer.rx
             .borderWidth
@@ -32,7 +37,7 @@ final class BaseTabbarController: UITabBarController {
         
         self.rx
             .viewControllers
-            .onNext([homeNavigationController])
+            .onNext([homeNavigationController, searchNavigationController])
     }
 }
 
