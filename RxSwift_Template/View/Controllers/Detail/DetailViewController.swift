@@ -50,27 +50,18 @@ final class DetailViewController: BaseViewController {
     private func configNavigation() {
         setTitleNavigation(type: .detail)
 
-        let leftBarButton = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(backButtonTouchUpInside))
+        //Add Button
+        setLeftBarButton(imageString:  "icon-back", tintColor: .black, action: #selector(backButtonTouchUpInside))
         favoriteButton = UIBarButtonItem(image: UIImage(systemName: "heart.fill"), style: .plain, target: self, action: #selector(favoriteButtonTouchUpInside))
+        navigationItem.rx
+            .rightBarButtonItem
+            .onNext(favoriteButton)
         
-        //Custom Color
-        leftBarButton.rx
-            .tintColor
-            .onNext(.black)
-
         checkIsExist()
             .bind { value in
                 self.updateColorFavorite(isFavorite: value)
             }
             .disposed(by: disposeBag)
-        
-        //Add Button
-        setLeftBarButton(imageString:  "icon-back", tintColor: .black, action: #selector(backButtonTouchUpInside))
-        favoriteButton = UIBarButtonItem(image: UIImage(systemName: "heart.fill"), style: .plain, target: self, action: #selector(favoriteButtonTouchUpInside))
-        favoriteButton?.rx.tintColor.onNext(.black)
-        navigationItem.rx
-            .rightBarButtonItem
-            .onNext(favoriteButton)
     }
     
     private func configUI() {
