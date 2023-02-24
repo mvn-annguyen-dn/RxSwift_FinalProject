@@ -23,6 +23,7 @@ final class FavoriteViewController: BaseViewController {
         configNavigation()
         configTableView()
         configDatasourcce()
+        dummyData()
     }
     
     // MARK: - Private func
@@ -40,6 +41,10 @@ final class FavoriteViewController: BaseViewController {
             cell.viewModel = self.viewModel.viewModelForItem(index: index)
         }
         .disposed(by: bag)
+    }
+    
+    private func dummyData() {
+        viewModel.dummyData()
     }
 }
 
