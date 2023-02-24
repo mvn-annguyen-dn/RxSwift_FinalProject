@@ -10,6 +10,7 @@ import RxSwift
 enum NavigationType {
     case example
     case profile
+    case detail
 
     var title: String {
         switch self {
@@ -17,13 +18,15 @@ enum NavigationType {
             return "Example"
         case .profile:
             return "Profile"
+        case .detail:
+            return "Detail"
         }
     }
 }
 
 extension BaseViewController {
     func setTitleNavigation(type: NavigationType) {
-        self.navigationItem.rx
+        navigationItem.rx
             .title
             .onNext(type.title)
     }
@@ -33,7 +36,7 @@ extension BaseViewController {
         rightButton.rx
             .tintColor
             .onNext(tintColor)
-        self.navigationItem.rx
+        navigationItem.rx
             .rightBarButtonItem
             .onNext(rightButton)
     }
@@ -43,7 +46,7 @@ extension BaseViewController {
         leftButton.rx
             .tintColor
             .onNext(tintColor)
-        self.navigationItem.rx
+        navigationItem.rx
             .leftBarButtonItem
             .onNext(leftButton)
     }
