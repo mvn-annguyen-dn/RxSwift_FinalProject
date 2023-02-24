@@ -1,23 +1,25 @@
 //
-//  ImageView+Ext.swift
+//  DownloadImage.swift
 //  RxSwift_Template
 //
-//  Created by Luong Tran M. VN.Danang on 03/02/2023.
+//  Created by Phong Huynh N. VN.Danang on 21/02/2023.
 //
 
 import UIKit
 import RxSwift
 
-extension UIImageView {
+final class DownloadImage {
     
-    public static func dowloadImageWithRxSwift(url: String) -> Observable<UIImage?> {
+    static let shared: DownloadImage = DownloadImage()
+    
+    func dowloadImageWithRxSwift(url: String) -> Observable<UIImage?> {
         return Observable.create { observer in
             guard let url = URL(string: url) else {
                 observer.onError(ApiError.noData)
                 return Disposables.create()
             }
             let urlRequest = URLRequest(url: url)
-            return URLSession.shared.rx.response(request: urlRequest).debug()
+            return URLSession.shared.rx.response(request: urlRequest)
                 .subscribe(onNext: { data in
                     let image = UIImage(data: data.data)
                     observer.onNext(image)

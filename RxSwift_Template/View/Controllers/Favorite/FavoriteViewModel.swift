@@ -48,4 +48,11 @@ final class FavoriteViewModel {
         }
         return .just(false)
     }
+    
+    func dummyData() {
+        let favoriteProducts: Product = Product()
+        favoriteProducts.imageProduct = "https://cdn.tgdd.vn/Files/2019/07/25/1181734/do-sau-truong-anh-la-gi-cach-thiet-lap-de-chup-anh-dep-nhat--1.jpg"
+        favoriteProducts.name = "Favorite test"
+        self.favoriteProducts.accept([favoriteProducts])
+    }
 }

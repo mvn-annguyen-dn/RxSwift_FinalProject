@@ -27,6 +27,7 @@ final class FavoriteViewController: BaseViewController, UIScrollViewDelegate {
         configTableView()
         configDatasourcce()
         setUpObserve()
+        dummyData()
     }
     
     // MARK: - Private func
@@ -70,6 +71,9 @@ final class FavoriteViewController: BaseViewController, UIScrollViewDelegate {
         } catch {
             normalAlert(message: "Can't reload data")
         }
+    }
+    private func dummyData() {
+        viewModel.dummyData()
     }
 }
 

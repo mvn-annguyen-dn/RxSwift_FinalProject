@@ -17,12 +17,10 @@ final class BaseTabbarController: UITabBarController {
         
         let homeVC = HomeViewController()
         homeVC.tabBarItem = UITabBarItem(title: "Home", image: UIImage(systemName: "house.fill"), tag: 0)
-        homeVC.viewModel = HomeViewModel()
         let homeNavigationController = UINavigationController(rootViewController: homeVC)
         
         let favoriteVC = FavoriteViewController()
         favoriteVC.tabBarItem = UITabBarItem(title: "Favorites", image: UIImage(systemName: "heart.fill"), tag: 2)
-        favoriteVC.viewModel = FavoriteViewModel()
         let favoriteNavigationController = UINavigationController(rootViewController: favoriteVC)
 
         // Custom Style For Tabbar

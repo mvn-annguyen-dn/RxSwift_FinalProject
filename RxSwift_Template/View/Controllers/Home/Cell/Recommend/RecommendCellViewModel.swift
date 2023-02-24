@@ -18,6 +18,6 @@ final class RecommendCellViewModel {
     }
     
     func viewModelForItem(index: Int) -> RecommendCollectionViewCellViewModel {
-        return RecommendCollectionViewCellViewModel(recommend: recommends.value[index])
+        return RecommendCollectionViewCellViewModel(recommend: recommends.value[safe: index])
     }
 }

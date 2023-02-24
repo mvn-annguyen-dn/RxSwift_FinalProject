@@ -18,7 +18,7 @@ final class PopularCollectionViewCell: UICollectionViewCell {
     @IBOutlet private weak var priceProductLabel: UILabel!
     
     // MARK: - Properties
-    private var bag: DisposeBag = DisposeBag()
+    var bag: DisposeBag = DisposeBag()
     var viewModel: PopularCollectionViewCellViewModel? {
         didSet {
             updateCell()
@@ -27,15 +27,32 @@ final class PopularCollectionViewCell: UICollectionViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        contentView.layer.borderWidth = Define.borderWidth
-        contentView.layer.cornerRadius = Define.cornerRadius
-        productImageView.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
-        productImageView.layer.cornerRadius = Define.cornerRadius
+        contentView.layer
+            .rx
+            .borderWidth
+            .onNext(Define.borderWidth)
+        contentView.layer
+            .rx
+            .cornerRadius
+            .onNext(Define.cornerRadius)
+        productImageView.layer
+            .rx
+            .maskedCorners
+            .onNext([.layerMaxXMinYCorner, .layerMinXMinYCorner])
+        productImageView.layer
+            .rx
+            .cornerRadius.onNext(Define.cornerRadius)
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        bag = DisposeBag()
     }
     
     private func updateCell() {
         guard let viewModel = viewModel else { return }
-        let popular = viewModel.popular.compactMap { $0 }
+        let popular = viewModel.popular
+            .compactMap { $0 }
         popular.map(\.name)
             .bind(to: nameProductLabel.rx.text)
             .disposed(by: bag)
@@ -48,13 +65,10 @@ final class PopularCollectionViewCell: UICollectionViewCell {
             .bind(to: categotyProductLabel.rx.text)
             .disposed(by: bag)
         
-        popular.map(\.imageProduct).subscribe { image in
-            UIImageView.dowloadImageWithRxSwift(url: image ?? "").subscribe { image in
-                self.productImageView.rx.image.onNext(image)
-            }
-            .disposed(by: self.bag)
-        }
-        .disposed(by: bag)
+        popular.map(\.imageProduct)
+            .flatMap { DownloadImage.shared.dowloadImageWithRxSwift(url: $0 ?? "") }
+            .bind(to: productImageView.rx.image)
+            .disposed(by: bag)
     }
 }
 
@@ -65,4 +79,3 @@ extension PopularCollectionViewCell {
         static var borderWidth: CGFloat = 1
     }
 }
-

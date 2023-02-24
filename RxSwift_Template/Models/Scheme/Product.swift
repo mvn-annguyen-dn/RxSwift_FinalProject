@@ -2,20 +2,22 @@
 //  Product.swift
 //  RxSwift_Template
 //
-//  Created by Phong Huynh N. VN.Danang on 08/02/2023.
+
+//  Created by Luong Tran M. VN.Danang on 10/02/2023.
 //
 
 import RxSwift
 import RealmSwift
 
-final class ProductResponse: Object, Codable {
+// MARK: Models API
+final class ProductResponse: Object, Decodable {
 
     var data = List<Product>()
 
     enum CodingKeys: String, CodingKey {
         case data
     }
-    
+
     convenience init(from decoder: Decoder) throws {
         self.init()
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -23,14 +25,14 @@ final class ProductResponse: Object, Codable {
     }
 }
 
-final class ShopResponse: Object, Codable {
+final class ShopResponse: Object, Decodable {
 
     var data = List<Shop>()
 
     enum CodingKeys: String, CodingKey {
         case data
     }
-    
+
     convenience init(from decoder: Decoder) throws {
         self.init()
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -38,7 +40,7 @@ final class ShopResponse: Object, Codable {
     }
 }
 
-final class Product: Object, Codable {
+final class Product: Object, Decodable {
 
     @objc dynamic var id: Int = 0
     @objc dynamic var name: String = ""
@@ -54,8 +56,8 @@ final class Product: Object, Codable {
         case imageProduct = "image_product"
         case images = "image_p_r"
     }
-    
-    required convenience init(from decoder: Decoder) throws {
+
+    convenience init(from decoder: Decoder) throws {
         self.init()
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.id = try container.decode(Int.self, forKey: .id)
@@ -69,7 +71,7 @@ final class Product: Object, Codable {
     }
 }
 
-final class Category: Object, Codable {
+final class Category: Object, Decodable {
 
     @objc dynamic var id: Int = 0
     @objc dynamic var nameCategory: String = ""
@@ -79,8 +81,8 @@ final class Category: Object, Codable {
         case id, shop
         case nameCategory = "name_category"
     }
-    
-    required convenience init(from decoder: Decoder) throws {
+
+    convenience init(from decoder: Decoder) throws {
         self.init()
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.id = try container.decode(Int.self, forKey: .id)
@@ -89,7 +91,7 @@ final class Category: Object, Codable {
     }
 }
 
-final class Shop: Object, Codable {
+final class Shop: Object, Decodable {
 
     @objc dynamic var id: Int = 0
     @objc dynamic var nameShop: String = ""
@@ -98,7 +100,7 @@ final class Shop: Object, Codable {
     @objc dynamic var emailShop: String = ""
     @objc dynamic var imageShop: String = ""
     @objc dynamic var shopDescription: String = ""
-    
+
     enum CodingKeys: String, CodingKey {
         case id, address
         case nameShop = "name_shop"
@@ -107,8 +109,8 @@ final class Shop: Object, Codable {
         case imageShop = "image_shop"
         case shopDescription = "description"
     }
-    
-    required convenience init(from decoder: Decoder) throws {
+
+    convenience init(from decoder: Decoder) throws {
         self.init()
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.id = try container.decode(Int.self, forKey: .id)
@@ -121,15 +123,15 @@ final class Shop: Object, Codable {
     }
 }
 
-final class ImageProduct: Object, Codable {
-
+final class ImageProduct: Object, Decodable {
+    
     @objc dynamic var image: String = ""
     
     enum CodingKeys: String, CodingKey {
         case image
     }
-    
-    required convenience init(from decoder: Decoder) throws {
+
+    convenience init(from decoder: Decoder) throws {
         self.init()
         let values = try decoder.container(keyedBy: CodingKeys.self)
         image = try values.decode(String.self, forKey: .image)
