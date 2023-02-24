@@ -28,6 +28,11 @@ final class HomeViewController: BaseViewController {
         getData()
         checkShowErrorCallApi()
     }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        showTabbar()
+    }
     
     // MARK: - Private func
     private func configTableView() {
@@ -57,11 +62,25 @@ final class HomeViewController: BaseViewController {
                 guard let cell = tableview.dequeueReusableCell(withIdentifier: "RecommendCell", for: indexpath) as? RecommendCell else { return UITableViewCell() }
                 cell.viewModel = self.viewModel.viewModelForRecommend(recommendProduct: recommendProduct)
                 cell.selectionStyle = .none
+                // Transform Navigation
+                cell.rx.didTap.subscribe(onNext: { product in
+                    let vc = DetailViewController()
+                    vc.viewModel = DetailViewModel(product: product)
+                    self.navigationController?.pushViewController(vc, animated: true)
+                })
+                .disposed(by: cell.bag)
                 return cell
             case .popular(popularProducts: let popularProduct):
                 guard let cell = tableview.dequeueReusableCell(withIdentifier: "PopularCell", for: indexpath) as? PopularCell else { return UITableViewCell() }
                 cell.viewModel = self.viewModel.viewModelForPopular(popularProduct: popularProduct)
                 cell.selectionStyle = .none
+                // Transform Navigation
+                cell.rx.didTap.subscribe(onNext: { product in
+                    let vc = DetailViewController()
+                    vc.viewModel = DetailViewModel(product: product)
+                    self.navigationController?.pushViewController(vc, animated: true)
+                })
+                .disposed(by: cell.bag)
                 return cell
             }
         })
@@ -107,10 +126,36 @@ extension HomeViewController {
         static var popularCell: String = String(describing: PopularCell.self)
         static var heightSlideCell: CGFloat = 300
         static var heightRecommendCell: CGFloat = 220
-        static var heightPopularCell: CGFloat = 220
+        static var heightPopularCell: CGFloat = 400
         static var heightDefaultCell: CGFloat = 0
     }
 }
+
+extension Reactive where Base: RecommendCell {
+     var delegate : DelegateProxy<RecommendCell, RecommendCellDelegate> {
+         return RecommendCellDelegateProxy.proxy(for: base)
+     }
+
+     var didTap: Observable<Product> {
+         return delegate.methodInvoked(#selector(RecommendCellDelegate.cell(_:product:)))
+             .map { parameters in
+                 return parameters[1] as? Product ?? Product()
+             }
+     }
+ }
+
+extension Reactive where Base: PopularCell {
+     var delegate : DelegateProxy<PopularCell, PopularCellDelegate> {
+         return PopularCellDelegateProxy.proxy(for: base)
+     }
+
+     var didTap: Observable<Product> {
+         return delegate.methodInvoked(#selector(PopularCellDelegate.cell(_:product:)))
+             .map { parameters in
+                 return parameters[1] as? Product ?? Product()
+             }
+     }
+ }
 
 extension Reactive where Base: BaseViewController {
     var errorMessage: Binder<ApiError> {

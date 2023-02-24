@@ -10,6 +10,33 @@ import RxSwift
 import RxCocoa
 import RxDataSources
 
+// MARK: Delegate Proxy Cell
+@objc
+protocol RecommendCellDelegate {
+    @objc optional func cell(_ cell: RecommendCell, product: Product)
+}
+
+final class RecommendCellDelegateProxy:
+     DelegateProxy<RecommendCell, RecommendCellDelegate>,
+     DelegateProxyType,
+     RecommendCellDelegate {
+
+     static func registerKnownImplementations() {
+         self.register { parent in
+             RecommendCellDelegateProxy(parentObject: parent, delegateProxy: self)
+         }
+     }
+
+     static func currentDelegate(for object: RecommendCell) -> RecommendCellDelegate? {
+         return object.delegate
+     }
+
+     static func setCurrentDelegate(_ delegate: RecommendCellDelegate?, to object: RecommendCell) {
+         object.delegate = delegate
+     }
+ }
+
+// MARK: Cell View
 final class RecommendCell: UITableViewCell {
     
     // MARK: - IBOutlets
@@ -17,7 +44,8 @@ final class RecommendCell: UITableViewCell {
     @IBOutlet private weak var viewAllLabel: UILabel!
     
     // MARK: - Properties
-    private var bag: DisposeBag = DisposeBag()
+    var bag: DisposeBag = DisposeBag()
+    weak var delegate: RecommendCellDelegate?
     var viewModel: RecommendCellViewModel? {
         didSet {
             configDataSource()
@@ -47,6 +75,13 @@ final class RecommendCell: UITableViewCell {
             .drive(collectionView.rx.items(cellIdentifier: Define.cellName, cellType: RecommendCollectionViewCell.self)) { index, element, cell in
                 cell.viewModel = viewModel.viewModelForItem(index: index)
             }
+            .disposed(by: bag)
+        
+        collectionView.rx.modelSelected(Product.self)
+            .subscribe(onNext: { [weak self] event in
+                guard let this = self else { return }
+                this.delegate?.cell?(this, product: event)
+            })
             .disposed(by: bag)
     }
 }

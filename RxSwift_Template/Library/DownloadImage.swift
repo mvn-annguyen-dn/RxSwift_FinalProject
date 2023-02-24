@@ -19,7 +19,7 @@ final class DownloadImage {
                 return Disposables.create()
             }
             let urlRequest = URLRequest(url: url)
-            return URLSession.shared.rx.response(request: urlRequest).debug()
+            return URLSession.shared.rx.response(request: urlRequest)
                 .subscribe(onNext: { data in
                     let image = UIImage(data: data.data)
                     observer.onNext(image)
