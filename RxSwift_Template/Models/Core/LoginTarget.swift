@@ -10,6 +10,7 @@ import Moya
 enum LoginTarget {
     case example
     case login(userName: String, passWord: String)
+    case logout
 }
 
 extension LoginTarget: TargetType {
@@ -24,6 +25,8 @@ extension LoginTarget: TargetType {
             return "most-played/10/albums.json/"
         case .login:
             return "login"
+        case .logout:
+            return "logout"
         }
     }
     
@@ -31,14 +34,14 @@ extension LoginTarget: TargetType {
         switch self {
         case .example:
             return .get
-        case .login:
+        case .login, .logout:
             return .post
         }
     }
     
     var task: Moya.Task {
         switch self {
-        case .example:
+        case .example, .logout:
             return .requestPlain
         case .login(let userName, let passWord):
             return .requestParameters(parameters: ["email": userName, "password": passWord], encoding: JSONEncoding.default)
@@ -47,6 +50,8 @@ extension LoginTarget: TargetType {
     
     var headers: [String : String]? {
         switch self {
+        case .logout:
+            return ApiNetWorkManager.shared.defaultHTTPHeadersWithToken
         default:
             return ApiNetWorkManager.shared.defaultHTTPHeaders
         }
