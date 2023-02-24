@@ -61,37 +61,41 @@ final class CartViewController: BaseViewController {
             guard let this = self else { return }
             cell.viewModel = this.viewModel.viewModelForItem(index: index)
             
-            cell.rx.increase.subscribe(onNext: {
-                this.updateCart(orderId: element.id ?? 0, quantity: (element.quantity ?? 0) + 1)
-            })
-            .disposed(by: cell.bag)
+            cell.rx
+                .increase
+                .subscribe(onNext: {
+                    this.updateCart(orderId: element.id ?? 0, quantity: (element.quantity ?? 0) + 1)
+                    this.updatePriceInfoView()
+                })
+                .disposed(by: cell.bag)
             
-            cell.rx.decrease.subscribe(onNext: {
-                let numberItemCart = (element.quantity ?? 0) - 1
-                if numberItemCart != 0 {
-                    this.updateCart(orderId: element.id ?? 0, quantity: numberItemCart)
-                } else {
-                    this.viewModel.carts
-                        .map {
-                            var movies = $0
-                            movies.remove(at: index)
-                            return movies
-                        }
-                        .bind(to: this.viewModel.carts)
-                        .disposed(by: this.bag)
-                    this.updateCart(orderId: element.id ?? 0, quantity: numberItemCart)
-                }
-            })
-            .disposed(by: cell.bag)
+            cell.rx
+                .decrease
+                .subscribe(onNext: {
+                    let numberItemCart = (element.quantity ?? 0) - 1
+                    if numberItemCart != 0 {
+                        this.updateCart(orderId: element.id ?? 0, quantity: numberItemCart)
+                    } else {
+                        var deleteCart = this.viewModel.carts.value
+                        deleteCart.remove(at: index)
+                        this.viewModel.carts.accept(deleteCart)
+                        this.updateCart(orderId: element.id ?? 0, quantity: numberItemCart)
+                    }
+                    this.updatePriceInfoView()
+                })
+                .disposed(by: cell.bag)
             
-            cell.rx.inputQuantity.subscribe(onNext: { quantity in
-                if quantity.isNumeric {
-                    this.updateCart(orderId: element.id ?? 0, quantity: Int(quantity) ?? 0)
-                } else {
-                    this.normalAlert(message: "Format invalid")
-                }
-            })
-            .disposed(by: cell.bag)
+            cell.rx
+                .inputQuantity
+                .subscribe(onNext: { quantity in
+                    if quantity.isNumeric {
+                        this.updateCart(orderId: element.id ?? 0, quantity: Int(quantity) ?? 0)
+                    } else {
+                        this.normalAlert(message: "Format invalid")
+                    }
+                    this.updatePriceInfoView()
+                })
+                .disposed(by: cell.bag)
         }
         .disposed(by: bag)
     }
@@ -102,11 +106,12 @@ final class CartViewController: BaseViewController {
         formatter.rx.numberStyle.onNext(.currency)
         let totalPrice = viewModel.totalPriceCarts()
         
-        viewModel.carts.subscribe(onNext: { cart in
-            let selectedItem = "Item selected: \(cart.count)"
-            self.selectedItemLabel.rx.text.onNext(selectedItem)
-        })
-        .disposed(by: bag)
+        viewModel.carts
+            .subscribe(onNext: { cart in
+                let selectedItem = "Item selected: \(cart.count)"
+                self.selectedItemLabel.rx.text.onNext(selectedItem)
+            })
+            .disposed(by: bag)
         
         if let formattedTipAmount = formatter.string(from: totalPrice.value as NSNumber) {
             totalPriceLabel.rx.text.onNext("\(formattedTipAmount)")
@@ -150,7 +155,9 @@ final class CartViewController: BaseViewController {
         UIView.transition(with: checkOutButton, duration: 0.2,
                           options: .transitionCrossDissolve,
                           animations: {
-            self.checkOutButton.rx.isHidden.onNext(self.isShowViewDetail)
+            self.checkOutButton.rx
+                .isHidden
+                .onNext(self.isShowViewDetail)
             self.isShowViewDetail = !self.isShowViewDetail
         })
     }
@@ -163,14 +170,9 @@ final class CartViewController: BaseViewController {
     @objc private func deleteButtonTouchUpInside() {
         let refreshAlert = UIAlertController(title: "Delete", message: "Do you wanna delete all products in cart?", preferredStyle: UIAlertController.Style.alert)
         refreshAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (_) in
-            self.viewModel.carts
-                .map {
-                    var movies = $0
-                    movies.removeAll()
-                    return movies
-                }
-                .bind(to: self.viewModel.carts)
-                .disposed(by: self.bag)
+            var deleteCart = self.viewModel.carts.value
+            deleteCart.removeAll()
+            self.viewModel.carts.accept(deleteCart)
             self.animationLoadTable()
         }))
         refreshAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
@@ -246,6 +248,7 @@ extension Reactive where Base: CartTableViewCell {
     }
 }
 
+// MARK: - UITableViewDelegate
 extension CartViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let delete = UIContextualAction(style: .destructive, title: "Delete") { [weak self] (_, _, completionHandler) in

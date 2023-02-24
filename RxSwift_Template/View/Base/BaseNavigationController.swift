@@ -8,12 +8,15 @@
 import RxSwift
 
 enum NavigationType {
+    case discovery
     case example
     case cart
     case detail
 
     var title: String {
         switch self {
+        case .discovery:
+            return "Discovery"
         case .example:
             return "Example"
         case .cart:

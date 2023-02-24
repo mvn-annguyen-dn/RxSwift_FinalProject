@@ -130,6 +130,7 @@ final class CartTableViewCell: UITableViewCell {
     }
 }
 
+// MARK: - Define
 extension CartTableViewCell {
     private struct Define {
         static var cornerRadius: CGFloat = 10

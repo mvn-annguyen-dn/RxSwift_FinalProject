@@ -23,6 +23,7 @@ final class HomeViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        configNavigation()
         configTableView()
         configDataSource()
         getData()
@@ -35,6 +36,11 @@ final class HomeViewController: BaseViewController {
     }
     
     // MARK: - Private func
+    private func configNavigation() {
+        setTitleNavigation(type: .discovery)
+        setRightBarButton(imageString: "cart", tintColor: .red, action: #selector(cartButtonTouchUpInside))
+    }
+    
     private func configTableView() {
         let slideNib = UINib(nibName: Define.slideCell, bundle: Bundle.main)
         tableView.register(slideNib, forCellReuseIdentifier: Define.slideCell)
@@ -99,6 +105,13 @@ final class HomeViewController: BaseViewController {
         viewModel.apiErrorMessage
             .bind(to: self.rx.errorMessage)
             .disposed(by: bag)
+    }
+    
+    // MARK: - Objc methods
+    @objc private func cartButtonTouchUpInside() {
+        let vc = CartViewController()
+        vc.viewModel = CartViewModel()
+        navigationController?.pushViewController(vc, animated: true)
     }
 }
 
