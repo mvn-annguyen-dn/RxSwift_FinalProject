@@ -38,12 +38,14 @@ final class FavoriteTableViewCellDelegateProxy: DelegateProxy<FavoriteTableViewC
 
 final class FavoriteTableViewCell: UITableViewCell {
     
+    // MARK: - IBOutlets
     @IBOutlet private weak var itemImageView: UIImageView!
     @IBOutlet private weak var itemNameLabel: UILabel!
     @IBOutlet private weak var itemSubLabel: UILabel!
     @IBOutlet private weak var favoriteButton: UIButton!
     
-    var bag: DisposeBag = DisposeBag()
+    // MARK: - Properties
+    var cellBag: DisposeBag = DisposeBag()
     var viewModel: FavoriteTableCellViewModel? {
         didSet {
             updateCell()
@@ -51,6 +53,11 @@ final class FavoriteTableViewCell: UITableViewCell {
     }
     
     weak var delegate: FavoriteTableViewCellDelegate?
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        cellBag = DisposeBag()
+    }
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -70,22 +77,22 @@ final class FavoriteTableViewCell: UITableViewCell {
         
         product.map(\.name)
             .bind(to: itemNameLabel.rx.text)
-            .disposed(by: bag)
+            .disposed(by: cellBag)
         
         product.map(\.category?.shop?.nameShop)
             .bind(to: itemSubLabel.rx.text)
-            .disposed(by: bag)
+            .disposed(by: cellBag)
         
         product.map(\.imageProduct)
             .flatMap { DownloadImage.shared.dowloadImageWithRxSwift(url: $0 ) }
             .bind(to: itemImageView.rx.image)
-            .disposed(by: bag)
-
+            .disposed(by: cellBag)
+        
         favoriteButton.rx.tap.asDriver().drive(onNext: { [weak self] in
             guard let this = self else { return }
             this.delegate?.didTapCell?(this)
         })
-        .disposed(by: bag)
+        .disposed(by: cellBag)
     }
     
 }

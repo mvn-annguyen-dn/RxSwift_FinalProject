@@ -14,12 +14,15 @@ import RealmSwift
 
 final class FavoriteViewController: BaseViewController, UIScrollViewDelegate {
     
+    // MARK: - IBOutlet
     @IBOutlet private weak var tableView: UITableView!
     
+    // MARK: - Properties
     private var bag: DisposeBag = DisposeBag()
     var viewModel: FavoriteViewModel = FavoriteViewModel()
     private var notificationToken: NotificationToken?
     
+    // MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -27,7 +30,6 @@ final class FavoriteViewController: BaseViewController, UIScrollViewDelegate {
         configTableView()
         configDatasourcce()
         setUpObserve()
-        dummyData()
     }
     
     // MARK: - Private func
@@ -42,14 +44,17 @@ final class FavoriteViewController: BaseViewController, UIScrollViewDelegate {
     }
     
     private func configDatasourcce() {
-        viewModel.favoriteProducts.bind(to: tableView.rx.items(cellIdentifier: Define.cellName, cellType: FavoriteTableViewCell.self)) { index, element, cell in
-            cell.viewModel = self.viewModel.viewModelForItem(index: index)
-            cell.rx.didTap.subscribe(onNext: {
-                self.viewModel.deleteProductInRealm(id: element.id)
-            })
-            .disposed(by: cell.bag)
-        }
-        .disposed(by: bag)
+        viewModel.favoriteProducts
+            .bind(to: tableView.rx.items(cellIdentifier: Define.cellName, cellType: FavoriteTableViewCell.self)) { index, element, cell in
+                cell.viewModel = self.viewModel.viewModelForItem(index: index)
+                cell.rx
+                    .deleteFavorite
+                    .subscribe(onNext: {
+                        self.viewModel.deleteProductInRealm(id: element.id)
+                    })
+                    .disposed(by: cell.cellBag)
+            }
+            .disposed(by: bag)
     }
     
     private func setUpObserve() {
@@ -57,23 +62,11 @@ final class FavoriteViewController: BaseViewController, UIScrollViewDelegate {
             let realm = try Realm()
             notificationToken = realm.objects(Product.self).observe({ [weak self] (_) in
                 guard let this = self else { return }
-                this.viewModel.isFavorite(product: self?.viewModel.favoriteProduct.value ?? Product())
-                    .subscribe(onNext: { [weak self] isFavorite in
-                        guard let this = self else { return }
-                        if isFavorite {
-                            this.tableView.reloadData()
-                        } else {
-                            this.normalAlert(message: "No Data")
-                        }
-                    })
-                    .disposed(by: self?.bag ?? DisposeBag())
+                this.viewModel.getProductInRealm()
             })
         } catch {
             normalAlert(message: "Can't reload data")
         }
-    }
-    private func dummyData() {
-        viewModel.dummyData()
     }
 }
 
@@ -83,13 +76,14 @@ extension FavoriteViewController {
     }
 }
 
+// MARK: - FavoriteTableViewCellDelegate
 extension Reactive where Base: FavoriteTableViewCell {
     
     var delegate : DelegateProxy<FavoriteTableViewCell, FavoriteTableViewCellDelegate> {
         return FavoriteTableViewCellDelegateProxy.proxy(for: base)
     }
     
-    var didTap: Observable<Void> {
+    var deleteFavorite: Observable<Void> {
         return delegate.methodInvoked(#selector(FavoriteTableViewCellDelegate.didTapCell(_:)))
             .map { parameters in
                 return parameters[0] as? Void ?? ()
