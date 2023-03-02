@@ -5,7 +5,6 @@
 //  Created by Phong Huynh N. VN.Danang on 20/02/2023.
 //
 
-import Foundation
 import RxSwift
 import RxCocoa
 

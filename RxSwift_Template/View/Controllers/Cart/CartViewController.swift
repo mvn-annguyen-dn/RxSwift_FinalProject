@@ -37,7 +37,7 @@ final class CartViewController: BaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        tabBarController?.tabBar.rx.isHidden.onNext(true)
+        hideTabbar()
         navigationItem.largeTitleDisplayMode = .never
     }
     
@@ -98,6 +98,10 @@ final class CartViewController: BaseViewController {
                 .disposed(by: cell.bag)
         }
         .disposed(by: bag)
+    }
+    
+    private func updateUI() {
+        emptyView.rx.isHidden.onNext(viewModel.carts.value.isEmpty ? false : true)
     }
     
     private func updatePriceInfoView() {
