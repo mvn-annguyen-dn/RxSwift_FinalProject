@@ -33,6 +33,7 @@ final class CartViewController: BaseViewController {
         configDatasourcce()
         configUI()
         getCart()
+        setupUI()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -144,14 +145,20 @@ final class CartViewController: BaseViewController {
         priceInfoView.addGestureRecognizer(tapView)
     }
     
+    private func setupUI() {
+        viewModel.loadingCart.distinctUntilChanged().subscribe(onNext: { [weak self] isLoadingCart in
+            guard let this = self else { return }
+            if isLoadingCart {
+                this.updateUI()
+                this.updatePriceInfoView()
+                this.animationLoadTable()
+            }
+        })
+        .disposed(by: bag)
+    }
+    
     private func getCart() {
         viewModel.getApiCart()
-        viewModel.checkCart
-            .distinctUntilChanged()
-            .bind(to: emptyView.rx.isHidden)
-            .disposed(by: bag)
-        updatePriceInfoView()
-        animationLoadTable()
     }
     
     // MARK: - Objc methods
@@ -257,7 +264,7 @@ extension CartViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let delete = UIContextualAction(style: .destructive, title: "Delete") { [weak self] (_, _, completionHandler) in
             guard let this = self else { return }
-            this.deleteCart(orderId: self?.viewModel.carts.value[indexPath.row].id ?? 0)
+            this.deleteCart(orderId: this.viewModel.carts.value[indexPath.row].id ?? 0)
             completionHandler(true)
         }
         delete.backgroundColor = .white

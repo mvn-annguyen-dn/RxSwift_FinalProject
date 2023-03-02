@@ -13,7 +13,7 @@ final class CartViewModel {
     private var bag: DisposeBag = DisposeBag()
     var carts: BehaviorRelay<[Cart]> = .init(value: [])
     var errorBehaviorRelay: PublishRelay<ApiError> = .init()
-    var checkCart: BehaviorRelay<Bool> = .init(value: false)
+    var loadingCart: BehaviorRelay<Bool> = .init(value: false)
     
     func getApiCart() {
         ApiNetWorkManager.shared.request(CartResponse.self, .target(MainTarget.cart))
@@ -21,10 +21,10 @@ final class CartViewModel {
                 switch response {
                 case .success(let carts):
                     self.carts.accept(carts.data ?? [])
-                    self.checkCart.accept(true)
+                    self.loadingCart.accept(true)
                 case .failure(let error):
                     self.errorBehaviorRelay.accept(error as? ApiError ?? .invalidResponse)
-                    self.checkCart.accept(false)
+                    self.loadingCart.accept(false)
                 }
             }
             .disposed(by: bag)

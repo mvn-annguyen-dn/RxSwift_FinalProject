@@ -18,15 +18,10 @@ protocol CartTableViewCellDelegate {
 
 final class CartTableViewCellDelegateProxy: DelegateProxy<CartTableViewCell, CartTableViewCellDelegate>, DelegateProxyType, CartTableViewCellDelegate {
     
-    weak public private(set) var cartCell: CartTableViewCell?
-    
-    public init(cartCell: ParentObject) {
-        self.cartCell = cartCell
-        super.init(parentObject: cartCell, delegateProxy: CartTableViewCellDelegateProxy.self)
-    }
-    
     static func registerKnownImplementations() {
-        self.register { CartTableViewCellDelegateProxy(cartCell: $0) }
+        self.register { parent in
+            CartTableViewCellDelegateProxy(parentObject: parent, delegateProxy: self)
+        }
     }
     
     static func currentDelegate(for object: CartTableViewCell) -> CartTableViewCellDelegate? {
