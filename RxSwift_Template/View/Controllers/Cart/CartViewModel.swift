@@ -11,17 +11,31 @@ import RxCocoa
 final class CartViewModel {
     
     private var bag: DisposeBag = DisposeBag()
-    var carts: BehaviorRelay<[Cart]> = .init(value: [Cart(productName: "product name", quantity: 2, price: 3, productImage: "https://cdn.tgdd.vn/Files/2019/07/25/1181734/do-sau-truong-anh-la-gi-cach-thiet-lap-de-chup-anh-dep-nhat--1.jpg"), Cart(productName: "product name", quantity: 4, price: 5, productImage: "https://cdn.tgdd.vn/Files/2019/07/25/1181734/do-sau-truong-anh-la-gi-cach-thiet-lap-de-chup-anh-dep-nhat--1.jpg")])
+    var carts: PublishRelay<[Cart]> = .init()
+    var errorBehaviorRelay: PublishRelay<ApiError> = .init()
     
-    func viewModelForItem(index: Int) -> CartCellViewModel {
-        return CartCellViewModel(cart: carts.value[index])
+    func getApiCart() {
+        ApiNetWorkManager.shared.request(CartResponse.self, .target(MainTarget.cart))
+            .subscribe { response in
+                switch response {
+                case .success(let carts):
+                    self.carts.accept(carts.data ?? [])
+                case .failure(let error):
+                    self.errorBehaviorRelay.accept(error as? ApiError ?? .invalidResponse)
+                }
+            }
+            .disposed(by: bag)
     }
     
-    func totalPriceCarts() -> BehaviorRelay<Int> {
-        let total: BehaviorRelay<Int> = .init(value: 0)
-        for cart in carts.value {
-            total.accept(total.value + (cart.quantity ?? 0) * (cart.price ?? 0))
-        }
-        return total
+    func requestUpdateCart(orderId: Int, quantity: Int) -> Single<MessageResponse> {
+        return ApiNetWorkManager.shared.request(MessageResponse.self, .target(MainTarget.updateCart(id: orderId, quantity: quantity)))
+    }
+    
+    func requestDeleteCart(orderId: Int) -> Single<MessageResponse> {
+        return ApiNetWorkManager.shared.request(MessageResponse.self, .target(MainTarget.deleteCart(id: orderId)))
+    }
+    
+    func viewModelForItem(cart: Cart) -> CartCellViewModel {
+        return CartCellViewModel(cart: cart)
     }
 }

@@ -9,6 +9,30 @@ import UIKit
 import RxSwift
 import RxCocoa
 
+@objc
+protocol CartTableViewCellDelegate {
+    @objc optional func increase(_ cell: CartTableViewCell)
+    @objc optional func decrease(_ cell: CartTableViewCell)
+    @objc optional func inputQuantity(_ cell: CartTableViewCell, quantity: String)
+}
+
+final class CartTableViewCellDelegateProxy: DelegateProxy<CartTableViewCell, CartTableViewCellDelegate>, DelegateProxyType, CartTableViewCellDelegate {
+    
+    static func registerKnownImplementations() {
+        self.register { parent in
+            CartTableViewCellDelegateProxy(parentObject: parent, delegateProxy: self)
+        }
+    }
+    
+    static func currentDelegate(for object: CartTableViewCell) -> CartTableViewCellDelegate? {
+        return object.delegate
+    }
+    
+    static func setCurrentDelegate(_ delegate: CartTableViewCellDelegate?, to object: CartTableViewCell) {
+        object.delegate = delegate
+    }
+}
+
 final class CartTableViewCell: UITableViewCell {
     
     // MARK: - IBOutlets
@@ -16,6 +40,8 @@ final class CartTableViewCell: UITableViewCell {
     @IBOutlet private weak var nameLabel: UILabel!
     @IBOutlet private weak var priceLabel: UILabel!
     @IBOutlet private weak var quantityTextField: UITextField!
+    @IBOutlet private weak var plusButton: UIButton!
+    @IBOutlet private weak var minusButton: UIButton!
     
     // MARK: - Properties
     var bag: DisposeBag = DisposeBag()
@@ -24,6 +50,8 @@ final class CartTableViewCell: UITableViewCell {
             updateCell()
         }
     }
+    
+    weak var delegate: CartTableViewCellDelegate?
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -43,7 +71,8 @@ final class CartTableViewCell: UITableViewCell {
     
     private func updateCell() {
         guard let viewModel = viewModel else { return }
-        let cart = viewModel.cart.compactMap { $0 }
+        let cart = viewModel.cart
+            .compactMap { $0 }
         cart.map(\.productName)
             .bind(to: nameLabel.rx.text)
             .disposed(by: bag)
@@ -66,9 +95,37 @@ final class CartTableViewCell: UITableViewCell {
             .flatMap({DownloadImage.shared.dowloadImageWithRxSwift(url: $0 ?? "")})
             .bind(to: productImageView.rx.image)
             .disposed(by: bag)
+        
+        plusButton.rx
+            .tap
+            .subscribe(onNext: { [weak self] in
+                guard let this = self else { return }
+                this.delegate?.increase?(this)
+            })
+            .disposed(by: bag)
+        
+        minusButton.rx
+            .tap
+            .subscribe(onNext: { [weak self] in
+                guard let this = self else { return }
+                this.delegate?.decrease?(this)
+            })
+            .disposed(by: bag)
+        
+        quantityTextField.rx
+            .controlEvent(.editingDidEndOnExit)
+            .do(onNext: { _ in
+                self.quantityTextField.becomeFirstResponder()
+            })
+            .map { self.quantityTextField.text ?? "" }
+            .subscribe(onNext: { value in
+                self.delegate?.inputQuantity?(self, quantity: value)
+            })
+            .disposed(by: bag)
     }
 }
 
+// MARK: - Define
 extension CartTableViewCell {
     private struct Define {
         static var cornerRadius: CGFloat = 10
